@@ -87,6 +87,17 @@
 	padding: 5px;
 	border-radius: 10px;
 	font-family: sans-serif;
+	overflow: hidden;
+}
+
+#prompt {
+	position: absolute;
+	left: 265px;
+	top: 175px;
+	background-image: url('/client/img/a_button.png');
+	width: 25px;
+	height: 25px;
+	display: none;
 }
 
 /* プロトタイプ用 */
