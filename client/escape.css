@@ -1,0 +1,132 @@
+* {
+	margin: 0px;
+}
+
+#upper {
+	width: 320px;
+	height: 213px;
+	background-color: black;
+}
+
+#downer {
+	width: 320px;
+	height: 212px;
+	background-image: url("/client/img/room.png");
+}
+
+#item_list {
+	position: relative;
+	top: 12px;
+	left: 20px;
+	width: 277px;
+	height: 105px;
+}
+
+.item {
+	position: absolute;
+	width: 50px;
+	height: 50px;
+	background-color: white;
+	border-radius: 10px;
+}
+.item.active {
+	border-style: solid;
+	border-width: 3px;
+	border-color: red;
+	margin-left: -3px;
+	margin-top: -3px;
+}
+.item:nth-of-type(1) {
+	top: 0px;
+	left: 5px;
+}
+.item:nth-of-type(2) {
+	top: 0px;
+	left: 60px;
+}
+.item:nth-of-type(3) {
+	top: 0px;
+	left: 115px;
+}
+.item:nth-of-type(4) {
+	top: 0px;
+	left: 170px;
+}
+.item:nth-of-type(5) {
+	top: 0px;
+	left: 225px;
+}
+.item:nth-of-type(6) {
+	top: 55px;
+	left: 5px;
+}
+.item:nth-of-type(7) {
+	top: 55px;
+	left: 60px;
+}
+.item:nth-of-type(8) {
+	top: 55px;
+	left: 115px;
+}
+.item:nth-of-type(9) {
+	top: 55px;
+	left: 170px;
+}
+.item:nth-of-type(10) {
+	top: 55px;
+	left: 225px;
+}
+
+#message {
+	position: absolute;
+	left: 25px;
+	top: 125px;
+	background-color: white;
+	width: 260px;
+	height: 70px;
+	padding: 5px;
+	border-radius: 10px;
+	font-family: sans-serif;
+}
+
+/* プロトタイプ用 */
+#clock {
+	position: absolute;
+	left: 225px;
+	top: 238px;
+	width: 28px;
+	height: 28px;
+	background-image: url('/client/img/clock.png');
+}
+#desk {
+	position: absolute;
+	left: 35px;
+	top: 330px;
+	width: 114px;
+	height: 90px;
+	background-image: url('/client/img/desk.png');
+}
+#pot {
+	position: absolute;
+	left: 78px;
+	top: 317px;
+	width: 34px;
+	height: 37px;
+	background-image: url('/client/img/pot.png');
+}
+#light {
+	position: absolute;
+	left: 85px;
+	top: 212px;
+	width: 54px;
+	height: 67px;
+	background-image: url('/client/img/light.png');
+}
+#door {
+	position: absolute;
+	left: 208px;
+	top: 281px;
+	width: 62px;
+	height: 99px;
+	background-image: url('/client/img/door.png');
+}
