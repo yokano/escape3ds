@@ -23,6 +23,13 @@ $(function() {
 		$(this).addClass('selected');
 	});
 	
+	// イベント領域がクリックされたらイベントを開く
+	$(document).on('click', '.event_area:not(.selected)', function() {
+		$('.event_area').removeClass('selected');
+		$(this).addClass('selected');
+		console.log('イベントが選択されました');
+	});
+	
 	// シーン追加ボタン
 	$('#add_scene').on('click', function() {
 		$('#scene_list').append($('<li>新しいシーン</li>'));
@@ -63,6 +70,9 @@ $(function() {
 					.css('top', data.y)
 					.css('width', data.w)
 					.css('height', data.h)
+					.on('click', function() {
+						console.log('ok');
+					})
 					.appendTo($('#scene'));
 				jcropApi.release();
 			}

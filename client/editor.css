@@ -19,7 +19,6 @@ html {
 	border-width: 1px;
 	list-style-type: none;
 	list-style-position: inside;
-	width: 200px;
 	height: 20px;
 	padding: 5px;
 	margin-bottom: 5px;
@@ -58,7 +57,22 @@ html {
 	position: absolute;
 	background-color: blue;
 	opacity: 0.5;
+	z-index: 300;
+	cursor: pointer;
+}
+
+.event_area.selected {
+	border-style: solid;
+	border-color: red;
 }
 
 #scene_information {
+}
+
+#event_frame {
+	position: absolute;
+	width: 200px;
+	height: 480px;
+	left: 335px;
+	top: 25px;
 }
