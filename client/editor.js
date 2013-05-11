@@ -24,9 +24,12 @@ $(function() {
 			$('#scene').css('background-image', 'url(' + event.target.result + ')');
 		}
 		reader.readAsDataURL(file);
-		
 		$(this).css('background-color', 'black');
+		
+		$(this).Jcrop();
+		
 		return false;
+
 	}).on('dragenter', function() {
 		$(this).empty().css('background-color', 'gray');
 	}).on('dragleave', function() {
