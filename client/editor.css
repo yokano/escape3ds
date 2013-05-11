@@ -1,0 +1,72 @@
+html {
+	background-color: #eeeeff;
+}
+#scene_list_frame {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+	width: 200px;
+}
+#scene_list_header {
+	border-style: solid;
+	width: 200px;
+	height: 25px;
+}
+#scene_list {
+	padding-left: 0px;
+	margin-top: 0px;
+}
+#scene_list>li {
+	border-style: solid;
+	list-style-type: none;
+	list-style-position: inside;
+	width: 200px;
+	height: 100px;
+}
+
+#scene_frame {
+	position: absolute;
+	left: 250px;
+	top: 25px;
+	width: 320px;
+}
+
+#scene_header {
+	position: relative;
+	width: 320px;
+	height: 25px;
+	background-color: pink;
+}
+
+#scene {
+	position: relative;
+	left: 0px;
+	top: 0px;
+	width: 320px;
+	height: 212px;
+	background-color: black;
+	color: white;
+	text-align: center;
+}
+
+#scene_event {
+	
+}
+
+#events {
+	position: absolute;
+	left: 600px;
+	top: 25px;
+	width: 200px;
+	height: 100px;
+	background-color: red;
+	opacity: 0.5;
+	list-style-type: none;
+	list-style-position: inside;
+}
+
+#events>li {
+	border-style: solid;
+	width: 200px;
+	height: 100px;
+}
