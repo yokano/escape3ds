@@ -49,6 +49,12 @@ html {
 	text-align: center;
 }
 
+.event_area {
+	position: absolute;
+	background-color: blue;
+	opacity: 0.5;
+}
+
 #scene_event {
 	
 }

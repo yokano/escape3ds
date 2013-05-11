@@ -20,13 +20,25 @@ $(function() {
 			console.log('file read error');
 		};
 		reader.onload = function(event) {
-			console.log(event.target.result);
 			$('#scene').css('background-image', 'url(' + event.target.result + ')');
 		}
 		reader.readAsDataURL(file);
 		$(this).css('background-color', 'black');
 		
-		$(this).Jcrop();
+		var jcropApi;
+		$(this).Jcrop({
+			onSelect: function(data) {
+				$('<div class="event_area"></div>')
+					.css('left', data.x)
+					.css('top', data.y)
+					.css('width', data.w)
+					.css('height', data.h)
+					.appendTo($('#scene'));
+				jcropApi.release();
+			}
+		}, function() {
+			jcropApi = this;
+		});
 		
 		return false;
 
