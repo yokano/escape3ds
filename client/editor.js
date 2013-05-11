@@ -3,11 +3,38 @@
  * @file
  */
 $(function() {
+	// 設定ファイル作成
+	var config = {
+		title: 'サンプル',
+		start: 'default',
+		author: 'y.okano',
+		scenes: [
+			{
+				id: 'default',
+				events: []
+			}
+		]
+	};
+	var currentScene = 'default'
+	
+	// シーンリストを選択可能にする
+	$(document).on('click', '#scene_list>li', function() {
+		$('#scene_list>li').removeClass('selected');
+		$(this).addClass('selected');
+	});
+	
+	// シーン追加ボタン
+	$('#add_scene').on('click', function() {
+		$('#scene_list').append($('<li>新しいシーン</li>'));
+	});
+	
+	// File API 対応チェック
 	if(!window.File) {
 		alert('お使いのブラウザは File API に対応していません\n最新のブラウザをご使用ください');
 		return false;
 	}
 	
+	// 画像をシーンへドロップしたら
 	$('#scene').on('drop', function(event) {
 		var file = event.originalEvent.dataTransfer.files[0];
 		if(!file.type.match(/image*/)) {
@@ -15,16 +42,19 @@ $(function() {
 			return false;
 		}
 		
+		// 画像ファイル読み込み
 		var reader = new FileReader();
 		reader.onerror = function() {
 			console.log('file read error');
 		};
 		reader.onload = function(event) {
 			$('#scene').css('background-image', 'url(' + event.target.result + ')');
+			$('#scene_information').css('display', 'block');
 		}
 		reader.readAsDataURL(file);
 		$(this).css('background-color', 'black');
 		
+		// 範囲指定イベント
 		var jcropApi;
 		$(this).Jcrop({
 			onSelect: function(data) {
@@ -40,6 +70,7 @@ $(function() {
 			jcropApi = this;
 		});
 		
+		// ページ遷移をキャンセル
 		return false;
 
 	}).on('dragenter', function() {

@@ -7,21 +7,26 @@ html {
 	left: 25px;
 	width: 200px;
 }
-#scene_list_header {
-	border-style: solid;
-	width: 200px;
-	height: 25px;
-}
 #scene_list {
 	padding-left: 0px;
 	margin-top: 0px;
 }
+#scene_list_header {
+	margin-bottom: 5px;
+}
 #scene_list>li {
 	border-style: solid;
+	border-width: 1px;
 	list-style-type: none;
 	list-style-position: inside;
 	width: 200px;
-	height: 100px;
+	height: 20px;
+	padding: 5px;
+	margin-bottom: 5px;
+	cursor: pointer;
+}
+#scene_list .selected {
+	background-color: yellow;
 }
 
 #scene_frame {
@@ -55,24 +60,5 @@ html {
 	opacity: 0.5;
 }
 
-#scene_event {
-	
-}
-
-#events {
-	position: absolute;
-	left: 600px;
-	top: 25px;
-	width: 200px;
-	height: 100px;
-	background-color: red;
-	opacity: 0.5;
-	list-style-type: none;
-	list-style-position: inside;
-}
-
-#events>li {
-	border-style: solid;
-	width: 200px;
-	height: 100px;
+#scene_information {
 }
