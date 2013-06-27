@@ -1,13 +1,13 @@
-application: escape-3ds
-version: 0
+application: escape3ds
+version: 1
 runtime: go
 api_version: go1
 
-inbound_services:
-- mail
-
 handlers:
+- url: /
+  static_files: client/index.html
+  upload: client/index.html
 - url: /client
   static_dir: client
-- url: /.*
+- url: /
   script: _go_app
