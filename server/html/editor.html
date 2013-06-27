@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>ESCPAE 3DS</title>
+		<link rel="stylesheet" href="/client/css/editor.css"></link>
+		<link rel="stylesheet" href="/client/lib/jqueryui/css/overcast/jquery-ui-1.10.3.custom.min.css"></link>
+	</head>
+	<body>
+		<script type="text/template" id="header_view_template">
+			<header>
+				<h1 id="game_title"><%= name %></h1>
+				<div id="buttons">
+					<button id="scene_mode">シーン管理</button>
+					<button id="item_mode">アイテム管理</button>
+					<button id="back">ゲーム一覧へ戻る</button>
+					<button id="save">ゲームを保存</button>
+				</div>
+			</header>
+			<hr>
+		</script>
+		
+		
+		<section id="scene_editor">
+			<!--ul id="scene_list"-->
+				<script type="text/template" id="scene_li_view_template">
+						<li>
+							<img class="scene_img" src="/client/img/scene/<%= background %>">
+							<div class="scene_name"><%= name %></div>
+							<div class="is_first_scene"></div>
+						</li>
+				</script>
+			<!--/ul-->
+			
+			<script type="text/template" id="scene_view_template">
+				<div id="scene">
+					<div class="event">event</div>
+					<div class="event">event</div>
+					<div class="event">event</div>
+				</div>
+
+				<div id="scene_info">
+					<div>
+						シーン名: <input class="scene_name" type="text"></input>
+						<button id="change_scene_name">変更</button>
+					</div>
+					<div><label>ゲーム開始時のシーンにする <input class="#is_first_scene" type="checkbox"></input></label></div>
+					<div>背景画像:
+						<input id="change_scene_img" type="file"></input>
+						<div><img class="scene_img" src="/client/img/scene/living1.png"></div>
+					</div>
+					<div><button id="edit_enter_event">シーン開始時のイベント</button></div>
+					<div><button id="edit_leave_event">シーン終了時のイベント</button></div>
+					<div><button id="add_event">イベントを追加</button></div>
+					<div><button id="copy_scene">シーンをコピー</button><button id="delete_scene">シーンを削除</button></div>
+				</div>
+			</script>
+			
+			<script type="text/template" id="event_view_template">
+				<div id="event">
+					<div>イベント名: <input class="event_name" type="text"></input></div>
+					<div>
+						<div>画像</div>
+						<div>
+							<label><input class="on" name="event_img" type="radio" value="on">あり</input></label>
+							<input id="#change_event_img" type="file"></input>
+						</div>
+						<div><label><input class="off" name="event_img" type="radio" value="off">なし</input></label></div>
+					</div>
+					<div id="#event_editor">
+						<div>内容</div>
+						<textarea rows="25" cols="35"></textarea>
+					</div>
+				</div>
+			</script>
+		</section>
+		
+		<!--
+		<section id="itemeditor">
+			<ul id="item_list">
+				<li>
+					<img class="item_img" src="">
+					<div class="item_name">かなづち</div>
+					<div class="has_default"></div>
+				</li>
+				<li>
+					<img class="item_img" src="">
+					<div class="item_name">白い皿</div>
+					<div class="has_default"></div>
+				</li>
+			</ul>
+			
+			<div id="item_preview">
+				<img src="/client/img/upper.png">
+				<div class="item"></div>
+			</div>
+			
+			<div id="item_info">
+				<div>
+					<label>アイテム名: <input class="item_name" type="text"></input></label>
+					<button id="change_item_name">変更</button>
+				</div>
+				<div>
+					<img class="item_img" src="">
+					<input id="change_item_img" type="file"></input>
+				</div>
+				<div><label>最初から持っている: <input id="has_default" type="checkbox"></input></label></div>
+			</div>
+		</section>
+		-->
+		
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="/client/lib/underscorejs/underscore-min.js"></script>
+		<script src="/client/lib/backbonejs/backbone-min.js"></script>
+		<script src="/client/lib/jqueryui/js/jquery-ui-1.10.3.custom.min.js"></script>
+		<script src="/client/js/editor.js"></script>
+	</body>
+</html>

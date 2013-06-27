@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>DEBUG</title>
+		<link rel="stylesheet" href="/client/css/debug.css"></link>
+	</head>
+	<body>
+		<h1>デバッグツール</h1>
+		<h2>ユーザの追加</h2>
+		<div id="add_user">
+			<div>
+				<label for="user_type">ユーザ種別</label>
+				<select name="user_type" class="user_type">
+					<option value="Twitter">Twitter</option>
+					<option value="Facebook">Facebook</option>
+					<option value="normal">通常</option>
+				</select>
+			</div>
+			<div>
+				<label>ユーザ名<input type="text" class="user_name"></input></label>
+			</div>
+			<div>
+				<label>パスワード<input type="password" class="user_pass"></input></label>
+			</div>
+			<div>
+				<label>メールアドレス<input type="text" class="user_mail"></input></label>
+			</div>
+			<div>
+				<label>OAuth ID<input type="text" class="user_oauth_id"></input></label>
+			</div>
+			<button class="submit">実行</button>
+		</div>
+		
+		<h2>ログイン</h2>
+		<div id="login">
+			<div>
+				<label>メールアドレス</label>
+				<input type="text" class="mail"></input>
+			</div>
+			<div>
+				<label>パスワード</label>
+				<input type="password" class="password"></input>
+			</div>
+			<button class="submit">ログイン</button>
+		</div>
+		
+		<h2>仮登録ユーザ一覧</h2>
+		<div id="interim_users">
+			<select size="5">
+				<option>y.okano</option>
+			</select>
+			<button class="register">本登録する</button>
+		</div>
+		
+		<h2>登録済ユーザ一覧</h2>
+		<div id="users">
+			<div class="left">
+				<select size="10">
+					<option>y.okano</option>
+				</select>
+			</div>
+			<div>
+				<h3>ゲーム追加</h3>
+				<div>
+					<label>タイトル：<input type="text" id="game_title"></input></label>
+				</div>
+				<div>
+					<label>説明：<input type="text" id="game_description"></input></label>
+				</div>
+				<button id="add_game">追加</button>
+			</div>
+		</div>
+		
+		<h2>セッション</h2>
+		<div id="session">
+			<div>
+				<label>メールアドレス：<input type="text" class="mail"></input></label>
+			</div>
+			<div>
+				<label>パスワード：<input type="password" class="pass"></input></label>
+			</div>
+			<button id="start_session">セッション開始</button>
+		</div>
+		
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script src="/client/js/debug.js"></script>
+	</body>
+</html>

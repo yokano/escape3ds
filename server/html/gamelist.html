@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html ng-app>
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/client/css/gamelist.css"></link>
+		<title>ゲーム一覧</title>
+	</head>
+	<body>
+		<a href="/logout"><button>ログアウト</button></a>
+		<h1>ゲーム一覧</h1>
+		<div id="add_game_div">
+			<div>
+				<label>ゲームの名前: <input type="text" class="name"></input></label>
+			</div>
+			<div>
+				<label>ゲームの説明: <input type="text" class="description"></input></label>
+			</div>
+			<button id="add_game">新規作成</button>
+		</div>
+		<ul id="gamelist">
+			{{range $key, $val := .}}
+			<li class="game" key="{{$key}}">
+				<div class="title">{{$val.Name}}</div>
+				<div class="description">{{$val.Description}}</div>
+				<div class="thumbnail"><img width="200" src="/client/img/living.png"></div>
+				<a href="/editor?game_key={{$key}}"><button class="edit">作る</button></a>
+				<button class="copy">コピー</button>
+				<button class="delete">消す</button>
+			</li>
+			{{end}}
+		</ul>
+		
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		<script src="/client/js/gamelist.js"></script>
+		<script>
+			var userKey = "{{.Key}}";
+		</script>
+	</body>
+</html>
