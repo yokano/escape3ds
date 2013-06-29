@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"appengine"
+	"appengine/blobstore"
 	"fmt"
 	"encoding/json"
 )
@@ -531,4 +532,60 @@ func session(w http.ResponseWriter, r *http.Request) string {
 	return userKey
 }
 
+/**
+ * ファイルのアップロード
+ * ファイルを blobstore に保存して blob key を返す
+ * Ajax で使う
+ * method: POST
+ * 
+ * @function
+ * @param {http.ResponseWriter} w 応答先
+ * @param {*http.Request} r リクエスト
+ */
+func upload(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
 
+	// リクエストからファイルを取り出す
+	file, fileHeader, err := r.FormFile("file")
+	check(c, err)
+	
+	// ファイルデータを読み出す
+	fileData := make([]byte, 256 * 1024)
+	byteNum, err := file.Read(fileData)
+	check(c, err)
+	fileData = fileData[:byteNum]
+	
+	// blobstore に blob を作成
+	mimeType := fileHeader.Header.Get("Content-Type")
+	writer, err := blobstore.Create(c, mimeType)
+	check(c, err)
+	
+	// blob にファイルデータを書き込む
+	writedByteNum, err := writer.Write(fileData)
+	check(c, err)
+	if writedByteNum != byteNum {
+		c.Errorf("blob の書き込みに失敗しました")
+		return
+	}
+	err = writer.Close()
+	check(c, err)
+	
+	// blob key を取得
+	key, err := writer.Key()
+	check(c, err)
+	
+	// blob key をクライアントへ返す
+	fmt.Fprintf(w, `{"blobkey":"%s"}`, key)
+}
+
+/**
+ * ファイルのダウンロード
+ * blob key に対応するファイルを提供する
+ * Ajax で使う
+ * @function
+ * @param {http.ResponseWriter} w 応答先
+ * @param {*http.Request} r リクエスト
+ */
+func download(w http.ResponseWriter, r *http.Request) {
+	
+}

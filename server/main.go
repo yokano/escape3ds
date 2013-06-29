@@ -34,6 +34,8 @@ func init() {
 	http.HandleFunc("/login", login)
 	http.HandleFunc("/add_game", addGame)
 	http.HandleFunc("/delete_game", deleteGame)
+	http.HandleFunc("/upload", upload)
+	http.HandleFunc("/download", download)
 	
 	// 管理者専用 通常アクセス
 	http.HandleFunc("/debug", debug)

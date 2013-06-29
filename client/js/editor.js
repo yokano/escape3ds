@@ -1,23 +1,3 @@
-/*
-$(function() {
-
-// シーン選択
-$('#scene_list li').click(function() {
-	if($(this).hasClass('select')) {
-		return;
-	}
-	$('.select').removeClass('select');
-	$(this).addClass('select');
-	$('#scene').css('background-image', 'url("' + $(this).find('img').attr('src') + '")');
-	$('#scene_info .scene_name').val($(this).find('.scene_name').html());
-});
-
-// 初期化
-$('#scene_list li:first').click();
-
-});
-*/
-
 $(function() {
 
 /**
@@ -110,8 +90,7 @@ var HeaderView = Backbone.View.extend({
 	tagName: 'header',
 	template: _.template($('#header_view_template').html()),
 	render: function() {
-		var content = this.template(this.model.toJSON());
-		this.$el.html(content);
+		this.$el.html(this.template(this.model.toJSON()));
 		return this;
 	},
 	events: {
@@ -146,8 +125,8 @@ var SceneEditorView = Backbone.View.extend({
 	tagname: 'section',
 	render: function() {
 		var sceneListView = new SceneListView({collection: sceneList});
-		var sceneView = new SceneView;
-		var eventView = new EventView;
+		var sceneView = new SceneView();
+		var eventView = new EventView();
 		
 		$('<button id="add_scene">シーンを追加</button>').appendTo(this.$el);
 		this.$el.append(
@@ -168,7 +147,6 @@ var SceneEditorView = Backbone.View.extend({
 		sceneList.add({
 			name: name
 		});
-		console.log(sceneList.toJSON());
 	}
 });
 
@@ -202,25 +180,56 @@ var SceneListItemView = Backbone.View.extend({
 	tagName: 'li',
 	template: _.template($('#scene_li_view_template').html()),
 	render: function() {
-		this.el = this.template(this.model.toJSON());
+		this.$el.html(this.template(this.model.toJSON()));
 		return this;
 	}
 });
 
+/**
+ * シーンの設定ビュー
+ * 画面中央
+ * @class
+ * @extends Backbone.View
+ */
 var SceneView = Backbone.View.extend({
-	tagName: 'scene',
+	tagName: 'div',
 	template: _.template($('#scene_view_template').html()),
 	render: function() {
-		this.el = this.template({});
+		this.$el.html(this.template());
 		return this;
+	},
+	events: {
+		'change #change_scene_img': 'upload'
+	},
+	upload: function(data) {
+		var form = $('#change_scene_img_form').get()[0];
+		var formData = new FormData(form);
+		$.ajax('/upload', {
+			method: 'POST',
+			contentType: false,
+			processData: false,
+			data: formData,
+			error: function() {
+				console.log('error');
+			},
+			success: function(data) {
+				console.log('blobkey', data.blobkey);
+			}
+		});
 	}
 });
 
+/**
+ * イベント編集ビュー
+ * 画面右側
+ * @class
+ * @extends Backbone.View
+ */
 var EventView = Backbone.View.extend({
 	tagName: 'div',
 	template: _.template($('#event_view_template').html()),
 	render: function() {
-		this.el = this.template({});
+		this.$el.html(this.template());
 		return this;
 	}
 });

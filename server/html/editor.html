@@ -8,29 +8,22 @@
 	</head>
 	<body>
 		<script type="text/template" id="header_view_template">
-			<header>
-				<h1 id="game_title"><%= name %></h1>
-				<div id="buttons">
-					<button id="scene_mode">シーン管理</button>
-					<button id="item_mode">アイテム管理</button>
-					<button id="back">ゲーム一覧へ戻る</button>
-					<button id="save">ゲームを保存</button>
-				</div>
-			</header>
+			<h1 id="game_title"><%= name %></h1>
+			<div id="buttons">
+				<button id="scene_mode">シーン管理</button>
+				<button id="item_mode">アイテム管理</button>
+				<button id="back">ゲーム一覧へ戻る</button>
+				<button id="save">ゲームを保存</button>
+			</div>
 			<hr>
 		</script>
 		
-		
 		<section id="scene_editor">
-			<!--ul id="scene_list"-->
-				<script type="text/template" id="scene_li_view_template">
-						<li>
-							<img class="scene_img" src="/client/img/scene/<%= background %>">
-							<div class="scene_name"><%= name %></div>
-							<div class="is_first_scene"></div>
-						</li>
-				</script>
-			<!--/ul-->
+			<script type="text/template" id="scene_li_view_template">
+				<img class="scene_img" src="/client/img/scene/<%= background %>">
+				<div class="scene_name"><%= name %></div>
+				<div class="is_first_scene"></div>
+			</script>
 			
 			<script type="text/template" id="scene_view_template">
 				<div id="scene">
@@ -38,7 +31,7 @@
 					<div class="event">event</div>
 					<div class="event">event</div>
 				</div>
-
+				
 				<div id="scene_info">
 					<div>
 						シーン名: <input class="scene_name" type="text"></input>
@@ -46,8 +39,10 @@
 					</div>
 					<div><label>ゲーム開始時のシーンにする <input class="#is_first_scene" type="checkbox"></input></label></div>
 					<div>背景画像:
-						<input id="change_scene_img" type="file"></input>
-						<div><img class="scene_img" src="/client/img/scene/living1.png"></div>
+						<form id="change_scene_img_form" action="/upload" method="POST" enctype="multipart/form-data">
+							<input id="change_scene_img" name="file" type="file"></input>
+							<div><img class="scene_img" src="/client/img/scene/living1.png"></div>
+						</form>
 					</div>
 					<div><button id="edit_enter_event">シーン開始時のイベント</button></div>
 					<div><button id="edit_leave_event">シーン終了時のイベント</button></div>
