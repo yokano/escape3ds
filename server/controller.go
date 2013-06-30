@@ -10,8 +10,6 @@ import (
 	"net/http"
 	"net/url"
 	"appengine"
-	"appengine/blobstore"
-	"appengine/datastore"
 	"fmt"
 	"encoding/json"
 )
@@ -546,38 +544,13 @@ func session(w http.ResponseWriter, r *http.Request) string {
 func upload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 
-	// リクエストからファイルを取り出す
 	file, fileHeader, err := r.FormFile("file")
 	check(c, err)
 	
-	// ファイルデータを読み出す
-	fileData := make([]byte, 256 * 1024)
-	byteNum, err := file.Read(fileData)
-	check(c, err)
-	fileData = fileData[:byteNum]
+	model := NewModel(c)
+	blobKey := model.addBlob(file, fileHeader)
 	
-	// blobstore に blob を作成
-	mimeType := fileHeader.Header.Get("Content-Type")
-	writer, err := blobstore.Create(c, mimeType)
-	check(c, err)
-	
-	// blob にファイルデータを書き込む
-	writedByteNum, err := writer.Write(fileData)
-	check(c, err)
-	if writedByteNum != byteNum {
-		c.Errorf("blob の書き込みに失敗しました")
-		return
-	}
-	err = writer.Close()
-	check(c, err)
-	
-	// blob key を取得
-	key, err := writer.Key()
-	check(c, err)
-	
-	// blob key をクライアントへ返す
-	fmt.Fprintf(w, `{"blobkey":"%s"}`, string(key))
-	c.Debugf("blobkey: %s", key)
+	fmt.Fprintf(w, `{"blobkey":"%s"}`, blobKey)
 }
 
 /**
@@ -591,42 +564,17 @@ func upload(w http.ResponseWriter, r *http.Request) {
 func download(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
-	// リクエストから blobKey を取り出す
-	blobKey := appengine.BlobKey(r.FormValue("blobKey"))
+	blobKey := r.FormValue("blobKey")
 	if blobKey == "" {
 		c.Warningf("blobKey なしで download が実行されました")
 		return
 	}
 	
-	// __BlobFileIndex__ から blobKey で Key Name (string id) を取得
-	query := datastore.NewQuery("__BlobFileIndex__").Filter("blob_key =", blobKey)
-	iterator := query.Run(c)
-	blobFileIndexKey, err := iterator.Next(nil)
-	check(c, err)
+	model := NewModel(c)
+	contentType, bytes := model.getBlob(blobKey)
 	
-	// __Blobinfo__ から Key Name で size を取得
-	query = datastore.NewQuery("__BlobInfo__").Filter("creation_handle =", blobFileIndexKey.StringID())
-	iterator = query.Run(c)
-	blobInfo := new(blobstore.BlobInfo)
-	_, err = iterator.Next(blobInfo)
-	check(c, err)
-	size := blobInfo.Size
-	
-	// size バイトだけ reader からバイトを読み出す
-	reader := blobstore.NewReader(c, blobKey)
-	bytes := make([]byte, size)
-	readed, err := reader.Read(bytes)
-	check(c, err)
-	if(int64(readed) != size) {
-		c.Warningf("読み込んだファイルサイズとメタ情報のファイルサイズが異なります")
-	}
-	
-	// HTTP でファイルを出力する
 	header := w.Header()
-	header.Add("Content-Type", "image/png")
-	wrote, err := w.Write(bytes)
+	header.Add("Content-Type", contentType)
+	_, err := w.Write(bytes)
 	check(c, err)
-	if wrote != readed {
-		c.Warningf("blobstoreのファイルサイズとクライアントへ渡したファイルサイズが異なります")
-	}
 }
