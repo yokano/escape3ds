@@ -209,15 +209,33 @@ var SceneView = Backbone.View.extend({
 			contentType: false,
 			processData: false,
 			data: formData,
+			dataType: 'json',
 			error: function() {
 				console.log('error');
 			},
 			success: function(data) {
 				console.log('blobkey', data.blobkey);
+				download(data.blobkey);
 			}
 		});
 	}
 });
+
+var download = function(blobKey) {
+	$.ajax('/donwload', {
+		method: 'GET',
+		data: {
+			blobKey: blobKey
+		},
+		dataType: 'json',
+		error: function() {
+			console.log('error');
+		},
+		success: function(data) {
+			console.log(data);
+		}
+	});
+};
 
 /**
  * イベント編集ビュー

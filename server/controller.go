@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"appengine"
 	"appengine/blobstore"
+	"appengine/datastore"
 	"fmt"
 	"encoding/json"
 )
@@ -575,7 +576,8 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	check(c, err)
 	
 	// blob key をクライアントへ返す
-	fmt.Fprintf(w, `{"blobkey":"%s"}`, key)
+	fmt.Fprintf(w, `{"blobkey":"%s"}`, string(key))
+	c.Debugf("blobkey: %s", key)
 }
 
 /**
@@ -587,5 +589,44 @@ func upload(w http.ResponseWriter, r *http.Request) {
  * @param {*http.Request} r リクエスト
  */
 func download(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
 	
+	// リクエストから blobKey を取り出す
+	blobKey := appengine.BlobKey(r.FormValue("blobKey"))
+	if blobKey == "" {
+		c.Warningf("blobKey なしで download が実行されました")
+		return
+	}
+	
+	// __BlobFileIndex__ から blobKey で Key Name (string id) を取得
+	query := datastore.NewQuery("__BlobFileIndex__").Filter("blob_key =", blobKey)
+	iterator := query.Run(c)
+	blobFileIndexKey, err := iterator.Next(nil)
+	check(c, err)
+	
+	// __Blobinfo__ から Key Name で size を取得
+	query = datastore.NewQuery("__BlobInfo__").Filter("creation_handle =", blobFileIndexKey.StringID())
+	iterator = query.Run(c)
+	blobInfo := new(blobstore.BlobInfo)
+	_, err = iterator.Next(blobInfo)
+	check(c, err)
+	size := blobInfo.Size
+	
+	// size バイトだけ reader からバイトを読み出す
+	reader := blobstore.NewReader(c, blobKey)
+	bytes := make([]byte, size)
+	readed, err := reader.Read(bytes)
+	check(c, err)
+	if(int64(readed) != size) {
+		c.Warningf("読み込んだファイルサイズとメタ情報のファイルサイズが異なります")
+	}
+	
+	// HTTP でファイルを出力する
+	header := w.Header()
+	header.Add("Content-Type", "image/png")
+	wrote, err := w.Write(bytes)
+	check(c, err)
+	if wrote != readed {
+		c.Warningf("blobstoreのファイルサイズとクライアントへ渡したファイルサイズが異なります")
+	}
 }
