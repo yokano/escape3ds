@@ -43,7 +43,14 @@ var Item = Backbone.Model.extend({
 });
 
 var SceneList = Backbone.Collection.extend({
-	model: Scene
+	model: Scene,
+	selected: null,
+	select: function(cid) {
+		this.selected = cid;
+	},
+	initialize: function() {
+		this.on('select', this.select);
+	}
 });
 
 var EventList = Backbone.Collection.extend({
@@ -53,7 +60,6 @@ var EventList = Backbone.Collection.extend({
 var ItemList = Backbone.Collection.extend({
 	model: Item
 });
-
 
 /**
  * ビューの定義
@@ -160,14 +166,24 @@ var SceneListView = Backbone.View.extend({
 	id: 'scene_list',
 	initialize: function() {
 		this.listenTo(this.collection, 'add', this.render);
+		this.listenTo(this.collection, 'select', this.select);
 	},
 	render: function() {
 		this.$el.empty();
 		this.collection.each(function(scene) {
-			var sceneView = new SceneListItemView({model: scene});
+			var sceneView = new SceneListItemView({
+				model: scene,
+				parent: this
+			});
 			this.$el.append(sceneView.render().el);
 		}, this);
 		return this;
+	},
+	select: function(cid) {
+		var scene = this.collection.get(cid);
+		var index = this.collection.indexOf(scene)
+		this.$el.children().removeClass('select');
+		this.$el.children().eq(index).addClass('select');
 	}
 });
 
@@ -175,13 +191,27 @@ var SceneListView = Backbone.View.extend({
  * シーン一覧の１つ１つのli要素
  * @class
  * @extends Backbone.View
+ * @member {SceneListView} parent 親要素への参照
  */
 var SceneListItemView = Backbone.View.extend({
 	tagName: 'li',
 	template: _.template($('#scene_li_view_template').html()),
+	parent: null,
+	initialize: function(config) {
+		this.parent = config.parent;
+	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
 		return this;
+	},
+	events: {
+		'click': 'selectScene'
+	},
+	selectScene: function(event) {
+		if(this.$el.hasClass('select')) {
+			return;
+		}
+		this.parent.collection.trigger('select', this.model.cid)
 	}
 });
 
@@ -194,6 +224,9 @@ var SceneListItemView = Backbone.View.extend({
 var SceneView = Backbone.View.extend({
 	tagName: 'div',
 	template: _.template($('#scene_view_template').html()),
+	initialize: function() {
+		this.listenTo(sceneList, 'select', this.changeScene)
+	},
 	render: function() {
 		this.$el.html(this.template());
 		return this;
@@ -217,6 +250,11 @@ var SceneView = Backbone.View.extend({
 				console.log('blobkey', data.blobkey);
 			}
 		});
+	},
+	changeScene: function(cid) {
+		var scene = sceneList.get(cid);
+		this.$el.find('#scene').css('background-image', 'url("/client/img/scene/' + scene.get('background') + '")');
+		this.$el.find('#scene_info .scene_name').val(scene.get('name'));
 	}
 });
 
@@ -234,7 +272,6 @@ var EventView = Backbone.View.extend({
 		return this;
 	}
 });
-
 
 /**
  * エントリポイント
