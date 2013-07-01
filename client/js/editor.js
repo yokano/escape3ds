@@ -48,8 +48,13 @@ var SceneList = Backbone.Collection.extend({
 	select: function(cid) {
 		this.selected = cid;
 	},
+	removed: function() {
+		this.selected = null;
+		console.log(this.models);
+	},
 	initialize: function() {
 		this.on('select', this.select);
+		this.on('remove', this.removed);
 	}
 });
 
@@ -165,7 +170,7 @@ var SceneListView = Backbone.View.extend({
 	tagName: 'ul',
 	id: 'scene_list',
 	initialize: function() {
-		this.listenTo(this.collection, 'add', this.render);
+		this.listenTo(this.collection, 'add remove', this.render);
 		this.listenTo(this.collection, 'select', this.select);
 	},
 	render: function() {
@@ -226,13 +231,15 @@ var SceneView = Backbone.View.extend({
 	template: _.template($('#scene_view_template').html()),
 	initialize: function() {
 		this.listenTo(sceneList, 'select', this.changeScene)
+		this.listenTo(sceneList, 'remove', this.render)
 	},
 	render: function() {
 		this.$el.html(this.template());
 		return this;
 	},
 	events: {
-		'change #change_scene_img': 'upload'
+		'change #change_scene_img': 'upload',
+		'click #delete_scene': 'deleteSceneHasClicked'
 	},
 	upload: function(data) {
 		var form = $('#change_scene_img_form').get()[0];
@@ -255,6 +262,16 @@ var SceneView = Backbone.View.extend({
 		var scene = sceneList.get(cid);
 		this.$el.find('#scene').css('background-image', 'url("/client/img/scene/' + scene.get('background') + '")');
 		this.$el.find('#scene_info .scene_name').val(scene.get('name'));
+	},
+	deleteSceneHasClicked: function() {
+		var scene = sceneList.get(sceneList.selected);
+		if(scene == null) {
+			return;
+		}
+		if(!window.confirm(scene.get('name') + 'を削除しますか？')) {
+			return;
+		}
+		sceneList.remove(scene);
 	}
 });
 
