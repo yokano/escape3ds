@@ -17,7 +17,7 @@ var Scene = Backbone.Model.extend({
 	defaults: {
 		name: '',
 		gameKey: '',
-		background: 'black.png',
+		background: '/client/img/scene/black.png',
 		enter: '',
 		leave: ''
 	}
@@ -229,6 +229,7 @@ var SceneListItemView = Backbone.View.extend({
 	},
 	sceneHasChanged: function() {
 		this.$el.find('.scene_name').html(this.model.get('name'));
+		this.$el.find('.scene_img').attr('src', this.model.get('background'));
 	}
 });
 
@@ -243,7 +244,7 @@ var SceneView = Backbone.View.extend({
 	template: _.template($('#scene_view_template').html()),
 	model: null,
 	initialize: function() {
-		this.listenTo(sceneList, 'select', this.sceneHasChanged)
+		this.listenTo(sceneList, 'select', this.sceneHasSelected)
 		this.listenTo(sceneList, 'remove', this.sceneHasRemoved)
 	},
 	render: function() {
@@ -259,31 +260,41 @@ var SceneView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		'change #change_scene_img': 'upload',
+		'change #change_scene_img': 'sceneImageHasChanged',
 		'change #scene_info .scene_name': 'sceneNameHasChanged',
 		'click #delete_scene': 'deleteButtonHasClicked',
 		'click #copy_scene': 'copyButtonHasClicked',
 		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked'
 	},
-	upload: function(data) {
-		var form = $('#change_scene_img_form').get()[0];
-		var formData = new FormData(form);
-		$.ajax('/upload', {
-			method: 'POST',
-			contentType: false,
-			processData: false,
-			data: formData,
-			dataType: 'json',
-			error: function() {
-				console.log('error');
-			},
-			success: function(data) {
-				console.log('blobkey', data.blobkey);
-			}
-		});
+	sceneImageHasChanged: function() {
+		var that = this;
+		var file = $('#change_scene_img').get(0).files[0];
+		var fileReader = new FileReader();
+		fileReader.onload = function(data) {
+			that.model.set('background', data.target.result);
+		};
+		fileReader.readAsDataURL(file);
+
+//		保存処理へ移動させる
+//		var form = $('#change_scene_img_form').get()[0];
+//		var formData = new FormData(form);
+//		$.ajax('/upload', {
+//			method: 'POST',
+//			contentType: false,
+//			processData: false,
+//			data: formData,
+//			dataType: 'json',
+//			error: function() {
+//				console.log('error');
+//			},er
+//			success: function(data) {
+//				console.log('blobkey', data.blobkey);
+//			}
+//		});
 	},
-	sceneHasChanged: function(cid) {
+	sceneHasSelected: function(cid) {
 		this.model = sceneList.get(cid);
+		this.listenTo(this.model, 'change', this.sceneHasChanged);
 		this.render();
 	},
 	sceneNameHasChanged: function() {
@@ -291,6 +302,7 @@ var SceneView = Backbone.View.extend({
 		this.model.set('name', name);
 	},
 	sceneHasRemoved: function() {
+		this.stopListening(this.model);
 		this.model = null;
 		this.render();
 	},
@@ -320,6 +332,10 @@ var SceneView = Backbone.View.extend({
 		} else {
 			game.set('firstScene', null);
 		}
+	},
+	sceneHasChanged: function() {
+		this.$el.find('#scene').css('background-image', 'url(' + this.model.get('background') + ')');
+		this.$el.find('#scene_info .scene_img').attr('src', this.model.get('background'));
 	}
 });
 
@@ -350,8 +366,8 @@ var game = new Game({
 });
 
 var sceneList = new SceneList([
-	{name: '押入れ１', background: 'armoire1.png'},
-	{name: '押入れ２', background: 'armoire2.png'}
+	{name: '押入れ１'},
+	{name: '押入れ２'}
 ]);
 
 var rootView = new RootView();

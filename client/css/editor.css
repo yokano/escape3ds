@@ -85,6 +85,7 @@ hr {
 }
 #scene_info .scene_img {
 	width: 75px;
+	cursor: pointer;
 }
 #scene_info button {
 	padding: 5px;
