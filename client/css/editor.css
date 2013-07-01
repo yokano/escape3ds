@@ -59,6 +59,15 @@ hr {
 #scene_list li.select {
 	background-color: yellow;
 }
+#scene_list li .is_first_scene {
+	position: relative;
+	left: 165px;
+	top: 7px;
+	width: 25px;
+	height: 25px;
+	background-image: url("/client/img/start_scene_icon.png");
+	display: none;
+}
 
 #scene {
 	margin-top: 15px;

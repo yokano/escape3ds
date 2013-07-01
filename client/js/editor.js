@@ -9,7 +9,7 @@ var Game = Backbone.Model.extend({
 		description: '',
 		thumbnail: '',
 		userKey: '',
-		firstScene: ''
+		firstScene: null
 	}
 });
 
@@ -171,6 +171,7 @@ var SceneListView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.collection, 'add remove', this.render);
 		this.listenTo(this.collection, 'select', this.select);
+		this.listenTo(game, 'change', this.gameHasChanged);
 	},
 	render: function() {
 		this.$el.empty();
@@ -188,6 +189,14 @@ var SceneListView = Backbone.View.extend({
 		var index = this.collection.indexOf(scene)
 		this.$el.children().removeClass('select');
 		this.$el.children().eq(index).addClass('select');
+	},
+	gameHasChanged: function() {
+		this.$el.find('.is_first_scene').hide();
+		var index = this.collection.indexOf(game.get('firstScene'));
+		if(index == -1) {
+			return;
+		}
+		this.$el.children().eq(index).find('.is_first_scene').show();
 	}
 });
 
@@ -244,13 +253,17 @@ var SceneView = Backbone.View.extend({
 		}
 		this.$el.show();
 		this.$el.html(this.template(this.model.toJSON()));
+		if(game.get('firstScene') == this.model) {
+			this.$el.find('#scene_info .is_first_scene').attr('checked', true);
+		}
 		return this;
 	},
 	events: {
 		'change #change_scene_img': 'upload',
 		'change #scene_info .scene_name': 'sceneNameHasChanged',
 		'click #delete_scene': 'deleteButtonHasClicked',
-		'click #copy_scene': 'copyButtonHasClicked'
+		'click #copy_scene': 'copyButtonHasClicked',
+		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked'
 	},
 	upload: function(data) {
 		var form = $('#change_scene_img_form').get()[0];
@@ -299,6 +312,14 @@ var SceneView = Backbone.View.extend({
 		var clone = this.model.clone();
 		clone.set('name', name);
 		sceneList.add(clone);
+	},
+	firstSceneCheckboxHasClicked: function() {
+		var checked = this.$el.find('#scene_info .is_first_scene:checked').length;
+		if(checked == 1) {
+			game.set('firstScene', this.model);
+		} else {
+			game.set('firstScene', null);
+		}
 	}
 });
 
