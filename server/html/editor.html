@@ -26,7 +26,7 @@
 			</script>
 			
 			<script type="text/template" id="scene_view_template">
-				<div id="scene">
+				<div id="scene" style="background-image: url('/client/img/scene/<%= background %>')">
 					<div class="event">event</div>
 					<div class="event">event</div>
 					<div class="event">event</div>
@@ -34,8 +34,7 @@
 				
 				<div id="scene_info">
 					<div>
-						シーン名: <input class="scene_name" type="text"></input>
-						<button id="change_scene_name">変更</button>
+						シーン名: <input class="scene_name" type="text" value="<%= name %>"></input>
 					</div>
 					<div><label>ゲーム開始時のシーンにする <input class="#is_first_scene" type="checkbox"></input></label></div>
 					<div>背景画像:

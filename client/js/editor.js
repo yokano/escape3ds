@@ -50,7 +50,6 @@ var SceneList = Backbone.Collection.extend({
 	},
 	removed: function() {
 		this.selected = null;
-		console.log(this.models);
 	},
 	initialize: function() {
 		this.on('select', this.select);
@@ -204,6 +203,7 @@ var SceneListItemView = Backbone.View.extend({
 	parent: null,
 	initialize: function(config) {
 		this.parent = config.parent;
+		this.listenTo(this.model, 'change', this.sceneHasChanged);
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
@@ -217,6 +217,9 @@ var SceneListItemView = Backbone.View.extend({
 			return;
 		}
 		this.parent.collection.trigger('select', this.model.cid)
+	},
+	sceneHasChanged: function() {
+		this.$el.find('.scene_name').html(this.model.get('name'));
 	}
 });
 
@@ -229,17 +232,24 @@ var SceneListItemView = Backbone.View.extend({
 var SceneView = Backbone.View.extend({
 	tagName: 'div',
 	template: _.template($('#scene_view_template').html()),
+	model: null,
 	initialize: function() {
 		this.listenTo(sceneList, 'select', this.changeScene)
-		this.listenTo(sceneList, 'remove', this.render)
+		this.listenTo(sceneList, 'remove', this.sceneHasRemoved)
 	},
 	render: function() {
-		this.$el.html(this.template());
+		if(this.model == null) {
+			this.$el.hide();
+			return this;
+		}
+		this.$el.show();
+		this.$el.html(this.template(this.model.toJSON()));
 		return this;
 	},
 	events: {
 		'change #change_scene_img': 'upload',
-		'click #delete_scene': 'deleteSceneHasClicked'
+		'click #delete_scene': 'deleteSceneHasClicked',
+		'change #scene_info .scene_name': 'sceneNameHasChanged'
 	},
 	upload: function(data) {
 		var form = $('#change_scene_img_form').get()[0];
@@ -259,9 +269,8 @@ var SceneView = Backbone.View.extend({
 		});
 	},
 	changeScene: function(cid) {
-		var scene = sceneList.get(cid);
-		this.$el.find('#scene').css('background-image', 'url("/client/img/scene/' + scene.get('background') + '")');
-		this.$el.find('#scene_info .scene_name').val(scene.get('name'));
+		this.model = sceneList.get(cid);
+		this.render();
 	},
 	deleteSceneHasClicked: function() {
 		var scene = sceneList.get(sceneList.selected);
@@ -272,6 +281,14 @@ var SceneView = Backbone.View.extend({
 			return;
 		}
 		sceneList.remove(scene);
+	},
+	sceneNameHasChanged: function() {
+		var name = this.$el.find('#scene_info .scene_name').val();
+		this.model.set('name', name);
+	},
+	sceneHasRemoved: function() {
+		this.model = null;
+		this.render();
 	}
 });
 
