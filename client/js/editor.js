@@ -234,7 +234,7 @@ var SceneView = Backbone.View.extend({
 	template: _.template($('#scene_view_template').html()),
 	model: null,
 	initialize: function() {
-		this.listenTo(sceneList, 'select', this.changeScene)
+		this.listenTo(sceneList, 'select', this.sceneHasChanged)
 		this.listenTo(sceneList, 'remove', this.sceneHasRemoved)
 	},
 	render: function() {
@@ -248,8 +248,9 @@ var SceneView = Backbone.View.extend({
 	},
 	events: {
 		'change #change_scene_img': 'upload',
-		'click #delete_scene': 'deleteSceneHasClicked',
-		'change #scene_info .scene_name': 'sceneNameHasChanged'
+		'change #scene_info .scene_name': 'sceneNameHasChanged',
+		'click #delete_scene': 'deleteButtonHasClicked',
+		'click #copy_scene': 'copyButtonHasClicked'
 	},
 	upload: function(data) {
 		var form = $('#change_scene_img_form').get()[0];
@@ -268,11 +269,19 @@ var SceneView = Backbone.View.extend({
 			}
 		});
 	},
-	changeScene: function(cid) {
+	sceneHasChanged: function(cid) {
 		this.model = sceneList.get(cid);
 		this.render();
 	},
-	deleteSceneHasClicked: function() {
+	sceneNameHasChanged: function() {
+		var name = this.$el.find('#scene_info .scene_name').val();
+		this.model.set('name', name);
+	},
+	sceneHasRemoved: function() {
+		this.model = null;
+		this.render();
+	},
+	deleteButtonHasClicked: function() {
 		var scene = sceneList.get(sceneList.selected);
 		if(scene == null) {
 			return;
@@ -282,13 +291,14 @@ var SceneView = Backbone.View.extend({
 		}
 		sceneList.remove(scene);
 	},
-	sceneNameHasChanged: function() {
-		var name = this.$el.find('#scene_info .scene_name').val();
-		this.model.set('name', name);
-	},
-	sceneHasRemoved: function() {
-		this.model = null;
-		this.render();
+	copyButtonHasClicked: function() {
+		var name = window.prompt('コピー先のシーン名を入力してください');
+		if(name == '') {
+			return;
+		}
+		var clone = this.model.clone();
+		clone.set('name', name);
+		sceneList.add(clone);
 	}
 });
 
