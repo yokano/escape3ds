@@ -81,6 +81,12 @@ hr {
 	height: 212px;
 }
 
+#scene .event_area {
+	position: absolute;
+	background-color: blue;
+	opacity: 0.5;
+}
+
 #scene_info {
 }
 #scene_info .scene_img {

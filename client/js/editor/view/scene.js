@@ -180,9 +180,10 @@ var SceneView = Backbone.View.extend({
 	/**
 	 * 新しいイベントが追加されたら表示する
 	 * @method
-	 * @param {Event} 追加されたイベント
+	 * @param {Event} event 追加されたイベント
 	 */
-	eventHasAdded: function(data) {
-		var eventAreaView = new EventAreaView();
+	eventHasAdded: function(event) {
+		var eventAreaView = new EventAreaView({model: event});
+		this.$el.find('#scene').append(eventAreaView.render().el);
 	}
 });
