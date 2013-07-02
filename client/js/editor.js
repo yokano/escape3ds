@@ -23,17 +23,6 @@ var Scene = Backbone.Model.extend({
 	}
 });
 
-var Event = Backbone.Model.extend({
-	defaults: {
-		name: '',
-		image: '',
-		code: '',
-		position: '',
-		size: '',
-		sceneKey: ''
-	}
-});
-
 var Item = Backbone.Model.extend({
 	defaults: {
 		name: '',
@@ -54,6 +43,17 @@ var SceneList = Backbone.Collection.extend({
 	initialize: function() {
 		this.on('select', this.select);
 		this.on('remove', this.removed);
+	}
+});
+
+var Event = Backbone.Model.extend({
+	defaults: {
+		name: '',
+		image: '',
+		code: '',
+		position: '',
+		size: '',
+		sceneKey: ''
 	}
 });
 
@@ -78,6 +78,7 @@ var ItemList = Backbone.Collection.extend({
  */
 var RootView = Backbone.View.extend({
 	tagName: 'div',
+	id: 'root_view',
 	render: function() {
 		var headerView = new HeaderView({model: game});
 		var sceneEditorView = new SceneEditorView()
@@ -133,6 +134,7 @@ var HeaderView = Backbone.View.extend({
  */
 var SceneEditorView = Backbone.View.extend({
 	tagname: 'section',
+	id: 'scene_editor',
 	render: function() {
 		var sceneListView = new SceneListView({collection: sceneList});
 		var sceneView = new SceneView();
@@ -241,6 +243,7 @@ var SceneListItemView = Backbone.View.extend({
  */
 var SceneView = Backbone.View.extend({
 	tagName: 'div',
+	id: 'scene_view',
 	template: _.template($('#scene_view_template').html()),
 	model: null,
 	initialize: function() {
@@ -257,6 +260,14 @@ var SceneView = Backbone.View.extend({
 		if(game.get('firstScene') == this.model) {
 			this.$el.find('#scene_info .is_first_scene').attr('checked', true);
 		}
+		
+		// Jcrop の設定
+		var jcropAPI;
+		this.$el.find('#scene').Jcrop({
+			bgColor: 'white',
+			onSelect: this.eventAreaHasSelected
+		});
+		
 		return this;
 	},
 	events: {
@@ -336,6 +347,24 @@ var SceneView = Backbone.View.extend({
 	sceneHasChanged: function() {
 		this.$el.find('#scene').css('background-image', 'url(' + this.model.get('background') + ')');
 		this.$el.find('#scene_info .scene_img').attr('src', this.model.get('background'));
+	},
+	eventAreaHasSelected: function(data) {
+		// this は JcropObject を指す
+		var name = window.prompt('イベント名を入力してください');
+		this.release();
+		
+		if(name == '') {
+			return;
+		}
+		
+		eventList.add({
+			name: name,
+			image: '',
+			code: '',
+			position: [data.x, data.y],
+			size: [data.w, data.h],
+			sceneKey: ''
+		});
 	}
 });
 
@@ -347,6 +376,7 @@ var SceneView = Backbone.View.extend({
  */
 var EventView = Backbone.View.extend({
 	tagName: 'div',
+	id: 'event_view',
 	template: _.template($('#event_view_template').html()),
 	render: function() {
 		this.$el.html(this.template());
@@ -369,6 +399,8 @@ var sceneList = new SceneList([
 	{name: '押入れ１'},
 	{name: '押入れ２'}
 ]);
+
+var eventList = new EventList();
 
 var rootView = new RootView();
 $('body').html(rootView.render().el);

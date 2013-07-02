@@ -69,19 +69,19 @@ hr {
 	display: none;
 }
 
-#scene {
-	margin-top: 15px;
+#scene_view {
 	position: absolute;
 	left: 250px;
+}
+
+#scene {
+	margin-top: 15px;
+	background-color: black;
 	width: 320px;
 	height: 212px;
-	background-color: black;
 }
 
 #scene_info {
-	position: absolute;
-	left: 250px;
-	top: 290px;
 }
 #scene_info .scene_img {
 	width: 75px;
