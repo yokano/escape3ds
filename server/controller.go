@@ -23,7 +23,7 @@ func top(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	view := NewView(c, w)
 	sessionId := getSession(c, r)
-
+	
 	if sessionId != "" {
 		http.Redirect(w, r, "/gamelist", 302)
 	} else {
@@ -523,7 +523,8 @@ func session(w http.ResponseWriter, r *http.Request) string {
 	model := NewModel(c)
 	userKey := model.getUserKeyFromSession(sessionId)
 	if userKey == "" {
-		c.Warningf("セッションID: %s に該当するユーザーキが存在しません")
+		c.Warningf("セッションID: %s に該当するユーザーキが存在しません", sessionId)
+		deleteCookie(w)
 		http.Redirect(w, r, "/", 302)
 		return ""
 	}

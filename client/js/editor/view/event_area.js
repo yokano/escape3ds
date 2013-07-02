@@ -14,4 +14,10 @@ var EventAreaView = Backbone.View.extend({
 				.css('height', model.size[1]);
 		return this;
 	},
+	events: {
+		'click': 'eventAreaHasClicked'
+	},
+	eventAreaHasClicked: function() {
+		this.$el.toggleClass('selected');
+	}
 });

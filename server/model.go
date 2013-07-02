@@ -513,6 +513,7 @@ func (this *Model) removeSession(sessionId string) {
 
 /**
  * memcache からユーザキーを返す
+ * 該当するユーザーキーが見つからなかったら空文字を返す
  * @method
  * @memberof Model
  * @param {string} sessionId セッションID
@@ -521,6 +522,10 @@ func (this *Model) removeSession(sessionId string) {
 func (this *Model) getUserKeyFromSession(sessionId string) string {
 	item, err := memcache.Get(this.c, sessionId)
 	check(this.c, err)
+	if err != nil {
+		this.c.Warningf("セッションIDに関連付けられたユーザIDが存在しませんでした: sessionId:%s", sessionId)
+		return ""
+	}
 	data := make(map[string]string, 2)
 	err = json.Unmarshal(item.Value, &data)
 	check(this.c, err)

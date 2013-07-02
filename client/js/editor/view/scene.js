@@ -12,7 +12,6 @@ var SceneView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(sceneList, 'select', this.sceneHasSelected);
 		this.listenTo(sceneList, 'remove', this.sceneHasRemoved);
-		this.listenTo(eventList, 'add', this.eventHasAdded);
 	},
 	render: function() {
 		if(this.model == null) {
@@ -26,10 +25,13 @@ var SceneView = Backbone.View.extend({
 		}
 		
 		// Jcrop の設定
-		var jcropAPI;
+		var self = this;
 		this.$el.find('#scene').Jcrop({
 			bgColor: 'white',
-			onSelect: this.eventAreaHasSelected
+			onSelect: function(event) {
+				var jcropAPI = this;
+				self.eventAreaHasSelected(event, jcropAPI, self);
+			}
 		});
 		
 		return this;
@@ -78,8 +80,12 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	sceneHasSelected: function(cid) {
+		if(this.model != null) {
+			this.stopListening(this.model);
+		}
 		this.model = sceneList.get(cid);
 		this.listenTo(this.model, 'change', this.sceneHasChanged);
+		this.listenTo(this.model.get('eventList'), 'add', this.eventHasAdded);
 		this.render();
 	},
 	
@@ -156,23 +162,24 @@ var SceneView = Backbone.View.extend({
 	/**
 	 * 範囲選択されたらイベントを追加する
 	 * @method
-	 * @param {Object} jcropAPI
+	 * @param {Object} event jcropで範囲選択された時の座標を含むオブジェクト
+	 * @param {Object} jcropAPI jcropの操作を行うためのオブジェクト
 	 */
-	eventAreaHasSelected: function(data) {
+	eventAreaHasSelected: function(event, jcropAPI, self) {
 		// this は JcropObject を指す
 		var name = window.prompt('イベント名を入力してください');
-		this.release();
+		jcropAPI.release();
 		
 		if(name == '') {
-			return;
+			return this;
 		}
 		
-		eventList.add({
+		self.model.get('eventList').add({
 			name: name,
 			image: '',
 			code: '',
-			position: [data.x, data.y],
-			size: [data.w, data.h],
+			position: [event.x, event.y],
+			size: [event.w, event.h],
 			sceneKey: ''
 		});
 	},
