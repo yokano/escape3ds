@@ -6,6 +6,9 @@
 var EventAreaView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'event_area',
+	initialize: function() {
+		this.listenTo(this.model, 'change:selected', this.eventSelectedHasChanged);
+	},
 	render: function() {
 		var model = this.model.toJSON();
 		this.$el.css('left', model.position[0])
@@ -18,6 +21,13 @@ var EventAreaView = Backbone.View.extend({
 		'click': 'eventAreaHasClicked'
 	},
 	eventAreaHasClicked: function() {
-		this.$el.toggleClass('selected');
+		this.model.trigger('eventAreaHasSelected', this.model);
+	},
+	eventSelectedHasChanged: function() {
+		if(this.model.get('selected')) {
+			this.$el.addClass('selected');
+		} else {
+			this.$el.removeClass('selected');
+		}
 	}
 });

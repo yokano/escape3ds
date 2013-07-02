@@ -8,6 +8,10 @@ var Event = Backbone.Model.extend({
 		code: '',
 		position: '',
 		size: '',
-		sceneKey: ''
+		sceneKey: '',
+		selected: false
+	},
+	initialize: function() {
+		
 	}
 });
