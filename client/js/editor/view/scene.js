@@ -174,7 +174,7 @@ var SceneView = Backbone.View.extend({
 			return this;
 		}
 		
-		self.model.get('eventList').add({
+		var e = new Event({
 			name: name,
 			image: '',
 			code: '',
@@ -182,6 +182,8 @@ var SceneView = Backbone.View.extend({
 			size: [event.w, event.h],
 			sceneKey: ''
 		});
+		self.model.get('eventList').add(e);
+		e.trigger('eventAreaHasSelected', e);
 	},
 	
 	/**

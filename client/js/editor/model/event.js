@@ -12,6 +12,5 @@ var Event = Backbone.Model.extend({
 		selected: false
 	},
 	initialize: function() {
-		
 	}
 });

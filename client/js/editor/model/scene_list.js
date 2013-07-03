@@ -13,5 +13,8 @@ var SceneList = Backbone.Collection.extend({
 	initialize: function() {
 		this.on('select', this.select);
 		this.on('remove', this.removed);
+	},
+	getSelected: function() {
+		return this.get(this.selected);
 	}
 });
