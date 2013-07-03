@@ -10,7 +10,5 @@ var Event = Backbone.Model.extend({
 		size: '',
 		sceneKey: '',
 		selected: false
-	},
-	initialize: function() {
 	}
 });
