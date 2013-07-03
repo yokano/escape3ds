@@ -10,7 +10,7 @@ var EventEditorView = Backbone.View.extend({
 	eventList: null,
 	template: _.template($('#event_view_template').html()),
 	initialize: function() {
-		this.listenTo(sceneList, 'select', this.sceneHasSelected);
+		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
 	},
 	render: function() {
 		if(this.model == null) {
@@ -27,7 +27,7 @@ var EventEditorView = Backbone.View.extend({
 			this.model = null;
 			this.render();
 		}
-		this.eventList = sceneList.getSelected().get('eventList');
+		this.eventList = game.get('sceneList').getSelected().get('eventList');
 		this.listenTo(this.eventList, 'eventAreaHasSelected', this.eventHasSelected);
 	},
 	eventHasSelected: function(selectedEvent) {

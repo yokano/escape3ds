@@ -10,8 +10,8 @@ var SceneView = Backbone.View.extend({
 	template: _.template($('#scene_view_template').html()),
 	model: null,
 	initialize: function() {
-		this.listenTo(sceneList, 'select', this.sceneHasSelected);
-		this.listenTo(sceneList, 'remove', this.sceneHasRemoved);
+		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
+		this.listenTo(game.get('sceneList'), 'remove', this.sceneHasRemoved);
 	},
 	render: function() {
 		if(this.model == null) {
@@ -83,7 +83,7 @@ var SceneView = Backbone.View.extend({
 		if(this.model != null) {
 			this.stopListening(this.model);
 		}
-		this.model = sceneList.get(cid);
+		this.model = game.get('sceneList').get(cid);
 		this.listenTo(this.model, 'change', this.sceneHasChanged);
 		this.listenTo(this.model.get('eventList'), 'add', this.eventHasAdded);
 		this.render();
@@ -113,14 +113,14 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	deleteButtonHasClicked: function() {
-		var scene = sceneList.get(sceneList.selected);
+		var scene = game.get('sceneList').get(game.get('sceneList').selected);
 		if(scene == null) {
 			return;
 		}
 		if(!window.confirm(scene.get('name') + 'を削除しますか？')) {
 			return;
 		}
-		sceneList.remove(scene);
+		game.get('sceneList').remove(scene);
 	},
 	
 	/**
@@ -134,7 +134,7 @@ var SceneView = Backbone.View.extend({
 		}
 		var clone = this.model.clone();
 		clone.set('name', name);
-		sceneList.add(clone);
+		game.get('sceneList').add(clone);
 	},
 	
 	/**

@@ -10,13 +10,10 @@ var rootView;
 
 game = new Game({
 	name: '誕生日の脱出劇',
-	description: '誕生日会の翌日に目が覚めると見知らぬ部屋に閉じ込められていた',
-	thumbnail: '',
-	userKey: '',
-	firstScene: ''
+	description: '誕生日会の翌日に目が覚めると見知らぬ部屋に閉じ込められていた'
 });
 
-sceneList = new SceneList([
+game.get('sceneList').add([
 	{name: '押入れ１'},
 	{name: '押入れ２'}
 ]);

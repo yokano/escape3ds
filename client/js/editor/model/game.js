@@ -7,6 +7,10 @@ var Game = Backbone.Model.extend({
 		description: '',
 		thumbnail: '',
 		userKey: '',
-		firstScene: null
+		firstScene: null,
+		sceneList: null
+	},
+	initialize: function() {
+		this.set('sceneList', new SceneList());
 	}
 });

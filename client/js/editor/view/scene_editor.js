@@ -10,7 +10,7 @@ var SceneEditorView = Backbone.View.extend({
 	tagname: 'section',
 	id: 'scene_editor',
 	render: function() {
-		var sceneListView = new SceneListView({collection: sceneList});
+		var sceneListView = new SceneListView({collection: game.get('sceneList')});
 		var sceneView = new SceneView();
 		var eventEditorView = new EventEditorView();
 		
@@ -30,7 +30,7 @@ var SceneEditorView = Backbone.View.extend({
 		if(name == '') {
 			return;
 		}
-		sceneList.add({
+		game.set('sceneList').add({
 			name: name
 		});
 	}
