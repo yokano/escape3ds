@@ -92,6 +92,9 @@ button {
 	opacity: 0.5;
 	z-index: 700; /* jcrop area が 600 のため */
 	cursor: pointer;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
 }
 #scene .event_area.selected {
 	border-style: solid;

@@ -11,7 +11,8 @@ var EventEditorView = Backbone.View.extend({
 	template: _.template($('#event_view_template').html()),
 	events: {
 		'click #remove_event': 'removeButtonHasClicked',
-		'change #color': 'colorHasChanged'
+		'change #color': 'colorHasChanged',
+		'change #change_event_img': 'eventImageFileHasChanged'
 	},
 	initialize: function() {
 		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
@@ -22,6 +23,7 @@ var EventEditorView = Backbone.View.extend({
 			return this;
 		}
 		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.find('#color').val(this.model.get('color'));
 		
 		return this;
 	},
@@ -51,5 +53,11 @@ var EventEditorView = Backbone.View.extend({
 	colorHasChanged: function() {
 		var color = this.$el.find('#color').val();
 		this.model.set('color', color);
+	},
+	eventImageFileHasChanged: function() {
+		var file = $('#change_event_img').get(0).files[0];
+		getFileURL(file, this, function(url) {
+			this.model.set('image', url);
+		});
 	}
 });

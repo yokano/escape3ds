@@ -12,12 +12,15 @@ var EventAreaView = Backbone.View.extend({
 		'green': 'yellow',
 		'yellow': 'red',
 		'pink': 'red',
-		'perple': 'yellow'
+		'perple': 'yellow',
+		'black': 'red',
+		'white': 'red'
 	},
 	initialize: function() {
 		this.listenTo(this.model, 'change:selected', this.eventSelectedHasChanged);
 		this.listenTo(this.model, 'remove', this.eventHasRemoved);
 		this.listenTo(this.model, 'change:color', this.colorHasChanged);
+		this.listenTo(this.model, 'change:image', this.imageHasChanged);
 	},
 	render: function() {
 		var model = this.model.toJSON();
@@ -26,7 +29,8 @@ var EventAreaView = Backbone.View.extend({
 				.css('width', model.size[0])
 				.css('height', model.size[1])
 				.css('background-color', model.color)
-				.css('border-color', this.borderColor[model.color]);
+				.css('border-color', this.borderColor[model.color])
+				.css('background-image', 'url("' + this.model.get('image') + '")');
 		return this;
 	},
 	events: {
@@ -49,5 +53,8 @@ var EventAreaView = Backbone.View.extend({
 		var color = this.model.get('color');
 		this.$el.css('background-color', color);
 		this.$el.css('border-color', this.borderColor[color])
+	},
+	imageHasChanged: function() {
+		this.render();
 	}
 });

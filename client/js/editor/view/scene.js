@@ -56,13 +56,10 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	sceneImageHasChanged: function() {
-		var that = this;
 		var file = $('#change_scene_img').get(0).files[0];
-		var fileReader = new FileReader();
-		fileReader.onload = function(data) {
-			that.model.set('background', data.target.result);
-		};
-		fileReader.readAsDataURL(file);
+		getFileURL(file, this, function(result) {
+			this.model.set('background', result);
+		});
 
 //		保存処理へ移動させる
 //		var form = $('#change_scene_img_form').get()[0];
