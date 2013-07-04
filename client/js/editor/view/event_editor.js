@@ -12,7 +12,8 @@ var EventEditorView = Backbone.View.extend({
 	events: {
 		'click #remove_event': 'removeButtonHasClicked',
 		'change #color': 'colorHasChanged',
-		'change #change_event_img': 'eventImageFileHasChanged'
+		'change #change_event_img': 'eventImageFileHasChanged',
+		'click #remove_img': 'removeImageButtonHasClicked'
 	},
 	initialize: function() {
 		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
@@ -59,5 +60,9 @@ var EventEditorView = Backbone.View.extend({
 		getFileURL(file, this, function(url) {
 			this.model.set('image', url);
 		});
+	},
+	removeImageButtonHasClicked: function() {
+		this.$el.find('#change_event_img').val('');
+		this.model.set('image', '');
 	}
 });
