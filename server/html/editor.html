@@ -50,14 +50,31 @@
 			
 			<script type="text/template" id="event_view_template">
 				<div id="event">
-					<div>イベント名: <input class="event_name" type="text" value="<%= name %>"></input></div>
 					<div>
-						<div>画像</div>
+						イベント名: <input class="event_name" type="text" value="<%= name %>"></input>
+					</div>
+					<div>
+						色（開発用）：
+						<select id="color">
+							<option value="red">赤</option>
+							<option value="blue" selected>青</option>
+							<option value="green">緑</option>
+							<option value="yellow">黄</option>
+							<option value="pink">桃</option>
+							<option value="purple">紫</option>
+						</select>
+					</div>
+					<div>
+						<div>
+							画像
+						</div>
 						<div>
 							<label><input class="on" name="event_img" type="radio" value="on">あり</input></label>
 							<input id="#change_event_img" type="file"></input>
 						</div>
-						<div><label><input class="off" name="event_img" type="radio" value="off">なし</input></label></div>
+						<div>
+							<label><input class="off" name="event_img" type="radio" value="off">なし</input></label>
+						</div>
 					</div>
 					<div><button id="remove_event">イベントを削除</button></div>
 					<div id="event_editor">

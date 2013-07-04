@@ -10,7 +10,8 @@ var EventEditorView = Backbone.View.extend({
 	eventList: null,
 	template: _.template($('#event_view_template').html()),
 	events: {
-		'click #remove_event': 'removeButtonHasClicked'
+		'click #remove_event': 'removeButtonHasClicked',
+		'change #color': 'colorHasChanged'
 	},
 	initialize: function() {
 		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
@@ -46,5 +47,9 @@ var EventEditorView = Backbone.View.extend({
 	eventHasRemoved: function() {
 		this.model = null;
 		this.render();
+	},
+	colorHasChanged: function() {
+		var color = this.$el.find('#color').val();
+		this.model.set('color', color);
 	}
 });

@@ -9,6 +9,7 @@ var Event = Backbone.Model.extend({
 		position: '',
 		size: '',
 		sceneKey: '',
+		color: 'blue',
 		selected: false
 	}
 });

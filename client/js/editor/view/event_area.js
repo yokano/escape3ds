@@ -6,16 +6,27 @@
 var EventAreaView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'event_area',
+	borderColor: {
+		'red': 'yellow',
+		'blue': 'red',
+		'green': 'yellow',
+		'yellow': 'red',
+		'pink': 'red',
+		'perple': 'yellow'
+	},
 	initialize: function() {
 		this.listenTo(this.model, 'change:selected', this.eventSelectedHasChanged);
 		this.listenTo(this.model, 'remove', this.eventHasRemoved);
+		this.listenTo(this.model, 'change:color', this.colorHasChanged);
 	},
 	render: function() {
 		var model = this.model.toJSON();
 		this.$el.css('left', model.position[0])
 				.css('top', model.position[1])
 				.css('width', model.size[0])
-				.css('height', model.size[1]);
+				.css('height', model.size[1])
+				.css('background-color', model.color)
+				.css('border-color', this.borderColor[model.color]);
 		return this;
 	},
 	events: {
@@ -33,5 +44,10 @@ var EventAreaView = Backbone.View.extend({
 	},
 	eventHasRemoved: function() {
 		this.remove();
+	},
+	colorHasChanged: function() {
+		var color = this.model.get('color');
+		this.$el.css('background-color', color);
+		this.$el.css('border-color', this.borderColor[color])
 	}
 });
