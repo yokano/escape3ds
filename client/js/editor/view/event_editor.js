@@ -21,19 +21,19 @@ var EventEditorView = Backbone.View.extend({
 			return this;
 		}
 		this.$el.html(this.template(this.model.toJSON()));
-
+		
 		return this;
 	},
 	sceneHasSelected: function() {
-		this.stopListening(this.collection);
+		if(this.collection != undefined) {
+			this.stopListening(this.collection);
+		}
 		this.collection = game.get('sceneList').getSelected().get('eventList');
 		this.listenTo(this.collection, 'eventAreaHasSelected', this.eventHasSelected);
 		this.listenTo(this.collection, 'remove', this.eventHasRemoved);
+		this.$el.empty();
 	},
 	eventHasSelected: function(selectedEvent) {
-		if(selectedEvent == this.model) {
-			return;
-		}
 		this.model = selectedEvent;
 		this.render();
 	},

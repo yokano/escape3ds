@@ -7,7 +7,7 @@ var SceneListView = Backbone.View.extend({
 	tagName: 'ul',
 	id: 'scene_list',
 	initialize: function() {
-		this.listenTo(this.collection, 'add remove', this.render);
+		this.listenTo(this.collection, 'add', this.render);
 		this.listenTo(this.collection, 'select', this.select);
 		this.listenTo(game, 'change', this.gameHasChanged);
 	},

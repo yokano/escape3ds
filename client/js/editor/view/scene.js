@@ -12,6 +12,7 @@ var SceneView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
 		this.listenTo(game.get('sceneList'), 'remove', this.sceneHasRemoved);
+		this.children = [];
 	},
 	render: function() {
 		if(this.model == null) {
@@ -23,6 +24,12 @@ var SceneView = Backbone.View.extend({
 		if(game.get('firstScene') == this.model) {
 			this.$el.find('#scene_info .is_first_scene').attr('checked', true);
 		}
+
+		var that = this;
+		this.model.get('eventList').each(function(event) {
+			var eventAreaView = new EventAreaView({model: event});
+			that.$el.find('#scene').append(eventAreaView.render().el);
+		});
 		
 		// Jcrop の設定
 		var self = this;
@@ -81,10 +88,11 @@ var SceneView = Backbone.View.extend({
 	 */
 	sceneHasSelected: function(cid) {
 		if(this.model != null) {
+			this.stopListening(this.model.get('eventList'));
 			this.stopListening(this.model);
 		}
 		this.model = game.get('sceneList').get(cid);
-		this.listenTo(this.model, 'change', this.sceneHasChanged);
+		this.listenTo(this.model, 'change', this.sceneHasChanged);				
 		this.listenTo(this.model.get('eventList'), 'add', this.eventHasAdded);
 		this.render();
 	},

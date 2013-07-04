@@ -11,6 +11,7 @@ var SceneListItemView = Backbone.View.extend({
 	initialize: function(config) {
 		this.parent = config.parent;
 		this.listenTo(this.model, 'change', this.sceneHasChanged);
+		this.listenTo(this.model, 'remove', this.sceneHasRemoved);
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
@@ -28,5 +29,8 @@ var SceneListItemView = Backbone.View.extend({
 	sceneHasChanged: function() {
 		this.$el.find('.scene_name').html(this.model.get('name'));
 		this.$el.find('.scene_img').attr('src', this.model.get('background'));
+	},
+	sceneHasRemoved: function() {
+		this.remove();
 	}
 });
