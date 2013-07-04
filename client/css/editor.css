@@ -89,7 +89,7 @@ button {
 #scene .event_area {
 	position: absolute;
 	background-color: blue;
-	opacity: 0.5;
+	opacity: 0.75;
 	z-index: 700; /* jcrop area が 600 のため */
 	cursor: pointer;
 	background-size: contain;

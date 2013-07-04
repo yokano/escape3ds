@@ -30,7 +30,6 @@ var EventList = Backbone.Collection.extend({
 		var selectedEvent = this.find(function(event) {
 			return event.get('selected');
 		});
-		console.log(selectedEvent);
 		return selectedEvent;
 	},
 	

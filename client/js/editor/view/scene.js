@@ -48,7 +48,9 @@ var SceneView = Backbone.View.extend({
 		'change #scene_info .scene_name': 'sceneNameHasChanged',
 		'click #delete_scene': 'deleteButtonHasClicked',
 		'click #copy_scene': 'copyButtonHasClicked',
-		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked'
+		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked',
+		'drop .dropbox': 'eventImageHasDropped',
+		'dragenter .dropbox': 'eventImageHasEntered'
 	},
 	
 	/**
@@ -199,5 +201,44 @@ var SceneView = Backbone.View.extend({
 	eventHasAdded: function(event) {
 		var eventAreaView = new EventAreaView({model: event});
 		this.$el.find('#scene').append(eventAreaView.render().el);
+	},
+	
+	/**
+	 * シーン上にイベントの画像ファイルがドロップされた
+	 * @method
+	 */
+	eventImageHasDropped: function(event) {
+		event = event.originalEvent;
+		var self = this;
+		
+		// 画像を取得
+		var file = event.dataTransfer.files[0];
+		getFileURL(file, this, function(url) {
+		
+			// 画像サイズを取得
+			var image = new Image();
+			image.src = url;
+			image.onload = function() {
+
+				// jcropの範囲選択イベントになりすましてイベントを追加
+				var jcropAPIDummy = {
+					release: function() {}
+				};
+				var e = {};
+				e.w = this.width;
+				e.h = this.height;
+				e.x = event.offsetX - e.w / 2;
+				e.y = event.offsetY - e.h / 2;
+				self.eventAreaHasSelected(e, jcropAPIDummy, self);
+				
+				// イベントの画像を設定
+				self.model.get('eventList').getSelected().set('image', url);
+			};
+		});
+		
+		return false;
+	},
+	
+	eventImageHasEntered: function(event) {
 	}
 });

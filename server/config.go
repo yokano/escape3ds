@@ -33,6 +33,7 @@ http://escape-3ds.appspot.com/registration?key=%s
 - ESCPAE 3DS
 - 開発者：岡野雄太(Yuta Okano)
 - 連絡先：yuta.okano@gmail.com
+- ブログ：http://yokano-jp.blogspot.jp/
 ---------------------------------
 
 `,
