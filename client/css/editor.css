@@ -21,6 +21,11 @@ hr {
 	clear: both;
 }
 
+button {
+	padding: 5px;
+	margin: 2px;
+}
+
 #add_scene {
 	padding: 3px;
 	width: 100px;
@@ -97,15 +102,9 @@ hr {
 	z-index: 701;
 }
 
-#scene_info {
-}
 #scene_info .scene_img {
 	width: 75px;
 	cursor: pointer;
-}
-#scene_info button {
-	padding: 5px;
-	margin: 2px;
 }
 
 #event {
@@ -120,8 +119,7 @@ hr {
 	margin-left: 10px;
 }
 #event button {
-	padding: 5px;
-	margin: 2px;
+	margin-left: 10px;
 }
 
 #item_list {
@@ -156,8 +154,4 @@ hr {
 	position: absolute;
 	left: 250px;
 	top: 290px;
-}
-#item_info button {
-	padding: 5px;
-	margin: 2px;
 }
