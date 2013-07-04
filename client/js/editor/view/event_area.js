@@ -8,6 +8,7 @@ var EventAreaView = Backbone.View.extend({
 	className: 'event_area',
 	initialize: function() {
 		this.listenTo(this.model, 'change:selected', this.eventSelectedHasChanged);
+		this.listenTo(this.model, 'remove', this.eventHasRemoved);
 	},
 	render: function() {
 		var model = this.model.toJSON();
@@ -29,5 +30,8 @@ var EventAreaView = Backbone.View.extend({
 		} else {
 			this.$el.removeClass('selected');
 		}
+	},
+	eventHasRemoved: function() {
+		this.remove();
 	}
 });

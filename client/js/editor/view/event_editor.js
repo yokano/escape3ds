@@ -9,6 +9,9 @@ var EventEditorView = Backbone.View.extend({
 	id: 'event_editor',
 	eventList: null,
 	template: _.template($('#event_view_template').html()),
+	events: {
+		'click #remove_event': 'removeButtonHasClicked'
+	},
 	initialize: function() {
 		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
 	},
@@ -22,16 +25,26 @@ var EventEditorView = Backbone.View.extend({
 		return this;
 	},
 	sceneHasSelected: function() {
-		if(this.eventList != null) {
-			this.stopListening(this.eventList, 'eventAreaHasSelected');
-			this.model = null;
-			this.render();
-		}
-		this.eventList = game.get('sceneList').getSelected().get('eventList');
-		this.listenTo(this.eventList, 'eventAreaHasSelected', this.eventHasSelected);
+		this.stopListening(this.collection);
+		this.collection = game.get('sceneList').getSelected().get('eventList');
+		this.listenTo(this.collection, 'eventAreaHasSelected', this.eventHasSelected);
+		this.listenTo(this.collection, 'remove', this.eventHasRemoved);
 	},
 	eventHasSelected: function(selectedEvent) {
+		if(selectedEvent == this.model) {
+			return;
+		}
 		this.model = selectedEvent;
+		this.render();
+	},
+	removeButtonHasClicked: function() {
+		if(!window.confirm('イベントを削除しますか？')) {
+			return;
+		}
+		this.model.trigger('removeButtonHasClicked', this.model);
+	},
+	eventHasRemoved: function() {
+		this.model = null;
 		this.render();
 	}
 });

@@ -118,6 +118,10 @@ hr {
 #event input {
 	margin-left: 10px;
 }
+#event button {
+	padding: 5px;
+	margin: 2px;
+}
 
 #item_list {
 	margin: 10px;

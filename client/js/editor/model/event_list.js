@@ -8,6 +8,7 @@ var EventList = Backbone.Collection.extend({
 	model: Event,
 	initialize: function() {
 		this.on('eventAreaHasSelected', this.eventAreaHasSelected);
+		this.on('removeButtonHasClicked', this.removeButtonHasClicked);
 	},
 	
 	/**
@@ -31,5 +32,13 @@ var EventList = Backbone.Collection.extend({
 		});
 		console.log(selectedEvent);
 		return selectedEvent;
+	},
+	
+	/**
+	 * イベントの削除ボタンが押された
+	 * @param event 削除するイベント
+	 */
+	removeButtonHasClicked: function(event) {
+		this.remove(event);
 	}
 });
