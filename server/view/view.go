@@ -43,8 +43,8 @@ func NewView(c appengine.Context, w http.ResponseWriter) *View {
  * @method
  * @memberof View
  */
-func (this *View) login() {
-	t, err := template.ParseFiles("server/html/login.html")
+func (this *View) Login() {
+	t, err := template.ParseFiles("server/view/html/login.html")
 	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
@@ -55,7 +55,7 @@ func (this *View) login() {
  * @memberof View
  * @param {string} gameKey ゲームキー
  */
-func (this *View) editor(gameKey string) {
+func (this *View) Editor(gameKey string) {
 	model := NewModel(this.c)
 	game := model.GetGame(gameKey)
 	
@@ -67,7 +67,7 @@ func (this *View) editor(gameKey string) {
 	contents.Game = game
 	contents.GameKey = gameKey
 	
-	t, err := template.ParseFiles("server/html/editor.html")
+	t, err := template.ParseFiles("server/view/html/editor.html")
 	Check(this.c, err)
 	t.Execute(this.w, contents)
 }
@@ -77,8 +77,8 @@ func (this *View) editor(gameKey string) {
  * @method
  * @memberof View
  */
-func (this *View) debug() {
-	t, err := template.ParseFiles("server/html/debug.html")
+func (this *View) Debug() {
+	t, err := template.ParseFiles("server/view/html/debug.html")
 	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
@@ -88,8 +88,8 @@ func (this *View) debug() {
  * @method
  * @memberof View
  */
-func (this *View) interimRegistration() {
-	t, err := template.ParseFiles("server/html/interim_registration.html")
+func (this *View) InterimRegistration() {
+	t, err := template.ParseFiles("server/view/html/interim_registration.html")
 	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
@@ -99,8 +99,8 @@ func (this *View) interimRegistration() {
  * @method
  * @memberof View
  */
-func (this *View) registration() {
-	t, err := template.ParseFiles("server/html/registration.html")
+func (this *View) Registration() {
+	t, err := template.ParseFiles("server/view/html/registration.html")
 	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
@@ -111,11 +111,11 @@ func (this *View) registration() {
  * @memberof View
  * @param {string} userKey
  */
-func (this *View) gamelist(userKey string) {
+func (this *View) Gamelist(userKey string) {
 	model := NewModel(this.c)
 	gameList := model.GetGameList(userKey)
 	
-	t, err := template.ParseFiles("server/html/gamelist.html")
+	t, err := template.ParseFiles("server/view/html/gamelist.html")
 	Check(this.c, err)
 	t.Execute(this.w, gameList)
 }

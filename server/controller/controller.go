@@ -14,24 +14,95 @@ import (
 	"strings"
 	"encoding/json"
 	. "server/model"
+	. "server/view"
 	. "server/config"
 	. "server/lib"
 )
+
+type Controller struct {
+}
+
+/**
+ * Controller オブジェクトを作成して返す
+ * @returns {*Controller} 作成したオブジェクト
+ */
+func NewController() *Controller {
+	controller := new(Controller)
+	return controller
+}
+
+/**
+ * メソッドを http.HandleFunc() で呼び出し可能な関数型に変換して返す
+ * http.HandleFunc() は引数として func(http.ResponseWriter, *http.Request) 型の関数しか渡せない
+ * コントローラのメソッドをこの関数型で包むことで http.HandleFunc() から呼び出し可能にする
+ * @method
+ * @memberof Controller
+ * @param {func(*Controller, http.ResponseWriter, *http.Request)} メソッド
+ * @returns {func(http.ResponseWRiter, *http.Request)} 呼び出し可能にしたメソッド
+ */
+func (this *Controller) GetHandler(callback func(this *Controller, w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		callback(this, w, r)
+	}
+}
+
+/**
+ * リクエスト URL に合わせて処理を振り分ける
+ * @method
+ * @memberof Controller
+ */
+func (this *Controller) Handle() {
+	table := make(map[string]func(this *Controller, w http.ResponseWriter, r *http.Request), 21)
+
+	// 通常アクセス
+	table["/"]         = (*Controller).Top
+	table["/editor"]   = (*Controller).Editor
+	table["/gamelist"] = (*Controller).Gamelist
+	table["/logout"]   = (*Controller).Logout
+
+	// OAuth 関係
+	table["/login_twitter"]     = (*Controller).CallbackTwitter
+	table["/callback_twitter"]  = (*Controller).LoginTwitter
+	table["/login_facebook"]    = (*Controller).LoginFacebook
+	table["/callback_facebook"] = (*Controller).CallbackFacebook
+
+	// アカウント登録関係
+	table["/interim_registration"] = (*Controller).InterimRegistration
+	table["/registration"]         = (*Controller).Registration
+
+	// Ajax API
+	table["/add_user"]    = (*Controller).AddUser
+	table["/login"]       = (*Controller).Login
+	table["/add_game"]    = (*Controller).AddGame
+	table["/delete_game"] = (*Controller).DeleteGame
+	table["/upload"]      = (*Controller).Upload
+	table["/download"]    = (*Controller).Download
+	table["/sync/"]       = (*Controller).SyncHandler
+
+	// 管理者アカウント専用
+	table["/debug"]             = (*Controller).Debug
+	table["/get_users"]         = (*Controller).GetUsers
+	table["/get_interim_users"] = (*Controller).GetInterimUsers
+
+	for url, callback := range table {
+		http.HandleFunc(url, this.GetHandler(callback))
+	}
+}
 
 /**
  * ログインページの表示
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func top(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) Top(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	view := NewView(c, w)
-	sessionId := getSession(c, r)
+	sessionId := this.GetSession(c, r)
 	
 	if sessionId != "" {
 		http.Redirect(w, r, "/gamelist", 302)
 	} else {
-		view.login()
+		view.Login()
 	}
 }
 
@@ -40,7 +111,7 @@ func top(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func loginTwitter(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) LoginTwitter(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	oauth := NewOAuth1(c, fmt.Sprintf("http://escape-3ds.appspot.com/callback_twitter"))
 	result := oauth.RequestToken("https://api.twitter.com/oauth/request_token")
@@ -51,7 +122,7 @@ func loginTwitter(w http.ResponseWriter, r *http.Request) {
  * Twitter からのコールバック * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func callbackTwitter(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) CallbackTwitter(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	token := r.FormValue("oauth_token")
 	verifier := r.FormValue("oauth_verifier")
@@ -81,13 +152,13 @@ func callbackTwitter(w http.ResponseWriter, r *http.Request) {
 			user := model.NewUser(params)
 			key = model.AddUser(user)
 		}
-		if getSession(c, r) == "" {
-			startSession(w, r, key)
+		if this.GetSession(c, r) == "" {
+			this.StartSession(w, r, key)
 		}
-		view.gamelist(key)
+		view.Gamelist(key)
 	} else {
 		// ログイン失敗
-		view.login()
+		view.Login()
 		fmt.Fprintf(w, "ログインに失敗しました")
 	}
 }
@@ -97,7 +168,7 @@ func callbackTwitter(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func loginFacebook(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) LoginFacebook(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	oauth := NewOAuth2(c, FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET)
 	oauth.RequestAuthorizationCode(w, r, "https://www.facebook.com/dialog/oauth", url.QueryEscape("http://escape-3ds.appspot.com/callback_facebook"))
@@ -110,7 +181,7 @@ func loginFacebook(w http.ResponseWriter, r *http.Request) {
  * @param {*http.Request} r リクエスト
  * @returns {map[string]string} ユーザ情報
  */
-func requestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]string {
+func (this *Controller) RequestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]string {
 	c := appengine.NewContext(r)
 	code := r.FormValue("code")
 	oauth := NewOAuth2(c, FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET)
@@ -139,9 +210,9 @@ func requestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]str
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func callbackFacebook(w http.ResponseWriter, r*http.Request) {
+func (this *Controller) CallbackFacebook(w http.ResponseWriter, r*http.Request) {
 	c := appengine.NewContext(r)
-	userInfo := requestFacebookToken(w, r)
+	userInfo := this.RequestFacebookToken(w, r)
 	
 	model := NewModel(c)
 	view := NewView(c, w)
@@ -164,10 +235,10 @@ func callbackFacebook(w http.ResponseWriter, r*http.Request) {
 		key = model.AddUser(user)
 	}
 	
-	if getSession(c, r) == "" {
-		startSession(w, r, key)
+	if this.GetSession(c, r) == "" {
+		this.StartSession(w, r, key)
 	}
-	view.gamelist(key)
+	view.Gamelist(key)
 }
 
 /**
@@ -175,8 +246,8 @@ func callbackFacebook(w http.ResponseWriter, r*http.Request) {
  * @param {http.ResponseWRiter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func editor(w http.ResponseWriter, r *http.Request) {
-	userKey := session(w, r)
+func (this *Controller) Editor(w http.ResponseWriter, r *http.Request) {
+	userKey := this.Session(w, r)
 	c := appengine.NewContext(r)
 	model := NewModel(c)
 
@@ -193,7 +264,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	view := NewView(c, w)
-	view.editor(gameKey)
+	view.Editor(gameKey)
 }
 
 /**
@@ -201,7 +272,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func addUser(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) AddUser(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 
 	params := make(map[string]string, 5)
@@ -221,10 +292,10 @@ func addUser(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func debug(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) Debug(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	view := NewView(c, w)
-	view.debug()
+	view.Debug()
 }
 
 /**
@@ -235,7 +306,7 @@ func debug(w http.ResponseWriter, r *http.Request) {
  * @returns {Ajax JSON} to 成功した時のリダイレクト先URL
  * @returns {Ajax JSON} message 失敗した時のエラーメッセージ
  */
-func login(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) Login(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	mail := r.FormValue("mail")
 	pass := r.FormValue("pass")
@@ -244,9 +315,9 @@ func login(w http.ResponseWriter, r *http.Request) {
 	key, _ := model.LoginCheck(mail, pass)
 	if key != "" {
 		// ログイン成功
-		sessionId := getSession(c, r)
+		sessionId := this.GetSession(c, r)
 		if sessionId == "" {
-			startSession(w, r, key)
+			this.StartSession(w, r, key)
 		}
 		fmt.Fprintf(w, `{"result":true, "to":"/gamelist"}`)
 	} else {
@@ -262,7 +333,7 @@ func login(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func logout(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) Logout(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	cookie, err := r.Cookie("escape3ds")
 	Check(c, err)
@@ -270,7 +341,7 @@ func logout(w http.ResponseWriter, r *http.Request) {
 	
 	model := NewModel(c)
 	model.RemoveSession(sessionId)
-	deleteCookie(c, w)
+	this.DeleteCookie(c, w)
 	
 	http.Redirect(w, r, "/", 302)
 }
@@ -280,7 +351,7 @@ func logout(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func interimRegistration(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) InterimRegistration(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
 	name := r.FormValue("name")
@@ -293,7 +364,7 @@ func interimRegistration(w http.ResponseWriter, r *http.Request) {
 	SendMail(c, "infomation@escape-3ds.appspotmail.com", mail, "仮登録完了のお知らせ", fmt.Sprintf(INTERIM_MAIL_BODY, name, key))
 	
 	view := NewView(c, w)
-	view.interimRegistration()
+	view.InterimRegistration()
 }
 
 /**
@@ -302,7 +373,7 @@ func interimRegistration(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func registration(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) Registration(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	key := r.FormValue("key")
 	
@@ -310,7 +381,7 @@ func registration(w http.ResponseWriter, r *http.Request) {
 	model.Registration(key)
 	
 	view := NewView(c, w)
-	view.registration()
+	view.Registration()
 }
 
 /**
@@ -318,11 +389,11 @@ func registration(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func gamelist(w http.ResponseWriter, r *http.Request) {
-	userKey := session(w, r)
+func (this *Controller) Gamelist(w http.ResponseWriter, r *http.Request) {
+	userKey := this.Session(w, r)
 	c := appengine.NewContext(r)
 	view := NewView(c, w)
-	view.gamelist(userKey)
+	view.Gamelist(userKey)
 }
 
 /**
@@ -330,7 +401,7 @@ func gamelist(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func addGame(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) AddGame(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	gameName := r.FormValue("game_name")
 	gameDescription := r.FormValue("game_description")
@@ -343,7 +414,7 @@ func addGame(w http.ResponseWriter, r *http.Request) {
 		c.Warningf("ゲーム説明文が空のゲームを作成しようとしました")
 	}
 
-	sessionId := getSession(c, r)
+	sessionId := this.GetSession(c, r)
 	if sessionId == "" {
 		fmt.Fprintf(w, `{"result": false}`)
 		c.Warningf("セッションIDなしでゲームを作成しようとしました")
@@ -368,9 +439,9 @@ func addGame(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func deleteGame(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	sessionId := getSession(c, r)
+	sessionId := this.GetSession(c, r)
 	gameKey := r.FormValue("game_key")
 	
 	if sessionId == "" {
@@ -403,7 +474,7 @@ func deleteGame(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func getInterimUsers(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) GetInterimUsers(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	model := NewModel(c)
 	interimUsers := model.GetInterimUsers()
@@ -426,7 +497,7 @@ func getInterimUsers(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func getUsers(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) GetUsers(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	model := NewModel(c)
 	users := model.GetAllUser()
@@ -450,11 +521,11 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
  * @param {string} key ユーザのキー
  * @returns {string} セッションID
  */
-func startSession(w http.ResponseWriter, r *http.Request, key string) {
+func (this *Controller) StartSession(w http.ResponseWriter, r *http.Request, key string) {
 	c := appengine.NewContext(r)
 	model := NewModel(c)
 	sessionId := model.StartSession(key)
-	cookie := NewCookie("escape3ds", sessionId, appengine.DefaultVersionHostname(c), "/", 24)
+	cookie := NewCookie("escape3ds", sessionId, HOSTNAME, "/", 24)
 	http.SetCookie(w, cookie)
 }
 
@@ -466,7 +537,7 @@ func startSession(w http.ResponseWriter, r *http.Request, key string) {
  * @param {*http.Request} r リクエスト
  * @returns {string} セッションIDまたは空文字
  */
-func getSession(c appengine.Context, r *http.Request) string {
+func (this *Controller) GetSession(c appengine.Context, r *http.Request) string {
 	var result string
 	cookie, err := r.Cookie("escape3ds")
 	if err == http.ErrNoCookie {
@@ -486,12 +557,12 @@ func getSession(c appengine.Context, r *http.Request) string {
  * @param
  * @param {string} sessionId
  */
-func closeSession(c appengine.Context, w http.ResponseWriter, r *http.Request) {
-	sessionId := getSession(c, r)
+func (this *Controller) CloseSession(c appengine.Context, w http.ResponseWriter, r *http.Request) {
+	sessionId := this.GetSession(c, r)
 		
 	model := NewModel(c)
 	model.RemoveSession(sessionId)
-	deleteCookie(c, w)
+	this.DeleteCookie(c, w)
 }
 
 /**
@@ -500,8 +571,8 @@ func closeSession(c appengine.Context, w http.ResponseWriter, r *http.Request) {
  * @param {appengine.Context} c コンテキスト
  * @param {http.ResponseWriter} w 応答先
  */
-func deleteCookie(c appengine.Context, w http.ResponseWriter) {
-	cookie := NewCookie("escape3ds", "", appengine.DefaultVersionHostname(c), "/", -1)
+func (this *Controller) DeleteCookie(c appengine.Context, w http.ResponseWriter) {
+	cookie := NewCookie("escape3ds", "", HOSTNAME, "/", -1)
 	http.SetCookie(w, cookie)
 }
 
@@ -516,9 +587,9 @@ func deleteCookie(c appengine.Context, w http.ResponseWriter) {
  * @param {*http.Request} r リクエスト
  * @returns {string} ユーザキー
  */
-func session(w http.ResponseWriter, r *http.Request) string {
+func (this *Controller) Session(w http.ResponseWriter, r *http.Request) string {
 	c := appengine.NewContext(r)
-	sessionId := getSession(c, r)
+	sessionId := this.GetSession(c, r)
 	if sessionId == "" {
 		c.Warningf("セッションIDなしで内部へ入ろうとしました")
 		http.Redirect(w, r, "/", 302)
@@ -529,7 +600,7 @@ func session(w http.ResponseWriter, r *http.Request) string {
 	userKey := model.GetUserKeyFromSession(sessionId)
 	if userKey == "" {
 		c.Warningf("セッションID: %s に該当するユーザーキが存在しません", sessionId)
-		deleteCookie(c, w)
+		this.DeleteCookie(c, w)
 		http.Redirect(w, r, "/", 302)
 		return ""
 	}
@@ -547,7 +618,7 @@ func session(w http.ResponseWriter, r *http.Request) string {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func upload(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) Upload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 
 	file, fileHeader, err := r.FormFile("file")
@@ -567,7 +638,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func download(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) Download(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
 	blobKey := r.FormValue("blobKey")
@@ -592,7 +663,7 @@ func download(w http.ResponseWriter, r *http.Request) {
  * @param {http.ResponseWriter} w 応答先
  * @param {*http.Request} r リクエスト
  */
-func syncHandler(w http.ResponseWriter, r *http.Request) {
+func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	path := strings.Split(r.URL.String(), "/") // "/sync/[kind]/[id]"
 	
@@ -604,7 +675,7 @@ func syncHandler(w http.ResponseWriter, r *http.Request) {
 	
 	switch path[2] {
 	case "game":
-		syncGame(c, w, r, path[3])
+		this.SyncGame(c, w, r, path[3])
 	}
 }
 
@@ -615,7 +686,7 @@ func syncHandler(w http.ResponseWriter, r *http.Request) {
  * @param {*http.Request} r リクエスト
  * @param {}
  */
-func syncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameKey string) {
+func (this *Controller) SyncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameKey string) {
 	switch r.Method {
 	case "POST":
 	case "GET":
@@ -629,8 +700,8 @@ func syncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameK
 		
 		model := NewModel(c)
 		oldGame := model.GetGame(gameKey)
-		if oldGame.UserKey != session(w, r) {
-			c.Warningf("他者のゲームを削除しようとしました　userKey:%s, gameKey:%s", session(w, r), gameKey)
+		if oldGame.UserKey != this.Session(w, r) {
+			c.Warningf("他者のゲームを削除しようとしました　userKey:%s, gameKey:%s", this.Session(w, r), gameKey)
 			return
 		}
 		
