@@ -2,6 +2,7 @@
  * ゲームモデル
  */
 var Game = Backbone.Model.extend({
+	urlRoot: '/sync/game',
 	defaults: {
 		name: '',
 		description: '',

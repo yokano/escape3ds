@@ -11,7 +11,11 @@ import (
 	"net/url"
 	"appengine"
 	"fmt"
+	"strings"
 	"encoding/json"
+	. "server/model"
+	. "server/config"
+	. "server/lib"
 )
 
 /**
@@ -39,8 +43,8 @@ func top(w http.ResponseWriter, r *http.Request) {
 func loginTwitter(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	oauth := NewOAuth1(c, fmt.Sprintf("http://escape-3ds.appspot.com/callback_twitter"))
-	result := oauth.requestToken("https://api.twitter.com/oauth/request_token")
-	oauth.authenticate(w, r, "https://api.twitter.com/oauth/authenticate", result["oauth_token"])
+	result := oauth.RequestToken("https://api.twitter.com/oauth/request_token")
+	oauth.Authenticate(w, r, "https://api.twitter.com/oauth/authenticate", result["oauth_token"])
 }
 
 /**
@@ -53,7 +57,7 @@ func callbackTwitter(w http.ResponseWriter, r *http.Request) {
 	verifier := r.FormValue("oauth_verifier")
 	
 	oauth := NewOAuth1(c, "http://escape-3ds.appspotcom/callback_twitter")
-	result := oauth.exchangeToken(token, verifier, "https://api.twitter.com/oauth/access_token")
+	result := oauth.ExchangeToken(token, verifier, "https://api.twitter.com/oauth/access_token")
 	
 	view := NewView(c, w)
 	model := NewModel(c)
@@ -61,12 +65,12 @@ func callbackTwitter(w http.ResponseWriter, r *http.Request) {
 	if result["oauth_token"] != "" {
 		// ログイン成功
 		key := ""
-		if model.existOAuthUser("Twitter", result["user_id"]) {
+		if model.ExistOAuthUser("Twitter", result["user_id"]) {
 			// 既存ユーザ
 			params := make(map[string]string, 2)
 			params["Type"] = "Twitter"
 			params["OAuthId"] = result["user_id"]
-			key = model.getUserKey(params)
+			key = model.GetUserKey(params)
 		} else {
 			// 新規ユーザ
 			params := make(map[string]string, 4)
@@ -75,12 +79,12 @@ func callbackTwitter(w http.ResponseWriter, r *http.Request) {
 			params["user_oauth_id"] = result["user_id"]
 			params["user_pass"] = ""
 			user := model.NewUser(params)
-			key = model.addUser(user)
+			key = model.AddUser(user)
 		}
 		if getSession(c, r) == "" {
 			startSession(w, r, key)
 		}
-		view.editor(key)
+		view.gamelist(key)
 	} else {
 		// ログイン失敗
 		view.login()
@@ -95,8 +99,8 @@ func callbackTwitter(w http.ResponseWriter, r *http.Request) {
  */
 func loginFacebook(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	oauth := NewOAuth2(c, config["facebook_client_id"], config["facebook_client_secret"])
-	oauth.requestAuthorizationCode(w, r, "https://www.facebook.com/dialog/oauth", url.QueryEscape("http://escape-3ds.appspot.com/callback_facebook"))
+	oauth := NewOAuth2(c, FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET)
+	oauth.RequestAuthorizationCode(w, r, "https://www.facebook.com/dialog/oauth", url.QueryEscape("http://escape-3ds.appspot.com/callback_facebook"))
 }
 
 /**
@@ -109,9 +113,9 @@ func loginFacebook(w http.ResponseWriter, r *http.Request) {
 func requestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]string {
 	c := appengine.NewContext(r)
 	code := r.FormValue("code")
-	oauth := NewOAuth2(c, config["facebook_client_id"], config["facebook_client_secret"])
-	token := oauth.requestAccessToken(w, r, "https://graph.facebook.com/oauth/access_token", url.QueryEscape("http://escape-3ds.appspot.com/callback_facebook"), code)
-	response := oauth.requestAPI(w, "https://graph.facebook.com/me", token)
+	oauth := NewOAuth2(c, FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET)
+	token := oauth.RequestAccessToken(w, r, "https://graph.facebook.com/oauth/access_token", url.QueryEscape("http://escape-3ds.appspot.com/callback_facebook"), code)
+	response := oauth.RequestAPI(w, "https://graph.facebook.com/me", token)
 	
 	// JSON を解析
 	type UserInfo struct {
@@ -120,7 +124,7 @@ func requestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]str
 	}
 	userInfo := new(UserInfo)
 	err := json.Unmarshal(response, userInfo)
-	check(c, err)
+	Check(c, err)
 	
 	result := make(map[string]string, 2)
 	result["oauth_id"] = userInfo.Id
@@ -143,12 +147,12 @@ func callbackFacebook(w http.ResponseWriter, r*http.Request) {
 	view := NewView(c, w)
 	
 	key := ""
-	if model.existOAuthUser("Facebook", userInfo["oauth_id"]) {
+	if model.ExistOAuthUser("Facebook", userInfo["oauth_id"]) {
 		// 既存ユーザ
 		params := make(map[string]string, 2)
 		params["OAuthId"] = userInfo["oauth_id"]
 		params["Type"] = "Facebook"
-		key = model.getUserKey(params)
+		key = model.GetUserKey(params)
 	} else {
 		// 新規ユーザ
 		params := make(map[string]string, 4)
@@ -157,13 +161,13 @@ func callbackFacebook(w http.ResponseWriter, r*http.Request) {
 		params["user_oauth_id"] = userInfo["oauth_id"]
 		params["user_pass"] = ""
 		user := model.NewUser(params)
-		key = model.addUser(user)
+		key = model.AddUser(user)
 	}
 	
 	if getSession(c, r) == "" {
 		startSession(w, r, key)
 	}
-	view.editor(key)
+	view.gamelist(key)
 }
 
 /**
@@ -182,7 +186,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", 302)
 	}
 	
-	game := model.getGame(gameKey)
+	game := model.GetGame(gameKey)
 	if game.UserKey != userKey {
 		c.Warningf("ユーザキー: %s が他人のゲーム: %s を編集しようとしました", userKey, gameKey)
 		http.Redirect(w, r, "/gamelist", 302)
@@ -209,7 +213,7 @@ func addUser(w http.ResponseWriter, r *http.Request) {
 	
 	model := NewModel(c)
 	user := model.NewUser(params)
-	model.addUser(user)
+	model.AddUser(user)
 }
 
 /**
@@ -237,7 +241,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 	pass := r.FormValue("pass")
 	
 	model := NewModel(c)
-	key, _ := model.loginCheck(mail, pass)
+	key, _ := model.LoginCheck(mail, pass)
 	if key != "" {
 		// ログイン成功
 		sessionId := getSession(c, r)
@@ -261,12 +265,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 func logout(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	cookie, err := r.Cookie("escape3ds")
-	check(c, err)
+	Check(c, err)
 	sessionId := cookie.Value
 	
 	model := NewModel(c)
-	model.removeSession(sessionId)
-	deleteCookie(w)
+	model.RemoveSession(sessionId)
+	deleteCookie(c, w)
 	
 	http.Redirect(w, r, "/", 302)
 }
@@ -284,9 +288,9 @@ func interimRegistration(w http.ResponseWriter, r *http.Request) {
 	pass := r.FormValue("password")
 	
 	model := NewModel(c)
-	key := model.interimRegistration(name, mail, pass)
+	key := model.InterimRegistration(name, mail, pass)
 	
-	sendMail(c, "infomation@escape-3ds.appspotmail.com", mail, "仮登録完了のお知らせ", fmt.Sprintf(config["interimMailBody"], name, key))
+	SendMail(c, "infomation@escape-3ds.appspotmail.com", mail, "仮登録完了のお知らせ", fmt.Sprintf(INTERIM_MAIL_BODY, name, key))
 	
 	view := NewView(c, w)
 	view.interimRegistration()
@@ -303,7 +307,7 @@ func registration(w http.ResponseWriter, r *http.Request) {
 	key := r.FormValue("key")
 	
 	model := NewModel(c)
-	model.registration(key)
+	model.Registration(key)
 	
 	view := NewView(c, w)
 	view.registration()
@@ -346,14 +350,14 @@ func addGame(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	model := NewModel(c)
-	userKey := model.getUserKeyFromSession(sessionId)
+	userKey := model.GetUserKeyFromSession(sessionId)
 	params := make(map[string]string, 4)
 	params["name"] = gameName
 	params["description"] = gameDescription
 	params["thumbnail"] = ""
 	params["user_key"] = userKey
 	game := model.NewGame(params)
-	model.addGame(game)
+	model.AddGame(game)
 	
 	fmt.Fprintf(w, `{"result":true, "name":"%s", "description":"%s"}`, gameName, gameDescription)
 }
@@ -380,15 +384,15 @@ func deleteGame(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	model := NewModel(c)
-	userKey := model.getUserKeyFromSession(sessionId)
-	game := model.getGame(gameKey)
+	userKey := model.GetUserKeyFromSession(sessionId)
+	game := model.GetGame(gameKey)
 	if game.UserKey != userKey {
 		fmt.Fprintf(w, `{"result":false}`)
 		c.Warningf("ユーザキー: %s が他のユーザのゲームを削除しようとしました", userKey)
 		return
 	}
 	
-	model.deleteGame(gameKey)
+	model.DeleteGame(gameKey)
 	fmt.Fprintf(w, `{"result":true}`)
 }
 
@@ -402,7 +406,7 @@ func deleteGame(w http.ResponseWriter, r *http.Request) {
 func getInterimUsers(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	model := NewModel(c)
-	interimUsers := model.getInterimUsers()
+	interimUsers := model.GetInterimUsers()
 	
 	// キーと名前だけを返す
 	result := make(map[string]string, len(interimUsers))
@@ -411,7 +415,7 @@ func getInterimUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	bytes, err := json.Marshal(result)
-	check(c, err)
+	Check(c, err)
 	fmt.Fprintf(w, "%s", bytes)
 }
 
@@ -425,7 +429,7 @@ func getInterimUsers(w http.ResponseWriter, r *http.Request) {
 func getUsers(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	model := NewModel(c)
-	users := model.getAllUser()
+	users := model.GetAllUser()
 	
 	result := make(map[string]string, len(users))
 	for key, val := range users {
@@ -433,7 +437,7 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	bytes, err := json.Marshal(result)
-	check(c, err)
+	Check(c, err)
 	fmt.Fprintf(w, "%s", bytes)
 }
 
@@ -449,8 +453,8 @@ func getUsers(w http.ResponseWriter, r *http.Request) {
 func startSession(w http.ResponseWriter, r *http.Request, key string) {
 	c := appengine.NewContext(r)
 	model := NewModel(c)
-	sessionId := model.startSession(key)
-	cookie := NewCookie("escape3ds", sessionId, "localhost", "/", 24)
+	sessionId := model.StartSession(key)
+	cookie := NewCookie("escape3ds", sessionId, appengine.DefaultVersionHostname(c), "/", 24)
 	http.SetCookie(w, cookie)
 }
 
@@ -486,17 +490,18 @@ func closeSession(c appengine.Context, w http.ResponseWriter, r *http.Request) {
 	sessionId := getSession(c, r)
 		
 	model := NewModel(c)
-	model.removeSession(sessionId)
-	deleteCookie(w)
+	model.RemoveSession(sessionId)
+	deleteCookie(c, w)
 }
 
 /**
  * セッションIDが保存されたクッキーを削除する
  * @function
+ * @param {appengine.Context} c コンテキスト
  * @param {http.ResponseWriter} w 応答先
  */
-func deleteCookie(w http.ResponseWriter) {
-	cookie := NewCookie("escape3ds", "", "localhost", "/", -1)
+func deleteCookie(c appengine.Context, w http.ResponseWriter) {
+	cookie := NewCookie("escape3ds", "", appengine.DefaultVersionHostname(c), "/", -1)
 	http.SetCookie(w, cookie)
 }
 
@@ -521,10 +526,10 @@ func session(w http.ResponseWriter, r *http.Request) string {
 	}
 	
 	model := NewModel(c)
-	userKey := model.getUserKeyFromSession(sessionId)
+	userKey := model.GetUserKeyFromSession(sessionId)
 	if userKey == "" {
 		c.Warningf("セッションID: %s に該当するユーザーキが存在しません", sessionId)
-		deleteCookie(w)
+		deleteCookie(c, w)
 		http.Redirect(w, r, "/", 302)
 		return ""
 	}
@@ -546,10 +551,10 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 
 	file, fileHeader, err := r.FormFile("file")
-	check(c, err)
+	Check(c, err)
 	
 	model := NewModel(c)
-	blobKey := model.addBlob(file, fileHeader)
+	blobKey := model.AddBlob(file, fileHeader)
 	
 	fmt.Fprintf(w, `{"blobkey":"%s"}`, blobKey)
 }
@@ -572,10 +577,66 @@ func download(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	model := NewModel(c)
-	contentType, bytes := model.getBlob(blobKey)
+	contentType, bytes := model.GetBlob(blobKey)
 	
 	header := w.Header()
 	header.Add("Content-Type", contentType)
 	_, err := w.Write(bytes)
-	check(c, err)
+	Check(c, err)
+}
+
+/**
+ * /sync/* にマッチしたら呼び出される
+ * URL を解析して更に細かいハンドラへ処理を割り振る
+ * @function
+ * @param {http.ResponseWriter} w 応答先
+ * @param {*http.Request} r リクエスト
+ */
+func syncHandler(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	path := strings.Split(r.URL.String(), "/") // "/sync/[kind]/[id]"
+	
+	// 先頭の "/" も含まれるため
+	if len(path) != 4 {
+		c.Warningf("パラメータが不足した状態でsyncが実行されました")
+		return
+	}
+	
+	switch path[2] {
+	case "game":
+		syncGame(c, w, r, path[3])
+	}
+}
+
+/**
+ * ゲームデータの同期
+ * @param {appengine.Context} c コンテキストs
+ * @param {http.ResponseWriter} w 応答先
+ * @param {*http.Request} r リクエスト
+ * @param {}
+ */
+func syncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameKey string) {
+	switch r.Method {
+	case "POST":
+	case "GET":
+	case "PUT":
+		
+		body := make([]byte, r.ContentLength)
+		r.Body.Read(body)
+		
+		game := new(Game)
+		json.Unmarshal(body, game)
+		
+		model := NewModel(c)
+		oldGame := model.GetGame(gameKey)
+		if oldGame.UserKey != session(w, r) {
+			c.Warningf("他者のゲームを削除しようとしました　userKey:%s, gameKey:%s", session(w, r), gameKey)
+			return
+		}
+		
+		model.UpdateGame(gameKey, game)
+		fmt.Fprintf(w, `{}`)
+	case "DELETE":
+		c.Debugf("DELETE GAME")
+	}
 }

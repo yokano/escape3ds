@@ -13,15 +13,15 @@ var getFileURL = function(file, caller, callback) {
 	fileReader.readAsDataURL(file);
 };
 
-var game;
+//var game;
 var sceneList;
 var eventList;
 var rootView;
 
-game = new Game({
-	name: '誕生日の脱出劇',
-	description: '誕生日会の翌日に目が覚めると見知らぬ部屋に閉じ込められていた'
-});
+//game = new Game({
+//	name: '誕生日の脱出劇',
+//	description: '誕生日会の翌日に目が覚めると見知らぬ部屋に閉じ込められていた'
+//});
 
 game.get('sceneList').add([
 	{name: '押入れ１'},

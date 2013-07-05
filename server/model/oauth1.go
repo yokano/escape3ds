@@ -17,6 +17,8 @@ import (
 	"crypto/hmac"
 	"crypto/sha1"
 	"sort"
+	config "server/config"
+	. "server/lib"
 )
 
 /**
@@ -40,7 +42,7 @@ type OAuth1 struct {
 func NewOAuth1(c appengine.Context, callback string) *OAuth1 {
 	params := make(map[string]string, 7)
 	params["oauth_callback"] = callback
-	params["oauth_consumer_key"] = config["consumer_key"]
+	params["oauth_consumer_key"] = config.TWITTER_CONSUMER_KEY
 	params["oauth_signature_method"] = "HMAC-SHA1"
 	params["oauth_version"] = "1.0"
 	
@@ -57,8 +59,8 @@ func NewOAuth1(c appengine.Context, callback string) *OAuth1 {
  * @param {string} targetUrl リクエスト要求先のURL
  * @returns {map[string]string} リクエスト結果
  */
-func (this *OAuth1) requestToken(targetUrl string) map[string]string {
-	response := this.request(targetUrl, "")
+func (this *OAuth1) RequestToken(targetUrl string) map[string]string {
+	response := this.Request(targetUrl, "")
 	datas := strings.Split(response, "&")
 	result := make(map[string]string, len(datas))
 	for i := 0; i < len(datas); i++ {
@@ -78,17 +80,17 @@ func (this *OAuth1) requestToken(targetUrl string) map[string]string {
  * @param {string} body リクエストボディ
  * @returns {string} レスポンス
  */
-func (this *OAuth1) request(targetUrl string, body string) string {
+func (this *OAuth1) Request(targetUrl string, body string) string {
 
 	// リクエストごとに変わるパラメータを設定
-	this.params["oauth_nonce"] = this.createNonce()
+	this.params["oauth_nonce"] = this.CreateNonce()
 	this.params["oauth_timestamp"] = strconv.Itoa(int(time.Now().Unix()))
-	this.params["oauth_signature"] = this.createSignature(targetUrl)
+	this.params["oauth_signature"] = this.CreateSignature(targetUrl)
 	
 	// リクエスト送信
 	params := make(map[string]string, 1)
-	params["Authorization"] = this.createHeader()
-	response := request(this.context, "POST", targetUrl, params, body)
+	params["Authorization"] = this.CreateHeader()
+	response := Request(this.context, "POST", targetUrl, params, body)
 	
 	// レスポンスボディの読み取り
 	result := make([]byte, 256)
@@ -103,10 +105,10 @@ func (this *OAuth1) request(targetUrl string, body string) string {
  * @memberof OAuth1
  * @returns {string} 作成したoauth_nonce
  */
-func (this *OAuth1) createNonce() string {
+func (this *OAuth1) CreateNonce() string {
 	nonce := ""
 	for i := 0; i < 4; i++ {
-		nonce = strings.Join([]string{nonce, string(getRandomizedString())}, "")
+		nonce = strings.Join([]string{nonce, string(GetRandomizedString())}, "")
 	}
 	this.context.Infof("nonce: %s", nonce)
 	return nonce
@@ -118,7 +120,7 @@ func (this *OAuth1) createNonce() string {
  * @memberof OAuth1
  * @returns {string} ヘッダ
  */
-func (this *OAuth1) createHeader() string {
+func (this *OAuth1) CreateHeader() string {
 	params := make([]string, 0)
 	for key, val := range this.params {
 		key = url.QueryEscape(key)
@@ -138,7 +140,7 @@ func (this *OAuth1) createHeader() string {
  * @param {string} targetUrl リクエスト送信先のURL
  * @returns {string} oauth_signature
  */
-func (this *OAuth1) createSignature(targetUrl string) string {
+func (this *OAuth1) CreateSignature(targetUrl string) string {
 	keys := make([]string, 0)
 	for key := range this.params {
 		keys = append(keys, key)
@@ -154,7 +156,7 @@ func (this *OAuth1) createSignature(targetUrl string) string {
 	paramString := strings.Join(params, "&")
 	baseString := fmt.Sprintf("POST&%s&%s", url.QueryEscape(targetUrl), url.QueryEscape(paramString))
 	
-	signatureKey := fmt.Sprintf("%s&", url.QueryEscape(config["consumer_secret"]))
+	signatureKey := fmt.Sprintf("%s&", url.QueryEscape(config.TWITTER_CONSUMER_SECRET))
 	hash := hmac.New(sha1.New, []byte(signatureKey))
 	hash.Write([]byte(baseString))
 	signature := hash.Sum(nil)
@@ -170,7 +172,7 @@ func (this *OAuth1) createSignature(targetUrl string) string {
  * @param {string} targetUrl リダイレクト先
  * @param {string} token 未認証リクエストトークン
  */
-func (this *OAuth1) authenticate(w http.ResponseWriter, r *http.Request, targetUrl string, token string) {
+func (this *OAuth1) Authenticate(w http.ResponseWriter, r *http.Request, targetUrl string, token string) {
 	to := fmt.Sprintf("?oauth_token=%s", token)
 	to = strings.Join([]string{targetUrl, to}, "")
 	http.Redirect(w, r, to, 302)
@@ -185,10 +187,10 @@ func (this *OAuth1) authenticate(w http.ResponseWriter, r *http.Request, targetU
  * @param {string} targetUrl リクエストの送信先
  * @returns {map[string]string} アクセストークンとユーザデータ
  */
-func (this *OAuth1) exchangeToken(token string, verifier string, targetUrl string) map[string]string {
+func (this *OAuth1) ExchangeToken(token string, verifier string, targetUrl string) map[string]string {
 	this.params["oauth_token"] = token
 	body := fmt.Sprintf("oauth_verifier=%s", verifier)
-	response := this.request(targetUrl, body)
+	response := this.Request(targetUrl, body)
 	
 	datas := strings.Split(response, "&")
 	result := make(map[string]string, len(datas))

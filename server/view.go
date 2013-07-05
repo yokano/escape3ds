@@ -8,6 +8,8 @@ import(
 	"net/http"
 	"html/template"
 	"appengine"
+	. "server/model"
+	. "server/lib"
 )
 
 /**
@@ -43,7 +45,7 @@ func NewView(c appengine.Context, w http.ResponseWriter) *View {
  */
 func (this *View) login() {
 	t, err := template.ParseFiles("server/html/login.html")
-	check(this.c, err)
+	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
 
@@ -51,12 +53,23 @@ func (this *View) login() {
  * エディタ画面を表示する
  * @method
  * @memberof View
- * @param {string} key ユーザキー
+ * @param {string} gameKey ゲームキー
  */
-func (this *View) editor(key string) {
+func (this *View) editor(gameKey string) {
+	model := NewModel(this.c)
+	game := model.GetGame(gameKey)
+	
+	type Contents struct {
+		Game *Game
+		GameKey string
+	}
+	contents := new(Contents)
+	contents.Game = game
+	contents.GameKey = gameKey
+	
 	t, err := template.ParseFiles("server/html/editor.html")
-	check(this.c, err)
-	t.Execute(this.w, nil)
+	Check(this.c, err)
+	t.Execute(this.w, contents)
 }
 
 /**
@@ -66,7 +79,7 @@ func (this *View) editor(key string) {
  */
 func (this *View) debug() {
 	t, err := template.ParseFiles("server/html/debug.html")
-	check(this.c, err)
+	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
 
@@ -77,7 +90,7 @@ func (this *View) debug() {
  */
 func (this *View) interimRegistration() {
 	t, err := template.ParseFiles("server/html/interim_registration.html")
-	check(this.c, err)
+	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
 
@@ -88,7 +101,7 @@ func (this *View) interimRegistration() {
  */
 func (this *View) registration() {
 	t, err := template.ParseFiles("server/html/registration.html")
-	check(this.c, err)
+	Check(this.c, err)
 	t.Execute(this.w, nil)
 }
 
@@ -100,9 +113,9 @@ func (this *View) registration() {
  */
 func (this *View) gamelist(userKey string) {
 	model := NewModel(this.c)
-	gameList := model.getGameList(userKey)
+	gameList := model.GetGameList(userKey)
 	
 	t, err := template.ParseFiles("server/html/gamelist.html")
-	check(this.c, err)
+	Check(this.c, err)
 	t.Execute(this.w, gameList)
 }

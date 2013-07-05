@@ -145,6 +145,14 @@
 		<script src="/client/js/editor/view/event_area.js"></script>
 		<script src="/client/js/editor/view/event_editor.js"></script>
 		
+		<!-- from datastore -->
+		<script>
+			var game = new Game({
+				id: '{{.GameKey}}',
+				name: '{{.Game.Name}}',
+				description: '{{.Game.Description}}'
+			});
+		</script>
 		<script src="/client/js/editor/editor.js"></script>
 	</body>
 </html>

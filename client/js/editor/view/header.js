@@ -28,6 +28,13 @@ var HeaderView = Backbone.View.extend({
 		console.log('ゲームリストへ戻る');
 	},
 	save: function() {
-		console.log('ゲームデータを保存する');
+		Backbone.sync('update', game, {
+			success: function() {
+				console.log('success');
+			},
+			error: function() {
+				console.log('error');
+			}
+		});
 	}
 });

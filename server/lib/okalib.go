@@ -28,7 +28,7 @@ import (
  * @param {appengine.Context} c コンテキスト
  * @param {error} err チェックするエラーオブジェクト
  */
-func check(c appengine.Context, err error) {
+func Check(c appengine.Context, err error) {
 	if err != nil {
 		c.Errorf(err.Error())
 	}
@@ -43,7 +43,7 @@ func check(c appengine.Context, err error) {
  * @param {string} target 削除する文字列
  * @returns {[]string} 削除済みのスライス
  */
-func removeItem(s []string, target string) []string {
+func RemoveItem(s []string, target string) []string {
 	var i int
 	var str string
 	var result []string
@@ -67,7 +67,7 @@ func removeItem(s []string, target string) []string {
  * @param {string} target 探す文字列
  * @returns {bool} 存在したらtrue,　それ以外はfalse
  */
-func exist(arr []string, target string) bool {
+func Exist(arr []string, target string) bool {
 	var i int
 	for i = 0; i < len(arr); i++ {
 		if arr[i] == target {
@@ -89,7 +89,7 @@ func exist(arr []string, target string) bool {
  * @param {string} url URL
  * @returns {[]byte} 受信したXMLデータ、取得できなかったら nil を返す
  */
-func getXML(c appengine.Context, url string) []byte {
+func GetXML(c appengine.Context, url string) []byte {
 	var client *http.Client
 	var response *http.Response
 	var err error
@@ -97,14 +97,14 @@ func getXML(c appengine.Context, url string) []byte {
 	
 	client = urlfetch.Client(c)
 	response, err = client.Get(url)
-	check(c, err)
+	Check(c, err)
 	if err != nil {
 		log.Printf("URLからファイルを取得出来ませんでした")
 		result = nil
 	} else {
 		result = make([]byte, response.ContentLength)
 		_, err = response.Body.Read(result)
-		check(c, err)
+		Check(c, err)
 	}
 	
 	return result
@@ -116,7 +116,7 @@ func getXML(c appengine.Context, url string) []byte {
  * @param {[]string} dst 追加されるリスト
  * @param {[]string} src 追加するリスト
  */
-func prepend(dst []string, src []string) []string {
+func Prepend(dst []string, src []string) []string {
 	var result []string
 	
 	result = make([]string, 0)
@@ -132,7 +132,7 @@ func prepend(dst []string, src []string) []string {
  * @param {string} str 結合する文字列(可変個)
  * @param {string} 結合した文字列
  */
-func join(str ...string) string {
+func Join(str ...string) string {
 	var result string
 	var i int
 	
@@ -208,7 +208,7 @@ func (this *Reader) Read(p []byte) (int, error) {
  * @param {string} body リクエストボディ GET の場合は無視される
  * @param {*http.Response} レスポンス
  */
-func request(c appengine.Context, method string, targetUrl string, params map[string]string, body string) *http.Response {
+func Request(c appengine.Context, method string, targetUrl string, params map[string]string, body string) *http.Response {
 	var request *http.Request
 	var err error
 	
@@ -240,7 +240,7 @@ func request(c appengine.Context, method string, targetUrl string, params map[st
 	} else {
 		request, err = http.NewRequest(method, targetUrl, NewReader(body))
 	}
-	check(c, err)
+	Check(c, err)
 
 	// POST なら Header にパラメータ設定
 	if method == "POST" && (params != nil || len(params) > 0) {
@@ -252,7 +252,7 @@ func request(c appengine.Context, method string, targetUrl string, params map[st
 	// 送受信
 	client := urlfetch.Client(c)
 	response, err := client.Do(request)
-	check(c, err)
+	Check(c, err)
 	
 	return response
 }
@@ -263,7 +263,7 @@ func request(c appengine.Context, method string, targetUrl string, params map[st
  * @function
  * @returns {string} ランダムな文字列
  */
-func getRandomizedString() string {
+func GetRandomizedString() string {
 	r := rand.Int63()
 	b := make([]byte, binary.MaxVarintLen64)
 	binary.PutVarint(b, int64(r))
@@ -295,7 +295,7 @@ func SHA1(input string) []byte {
  * @param {string} subject タイトル
  * @param {string} body メッセージ
  */
-func sendMail(c appengine.Context, sender string, to string, subject string, body string) {
+func SendMail(c appengine.Context, sender string, to string, subject string, body string) {
 	message := new(mail.Message)
 	message.Sender = sender
 	message.To = []string{to}
@@ -303,7 +303,7 @@ func sendMail(c appengine.Context, sender string, to string, subject string, bod
 	message.Body = body
 	
 	err := mail.Send(c, message)
-	check(c, err)
+	Check(c, err)
 }
 
 /**

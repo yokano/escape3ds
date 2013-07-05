@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"strings"
 	"fmt"
+	. "server/lib"
 )
 
 /**
@@ -53,7 +54,7 @@ func NewOAuth2(c appengine.Context, clientId string, clientSecret string) *OAuth
  * @param {string} targetUri リクエスト先URI
  * @param {string} redirectUri リダイレクトURI
  */
-func (this *OAuth2) requestAuthorizationCode(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string) {
+func (this *OAuth2) RequestAuthorizationCode(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string) {
 	targetUri = fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&response_type=code", targetUri, this.clientId, redirectUri)
 	http.Redirect(w, r, targetUri, 302)
 }
@@ -71,7 +72,7 @@ func (this *OAuth2) requestAuthorizationCode(w http.ResponseWriter, r *http.Requ
  * @param {string} code
  * @returns {string} アクセストークン
  */
-func (this *OAuth2) requestAccessToken(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string, code string) string {
+func (this *OAuth2) RequestAccessToken(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string, code string) string {
 	targetUri = fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s", targetUri, this.clientId, redirectUri, this.clientSecret, code)
 	
 	params := make(map[string]string, 4)
@@ -79,11 +80,11 @@ func (this *OAuth2) requestAccessToken(w http.ResponseWriter, r *http.Request, t
 	params["redirect_uri"] = redirectUri
 	params["client_secret"] = this.clientSecret
 	params["code"] = code
-	response := request(this.context, "GET", targetUri, params, "")
+	response := Request(this.context, "GET", targetUri, params, "")
 	
 	body := make([]byte, 1024)
 	_, err := response.Body.Read(body)
-	check(this.context, err)
+	Check(this.context, err)
 	
 	// response: oauth_token=******&expires=******
 	responseParams := strings.Split(string(body), "&")
@@ -95,14 +96,14 @@ func (this *OAuth2) requestAccessToken(w http.ResponseWriter, r *http.Request, t
  * アクセストークンを使ってAPIを呼び出す
  * @method
  */
-func (this *OAuth2) requestAPI(w http.ResponseWriter, targetUri string, accessToken string) []byte {
+func (this *OAuth2) RequestAPI(w http.ResponseWriter, targetUri string, accessToken string) []byte {
 	params := make(map[string]string, 1)
 	params["access_token"] = accessToken
-	response := request(this.context, "GET", targetUri, params, "")
+	response := Request(this.context, "GET", targetUri, params, "")
 	
 	result := make([]byte, 1024)
 	i, err := response.Body.Read(result)
-	check(this.context, err)
+	Check(this.context, err)
 	result = result[0:i]
 	return result
 }
