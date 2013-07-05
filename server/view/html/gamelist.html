@@ -2,7 +2,7 @@
 <html ng-app>
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="/client/css/gamelist.css"></link>
+		<link rel="stylesheet" href="/client/gamelist/gamelist.css"></link>
 		<title>ゲーム一覧</title>
 	</head>
 	<body>
@@ -22,7 +22,7 @@
 			<li class="game" key="{{$key}}">
 				<div class="title">{{$val.Name}}</div>
 				<div class="description">{{$val.Description}}</div>
-				<div class="thumbnail"><img width="200" src="/client/img/scene/black.png"></div>
+				<div class="thumbnail"><img width="200" src="/client/gamelist/img/black.png"></div>
 				<a href="/editor?game_key={{$key}}"><button class="edit">作る</button></a>
 				<button class="copy">コピー</button>
 				<button class="delete">消す</button>
@@ -32,7 +32,7 @@
 		
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
-		<script src="/client/js/gamelist.js"></script>
+		<script src="/client/gamelist/gamelist.js"></script>
 		<script>
 			var userKey = "{{.Key}}";
 		</script>

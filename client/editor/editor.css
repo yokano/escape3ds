@@ -24,6 +24,7 @@ hr {
 button {
 	padding: 5px;
 	margin: 2px;
+	cursor: pointer;
 }
 
 #add_scene {
@@ -70,7 +71,7 @@ button {
 	top: 7px;
 	width: 25px;
 	height: 25px;
-	background-image: url("/client/img/start_scene_icon.png");
+	background-image: url("/client/editor/img/start_scene_icon.png");
 	display: none;
 }
 

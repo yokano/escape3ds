@@ -18,7 +18,6 @@ import (
 	"crypto/sha1"
 	"sort"
 	config "server/config"
-	. "server/lib"
 )
 
 /**
