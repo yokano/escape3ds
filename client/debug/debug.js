@@ -108,6 +108,29 @@ $(function() {
 		});
 	});
 	
+	// ファイルのアップロード
+	$('#submit').click(function() {
+		
+		var form = $('#ajaxform').get()[0];
+		var formData = new FormData(form);
+		
+		$.ajax('/upload', {
+			method: 'POST',
+			contentType: false,
+			processData: false,
+			data: formData,
+			dataType: 'json',
+			error: function() {
+				console.log('error');
+			},
+			success: function() {
+				console.log('success');
+			}
+		});
+		
+		return false;
+	});
+	
 	// データの更新
 	var update = function() {
 		var interimUsers = $('#interim_users');
@@ -143,6 +166,6 @@ $(function() {
 			}
 		});
 	};
-	
+		
 	update();
 });
