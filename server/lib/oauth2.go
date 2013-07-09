@@ -3,7 +3,7 @@
  * authorization code 方式のみ
  * @file
  */
-package escape3ds
+package lib
 
 import (
 	"appengine"

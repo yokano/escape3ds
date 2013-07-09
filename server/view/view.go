@@ -2,7 +2,7 @@
  * HTMLの表示
  * @file
  */
-package escape3ds
+package view
 
 import(
 	"net/http"

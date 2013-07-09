@@ -1,0 +1,698 @@
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "./server/model"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index">Index</a></dd>
+			
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+アプリケーションのデータ操作を行う
+</p>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="pkg-index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="#Game">type Game</a></dd>
+				
+				
+			
+				
+				<dd><a href="#InterimUser">type InterimUser</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Model">type Model</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewModel">func NewModel(c appengine.Context) *Model</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.AddBlob">func (this *Model) AddBlob(file multipart.File, fileHeader *multipart.FileHeader) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.AddGame">func (this *Model) AddGame(game *Game) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.AddUser">func (this *Model) AddUser(user *User) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.DeleteGame">func (this *Model) DeleteGame(encodedGameKey string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.ExistOAuthUser">func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetAllUser">func (this *Model) GetAllUser() map[string]*User</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetBlob">func (this *Model) GetBlob(key string) (string, []byte)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetGame">func (this *Model) GetGame(encodedGameKey string) *Game</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetGameList">func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetInterimUsers">func (this *Model) GetInterimUsers() map[string]*InterimUser</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetUser">func (this *Model) GetUser(encodedKey string) *User</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetUserKey">func (this *Model) GetUserKey(params map[string]string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetUserKeyFromSession">func (this *Model) GetUserKeyFromSession(sessionId string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.InterimRegistration">func (this *Model) InterimRegistration(name string, mail string, pass string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.LoginCheck">func (this *Model) LoginCheck(mail string, pass string) (string, string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.NewGame">func (this *Model) NewGame(params map[string]string) *Game</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.NewInterimUser">func (this *Model) NewInterimUser(name string, mail string, pass string) *InterimUser</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.NewUser">func (this *Model) NewUser(data map[string]string) *User</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.Registration">func (this *Model) Registration(encodedKey string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.RemoveSession">func (this *Model) RemoveSession(sessionId string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.StartSession">func (this *Model) StartSession(userKey string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.UpdateGame">func (this *Model) UpdateGame(encodedGameKey string, game *Game)</a></dd>
+				
+			
+				
+				<dd><a href="#User">type User</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#User.HashPassword">func (this *User) HashPassword(pass string, salt string) ([]byte, string)</a></dd>
+				
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/blob.go">blob.go</a>
+			
+				<a href="/target/game.go">game.go</a>
+			
+				<a href="/target/model.go">model.go</a>
+			
+				<a href="/target/session.go">session.go</a>
+			
+				<a href="/target/user.go">user.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+		
+		
+			
+			
+			<h2 id="Game">type <a href="/target/game.go?s=406:603#L7">Game</a></h2>
+			<pre>type Game struct {
+    Name        string `json:&#34;name&#34;`
+    Description string `json:&#34;description&#34;`
+    Thumbnail   string `json:&#34;thumbnail&#34;`
+    UserKey     string `json:&#34;userKey&#34;`
+    FirstScene  string `json:&#34;firstScene&#34;`
+}</pre>
+			<p>
+*
+</p>
+<pre>* ゲーム
+* @struct
+* @member {string} Name ゲーム名
+* @member {string} Description ゲームの説明
+* @member {string} Thumbnail サムネイルの画像パス
+* @member {string} UserKey 所有ユーザのエンコード済みキー
+* @member {string} FirstScene 最初のシーンのエンコード済みキー
+</pre>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="InterimUser">type <a href="/target/user.go?s=2219:2285#L76">InterimUser</a></h2>
+			<pre>type InterimUser struct {
+    Name string
+    Mail string
+    Pass string
+}</pre>
+			<p>
+*
+</p>
+<pre>* 仮登録ユーザ
+* @struct
+* @member {string} Name ユーザ名
+* @member {string} Mail メールアドレス
+* @member {string} Pass パスワード
+</pre>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Model">type <a href="/target/model.go?s=212:254#L1">Model</a></h2>
+			<pre>type Model struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+アプリケーションのデータ操作を行うモデル
+c: アプリケーションコンテキスト
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewModel">func <a href="/target/model.go?s=338:379#L6">NewModel</a></h3>
+				<pre>func NewModel(c appengine.Context) *Model</pre>
+				<p>
+モデルの新規作成作成
+c アプリケーションコンテキスト
+</p>
+
+				
+			
+
+			
+				
+				<h3 id="Model.AddBlob">func (*Model) <a href="/target/blob.go?s=364:452#L8">AddBlob</a></h3>
+				<pre>func (this *Model) AddBlob(file multipart.File, fileHeader *multipart.FileHeader) string</pre>
+				<p>
+*
+</p>
+<pre>* ファイルを blobstore に保存して blobkey を返す
+* @method
+* @memberof Model
+* @param {multipart.File} file 保存するファイル
+* @param {*multipart.FileHeader} fileHeader 保存するファイルのヘッダ
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1300:1345#L45">AddGame</a></h3>
+				<pre>func (this *Model) AddGame(game *Game) string</pre>
+				<p>
+*
+</p>
+<pre>* データストアにゲームを追加する
+* @method
+* @memberof Model
+* @param {*Game} game 追加するゲーム
+* @returns {string} エンコード済みのゲームキー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=3481:3526#L125">AddUser</a></h3>
+				<pre>func (this *Model) AddUser(user *User) string</pre>
+				<p>
+*
+</p>
+<pre>* ユーザの追加
+* @method
+* @memberof User
+* @param {*User} user 追加するユーザ
+* @returns {string} エンコードされたユーザキー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2696:2748#L91">DeleteGame</a></h3>
+				<pre>func (this *Model) DeleteGame(encodedGameKey string)</pre>
+				<p>
+*
+</p>
+<pre>* データストアからゲームを削除する
+* 削除を命令したユーザとゲームの所有者が一致していることを事前に確認すること
+* この関数内ではチェックを行わない
+* @param {string} encodedGameKey エンコード済みのゲームキー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=6862:6933#L239">ExistOAuthUser</a></h3>
+				<pre>func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</pre>
+				<p>
+*
+</p>
+<pre>* 指定されたOAuthユーザが既にデータベース上に存在するかどうか調べる
+* @method
+* @memberof Model
+* @param {string} userType &#34;Twitter&#34;または&#34;Facebook&#34;
+* @param {string} oauthId 調べる対象のOAuthId
+* @returns {bool} 存在したらtrue
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=8427:8475#L300">GetAllUser</a></h3>
+				<pre>func (this *Model) GetAllUser() map[string]*User</pre>
+				<p>
+*
+</p>
+<pre>* すべてのユーザを取得する
+* @method
+* @memberof Model
+* @returns {map[string]*User} ユーザ一覧
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetBlob">func (*Model) <a href="/target/blob.go?s=1399:1454#L45">GetBlob</a></h3>
+				<pre>func (this *Model) GetBlob(key string) (string, []byte)</pre>
+				<p>
+*
+</p>
+<pre>* blobstore に保存したファイルを読み出す
+* @method
+* @memberof Model
+* @param {string} key 読みだすファイルの blobkey
+* @returns {string} ファイルの Content-Type
+* @returns {[]byte} ファイルバイナリデータ
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1742:1797#L59">GetGame</a></h3>
+				<pre>func (this *Model) GetGame(encodedGameKey string) *Game</pre>
+				<p>
+*
+</p>
+<pre>* データストアからゲームを取得する
+* @method
+* @memberof Model
+* @param {string} encodedGameKey エンコード済みのゲームキー
+* @returns {*Game} ゲームオブジェクト
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=3131:3201#L106">GetGameList</a></h3>
+				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
+				<p>
+*
+</p>
+<pre>* ユーザが所有しているゲーム一覧を返す
+* @method
+* @memberof Model
+* @param {string} encodedUserKey ユーザキー
+* @returns {map[string]*Game} エンコード済みのゲームキーとゲームの対応表
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=7861:7921#L276">GetInterimUsers</a></h3>
+				<pre>func (this *Model) GetInterimUsers() map[string]*InterimUser</pre>
+				<p>
+*
+</p>
+<pre>* 仮登録ユーザ一覧を返す
+* @method
+* @memberof Model
+* @returns {map[string]*InterimUser} 仮登録ユーザリスト
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=4912:4963#L173">GetUser</a></h3>
+				<pre>func (this *Model) GetUser(encodedKey string) *User</pre>
+				<p>
+*
+</p>
+<pre>* ユーザの取得
+* @method
+* @memberof Model
+* @param {string} encodedKey エンコードされたキー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=7414:7476#L257">GetUserKey</a></h3>
+				<pre>func (this *Model) GetUserKey(params map[string]string) string</pre>
+				<p>
+*
+</p>
+<pre>* パラメータで指定されたユーザを探してキーを返す
+* 存在しない場合は空文字を返す
+* @method
+* @memberof Model
+* @param {map[string]string} 検索条件
+* @returns {string} 該当するユーザのキー、または空文字
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.GetUserKeyFromSession">func (*Model) <a href="/target/session.go?s=1466:1531#L52">GetUserKeyFromSession</a></h3>
+				<pre>func (this *Model) GetUserKeyFromSession(sessionId string) string</pre>
+				<p>
+*
+</p>
+<pre>* memcache からユーザキーを返す
+* 該当するユーザーキーが見つからなかったら空文字を返す
+* @method
+* @memberof Model
+* @param {string} sessionId セッションID
+* @returns {string} ユーザキー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=5527:5611#L195">InterimRegistration</a></h3>
+				<pre>func (this *Model) InterimRegistration(name string, mail string, pass string) string</pre>
+				<p>
+*
+</p>
+<pre>* ユーザを仮登録する
+* 仮登録したユーザは24時間以内に本登録する
+* 本登録されなかった場合は24時間後に削除される
+* @method
+* @memberof Model
+* @param {string} name ユーザ名
+* @param {string} mail メールアドレス
+* @param {string} pass パスワード
+* @returns {string} 仮登録ユーザのエンコードされたキー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=4112:4184#L145">LoginCheck</a></h3>
+				<pre>func (this *Model) LoginCheck(mail string, pass string) (string, string)</pre>
+				<p>
+*
+</p>
+<pre>* 指定されたメールアドレスとパスワードのユーザがいるか調べる
+* 存在しない場合は戻り値がすべて空文字になる
+* @method
+* @memberof Member
+* @returns {string} エンコードされたキー
+* @returns {string} ユーザ名
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=846:904#L28">NewGame</a></h3>
+				<pre>func (this *Model) NewGame(params map[string]string) *Game</pre>
+				<p>
+*
+</p>
+<pre>* ゲームインスタンスの作成
+* @method
+* @memberof Model
+* @param {map[string]string}
+* {
+*     name: string
+*     description: string
+*     thumbnail: string
+*     user_key: string
+*     first_scene: string
+* }
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2508:2593#L90">NewInterimUser</a></h3>
+				<pre>func (this *Model) NewInterimUser(name string, mail string, pass string) *InterimUser</pre>
+				<p>
+*
+</p>
+<pre>* 仮登録ユーザの作成
+* @function
+* @param {string} name ユーザ名
+* @param {string} mail メールアドレス
+* @param {string} pass パスワード
+* @returns {*InterimUser} 仮登録ユーザ
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=1005:1061#L33">NewUser</a></h3>
+				<pre>func (this *Model) NewUser(data map[string]string) *User</pre>
+				<p>
+*
+</p>
+<pre>* ユーザを作成する
+* @method
+* @memberof Model
+* @param {map[string]string} ユーザの設定項目を含んだマップ
+* {
+*     user_type: string
+*     user_name: string
+*     user_mail: string
+*     user_oauth_id: string
+*     user_pass: string
+* }
+* @returns {*User} ユーザ、失敗したらnil
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=6020:6070#L210">Registration</a></h3>
+				<pre>func (this *Model) Registration(encodedKey string)</pre>
+				<p>
+*
+</p>
+<pre>* ユーザを本登録する
+* 仮登録データベース
+* @method
+* @memberof Model
+* @param {string} encodedKey エンコード済みの仮登録キー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.RemoveSession">func (*Model) <a href="/target/session.go?s=1100:1150#L39">RemoveSession</a></h3>
+				<pre>func (this *Model) RemoveSession(sessionId string)</pre>
+				<p>
+*
+</p>
+<pre>* memcache から指定されたセッション情報を削除する
+* @method
+* @memberof Model
+* @param {string} sessionId 対象のセッションID
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.StartSession">func (*Model) <a href="/target/session.go?s=447:501#L11">StartSession</a></h3>
+				<pre>func (this *Model) StartSession(userKey string) string</pre>
+				<p>
+*
+</p>
+<pre>* セッションを開始する
+* memcache にセッションIDとユーザキーの対応を保存する
+* セッションは最後のページアクセスから24時間有効
+* 24時間経過したものは cron で定期的に削除される
+* @method
+* @memberof Model
+* @param {string}
+* @returns {string} セッションID
+</pre>
+
+				
+				
+			
+				
+				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2182:2246#L77">UpdateGame</a></h3>
+				<pre>func (this *Model) UpdateGame(encodedGameKey string, game *Game)</pre>
+				<p>
+*
+</p>
+<pre>* ゲームを更新する
+* @method
+* @memberof Model
+* @param {string} encodedGameKey エンコード済みのゲームキー
+* @param {*Game} game 上書きするゲームオブジェクト
+</pre>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="User">type <a href="/target/user.go?s=570:671#L10">User</a></h2>
+			<pre>type User struct {
+    Type    string
+    Name    string
+    Pass    []byte
+    Mail    string
+    Salt    string
+    OAuthId string
+}</pre>
+			<p>
+*
+</p>
+<pre>* ユーザデータ
+* @struct
+* @property {string} Type ユーザアカウントの種類 &#34;Twitter&#34;/&#34;Facebook&#34;/&#34;normal&#34;
+* @property {string} Name ユーザ名
+* @property {[]byte} Pass ユーザの暗号化済パスワード（user_type == &#34;normal&#34;の場合のみ）
+* @property {string} Mail ユーザのメールアドレス（user_type == &#34;normal&#34;の場合のみ）
+* @property {string} OAuthId OAuthのサービスプロバイダが決めたユーザID
+</pre>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3022:3095#L107">HashPassword</a></h3>
+				<pre>func (this *User) HashPassword(pass string, salt string) ([]byte, string)</pre>
+				<p>
+*
+</p>
+<pre>* ユーザのパスワードをハッシュ化する
+* @method
+* @memberof User
+* @param {string} pass 平文パスワード
+* @param {string} salt ソルト。空文字が渡された場合は自動で作成する。
+* @returns {[]byte} 暗号化されたパスワード
+* @returns {string} 使用したソルト
+</pre>
+
+				
+				
+			
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+

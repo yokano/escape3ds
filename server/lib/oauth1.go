@@ -3,7 +3,7 @@
  * OAuth 1.0 Revision A を使う
  * @file
  */
-package escape3ds
+package lib
 
 import (
 	"encoding/base64"

@@ -4,7 +4,7 @@
  * URL パターンに該当する処理を書く
  * クラス化されたModelとViewを使って処理を進める
  */
-package escape3ds
+package controller
 
 import (
 	"net/http"

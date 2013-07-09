@@ -1,5 +1,5 @@
 // アプリケーションのデータ操作を行う
-package escape3ds
+package model
 
 import (
 	"appengine"

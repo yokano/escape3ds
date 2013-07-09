@@ -1,4 +1,4 @@
-package escape3ds
+package model
 
 import (
 	"appengine/datastore"

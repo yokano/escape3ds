@@ -1,7 +1,7 @@
 /**
  * 設定ファイル
  */
-package escape3ds
+package config
 
 //var HOSTNAME = ""
 //

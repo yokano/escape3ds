@@ -4,7 +4,7 @@
  * @author y.okano
  * @file
  */
-package escape3ds
+package lib
 import (
 	"appengine"
 	"appengine/urlfetch"
