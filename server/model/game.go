@@ -5,36 +5,19 @@ import (
 	. "server/lib"
 )
 
-/**
- * ゲーム
- * @struct
- * @member {string} Name ゲーム名
- * @member {string} Description ゲームの説明
- * @member {string} Thumbnail サムネイルの画像パス
- * @member {string} UserKey 所有ユーザのエンコード済みキー
- * @member {string} FirstScene 最初のシーンのエンコード済みキー
- */
+// ゲームオブジェクト。ゲームはそれを所有するユーザにぶら下がる形で定義される。
+// ゲームは自分を所有するユーザを親として参照する形で datastore に保存される。
+// datastore の ancestor path を参照。
+// https://developers.google.com/appengine/docs/go/datastore/#Ancestor_Paths
 type Game struct {
-	Name string `json:"name"`
-	Description string `json:"description"`
-	Thumbnail string `json:"thumbnail"`
-	UserKey string `json:"userKey"`
-	FirstScene string `json:"firstScene"`
+	Name string `json:"name"`  // ゲーム名
+	Description string `json:"description"`  // ゲームの説明
+	Thumbnail string `json:"thumbnail"`  // サムネイルの画像パス
+	UserKey string `json:"userKey"`  // 所有ユーザのエンコード済みキー
+	FirstScene string `json:"firstScene"`  // 最初のシーンのエンコード済みキー
 }
 
-/**
- * ゲームインスタンスの作成
- * @method
- * @memberof Model
- * @param {map[string]string}
- * {
- *     name: string
- *     description: string
- *     thumbnail: string
- *     user_key: string
- *     first_scene: string
- * }
- */
+// 新しいゲームオブジェクトを作成して返す。新しく作られるゲームのパラメータを格納した map 引数として渡す。
 func (this *Model) NewGame(params map[string]string) *Game {
 	game := new(Game)
 	game.Name = params["name"]
@@ -45,13 +28,7 @@ func (this *Model) NewGame(params map[string]string) *Game {
 	return game
 }
 
-/**
- * データストアにゲームを追加する
- * @method
- * @memberof Model
- * @param {*Game} game 追加するゲーム
- * @returns {string} エンコード済みのゲームキー
- */
+// データストアにゲームを追加してエンコード済みのキーを返す。
 func (this *Model) AddGame(game *Game) string {
 	incompleteKey := datastore.NewIncompleteKey(this.c, "Game", nil)
 	completeKey, err := datastore.Put(this.c, incompleteKey, game)
@@ -59,13 +36,7 @@ func (this *Model) AddGame(game *Game) string {
 	return completeKey.Encode()
 }
 
-/**
- * データストアからゲームを取得する
- * @method
- * @memberof Model
- * @param {string} encodedGameKey エンコード済みのゲームキー
- * @returns {*Game} ゲームオブジェクト
- */
+// エンコード済みのキーを指定してデータストアからゲームを取得する。
 func (this *Model) GetGame(encodedGameKey string) *Game {
 	gameKey, err := datastore.DecodeKey(encodedGameKey)
 	Check(this.c, err)
@@ -77,13 +48,7 @@ func (this *Model) GetGame(encodedGameKey string) *Game {
 	return game
 }
 
-/**
- * ゲームを更新する
- * @method
- * @memberof Model
- * @param {string} encodedGameKey エンコード済みのゲームキー
- * @param {*Game} game 上書きするゲームオブジェクト
- */
+// ゲームを更新する。引数として渡されたキー encodedGameKey のゲームを、ゲームオブジェクト game で上書きする。
 func (this *Model) UpdateGame(encodedGameKey string, game *Game)  {
 	gameKey, err := datastore.DecodeKey(encodedGameKey)
 	Check(this.c, err)
@@ -92,12 +57,9 @@ func (this *Model) UpdateGame(encodedGameKey string, game *Game)  {
 	Check(this.c, err)
 }
 
-/**
- * データストアからゲームを削除する
- * 削除を命令したユーザとゲームの所有者が一致していることを事前に確認すること
- * この関数内ではチェックを行わない
- * @param {string} encodedGameKey エンコード済みのゲームキー
- */
+// データストアから指定したキーのゲームを削除する。
+// 削除を命令したユーザとゲームの所有者が一致していることを事前に確認すること。
+// この関数内ではチェックを行わない。
 func (this *Model) DeleteGame(encodedGameKey string) {
 	gameKey, err := datastore.DecodeKey(encodedGameKey)
 	Check(this.c, err)
@@ -106,13 +68,8 @@ func (this *Model) DeleteGame(encodedGameKey string) {
 	Check(this.c, err)
 }
 
-/**
- * ユーザが所有しているゲーム一覧を返す
- * @method
- * @memberof Model
- * @param {string} encodedUserKey ユーザキー
- * @returns {map[string]*Game} エンコード済みのゲームキーとゲームの対応表
- */
+// ユーザが所有しているゲーム一覧を返す。
+// 戻り値は、エンコード済みのゲームキーとゲームの対応表
 func (this *Model) GetGameList(encodedUserKey string) map[string]*Game {
 	query := datastore.NewQuery("Game").Filter("UserKey =", encodedUserKey)
 	iterator := query.Run(this.c)

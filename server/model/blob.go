@@ -8,13 +8,9 @@ import (
 	. "server/lib"
 )
 
-/**
- * ファイルを blobstore に保存して blobkey を返す
- * @method
- * @memberof Model
- * @param {multipart.File} file 保存するファイル
- * @param {*multipart.FileHeader} fileHeader 保存するファイルのヘッダ
- */
+// ファイルを blobstore に保存して blobkey を返す。
+// エディタから画像ファイルをアップロードするときに使う。
+// 引数としてファイルと、ファイルの種類などを含むファイルヘッダを渡す。
 func (this *Model) AddBlob(file multipart.File, fileHeader *multipart.FileHeader) string {
 	// ファイルデータを読み出す
 	fileData := make([]byte, 256 * 1024)
@@ -44,14 +40,9 @@ func (this *Model) AddBlob(file multipart.File, fileHeader *multipart.FileHeader
 	return string(key)
 }
 
-/**
- * blobstore に保存したファイルを読み出す
- * @method
- * @memberof Model
- * @param {string} key 読みだすファイルの blobkey
- * @returns {string} ファイルの Content-Type
- * @returns {[]byte} ファイルバイナリデータ
- */
+// blobstore に保存したファイルを読み出す。
+// 引数として読みだすファイルの blobkey を渡す。
+// ファイルタイプとバイナリデータが返される。
 func (this *Model) GetBlob(key string) (string, []byte) {
 	blobKey := appengine.BlobKey(key)
 	

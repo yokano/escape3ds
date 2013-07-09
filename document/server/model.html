@@ -9,6 +9,8 @@
 	them to conflict with generated attributes (some of which
 	correspond to Go identifiers).
 -->
+<link hreF="../style.css" rel="stylesheet"></link>
+<script src="../godocs.js"></script>
 
 	
 		<div id="short-nav">
@@ -31,7 +33,9 @@
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
-アプリケーションのデータ操作を行う
+datastore や blobstore などのサーバ上のデータを操作をまとめたもの。
+シーン、イベント、アイテムなどゲームに関わるデータや、
+仮登録ユーザ、本登録ユーザ、セッション管理などのユーザに関するデータを扱う。
 </p>
 
 			</div>
@@ -168,25 +172,20 @@
 		
 			
 			
-			<h2 id="Game">type <a href="/target/game.go?s=402:599#L7">Game</a></h2>
+			<h2 id="Game">type <a href="/target/game.go?s=416:791#L2">Game</a></h2>
 			<pre>type Game struct {
-    Name        string `json:&#34;name&#34;`
-    Description string `json:&#34;description&#34;`
-    Thumbnail   string `json:&#34;thumbnail&#34;`
-    UserKey     string `json:&#34;userKey&#34;`
-    FirstScene  string `json:&#34;firstScene&#34;`
+    Name        string `json:&#34;name&#34;`        <span class="comment">// ゲーム名</span>
+    Description string `json:&#34;description&#34;` <span class="comment">// ゲームの説明</span>
+    Thumbnail   string `json:&#34;thumbnail&#34;`   <span class="comment">// サムネイルの画像パス</span>
+    UserKey     string `json:&#34;userKey&#34;`     <span class="comment">// 所有ユーザのエンコード済みキー</span>
+    FirstScene  string `json:&#34;firstScene&#34;`  <span class="comment">// 最初のシーンのエンコード済みキー</span>
 }</pre>
 			<p>
-*
+ゲームオブジェクト。ゲームはそれを所有するユーザにぶら下がる形で定義される。
+ゲームは自分を所有するユーザを親として参照する形で datastore に保存される。
+datastore の ancestor path を参照。
+<a href="https://developers.google.com/appengine/docs/go/datastore/#Ancestor_Paths">https://developers.google.com/appengine/docs/go/datastore/#Ancestor_Paths</a>
 </p>
-<pre>* ゲーム
-* @struct
-* @member {string} Name ゲーム名
-* @member {string} Description ゲームの説明
-* @member {string} Thumbnail サムネイルの画像パス
-* @member {string} UserKey 所有ユーザのエンコード済みキー
-* @member {string} FirstScene 最初のシーンのエンコード済みキー
-</pre>
 
 
 			
@@ -201,21 +200,19 @@
 		
 			
 			
-			<h2 id="InterimUser">type <a href="/target/user.go?s=2215:2281#L76">InterimUser</a></h2>
+			<h2 id="InterimUser">type <a href="/target/user.go?s=2488:2617#L65">InterimUser</a></h2>
 			<pre>type InterimUser struct {
-    Name string
-    Mail string
-    Pass string
+    Name string <span class="comment">// ユーザ名</span>
+    Mail string <span class="comment">// メールアドレス</span>
+    Pass string <span class="comment">// パスワード</span>
 }</pre>
 			<p>
-*
+仮登録ユーザ。トップページのユーザ登録フォームに入力されたユーザデータは一時的に仮登録データベースへ保存される。
+ユーザが登録したメールアドレスに借り登録完了のメールが送られ、そのなかのURLをクリックすることで、
+仮登録データベースからユーザデータベースへデータが移行される。
+仮登録完了から 24 時間以内にメールの URL がクリックされなかった場合は、
+仮登録データベースからユーザ情報が削除され、仮登録は失敗と鳴る。
 </p>
-<pre>* 仮登録ユーザ
-* @struct
-* @member {string} Name ユーザ名
-* @member {string} Mail メールアドレス
-* @member {string} Pass パスワード
-</pre>
 
 
 			
@@ -230,13 +227,12 @@
 		
 			
 			
-			<h2 id="Model">type <a href="/target/model.go?s=208:250#L1">Model</a></h2>
+			<h2 id="Model">type <a href="/target/model.go?s=410:452#L1">Model</a></h2>
 			<pre>type Model struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-アプリケーションのデータ操作を行うモデル
-c: アプリケーションコンテキスト
+アプリケーションのデータ操作を行うオブジェクト
 </p>
 
 
@@ -248,11 +244,11 @@ c: アプリケーションコンテキスト
 
 			
 				
-				<h3 id="NewModel">func <a href="/target/model.go?s=334:375#L6">NewModel</a></h3>
+				<h3 id="NewModel">func <a href="/target/model.go?s=567:608#L7">NewModel</a></h3>
 				<pre>func NewModel(c appengine.Context) *Model</pre>
 				<p>
-モデルの新規作成作成
-c アプリケーションコンテキスト
+モデルのインスタンスを作成する。
+モデルを使う前にかならず実行すること。
 </p>
 
 				
@@ -260,374 +256,259 @@ c アプリケーションコンテキスト
 
 			
 				
-				<h3 id="Model.AddBlob">func (*Model) <a href="/target/blob.go?s=360:448#L8">AddBlob</a></h3>
+				<h3 id="Model.AddBlob">func (*Model) <a href="/target/blob.go?s=322:410#L4">AddBlob</a></h3>
 				<pre>func (this *Model) AddBlob(file multipart.File, fileHeader *multipart.FileHeader) string</pre>
 				<p>
-*
+ファイルを blobstore に保存して blobkey を返す
+@param {multipart.File} file 保存するファイル
+@param {*multipart.FileHeader} fileHeader 保存するファイルのヘッダ
 </p>
-<pre>* ファイルを blobstore に保存して blobkey を返す
-* @method
-* @memberof Model
-* @param {multipart.File} file 保存するファイル
-* @param {*multipart.FileHeader} fileHeader 保存するファイルのヘッダ
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1296:1341#L45">AddGame</a></h3>
+				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1301:1346#L22">AddGame</a></h3>
 				<pre>func (this *Model) AddGame(game *Game) string</pre>
 				<p>
-*
+データストアにゲームを追加してエンコード済みのキーを返す。
 </p>
-<pre>* データストアにゲームを追加する
-* @method
-* @memberof Model
-* @param {*Game} game 追加するゲーム
-* @returns {string} エンコード済みのゲームキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=3477:3522#L125">AddUser</a></h3>
+				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=3802:3847#L98">AddUser</a></h3>
 				<pre>func (this *Model) AddUser(user *User) string</pre>
 				<p>
-*
+データストアに引数として渡したユーザを新規追加する。
+追加が完了したらユーザキーを返す。
 </p>
-<pre>* ユーザの追加
-* @method
-* @memberof User
-* @param {*User} user 追加するユーザ
-* @returns {string} エンコードされたユーザキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2692:2744#L91">DeleteGame</a></h3>
+				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2479:2531#L53">DeleteGame</a></h3>
 				<pre>func (this *Model) DeleteGame(encodedGameKey string)</pre>
 				<p>
-*
+データストアから指定したキーのゲームを削除する。
+削除を命令したユーザとゲームの所有者が一致していることを事前に確認すること。
+この関数内ではチェックを行わない。
 </p>
-<pre>* データストアからゲームを削除する
-* 削除を命令したユーザとゲームの所有者が一致していることを事前に確認すること
-* この関数内ではチェックを行わない
-* @param {string} encodedGameKey エンコード済みのゲームキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=6858:6929#L239">ExistOAuthUser</a></h3>
+				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=6995:7066#L187">ExistOAuthUser</a></h3>
 				<pre>func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</pre>
 				<p>
-*
+指定されたOAuthユーザが既にデータベース上に存在するかどうか調べる。
+存在したら true、存在しなかったら false を返す。
+userType に &#34;Twitter&#34; または &#34;Facebook&#34; を指定すること。
+oauthId に調べる対象の OAuthId を指定する。
 </p>
-<pre>* 指定されたOAuthユーザが既にデータベース上に存在するかどうか調べる
-* @method
-* @memberof Model
-* @param {string} userType &#34;Twitter&#34;または&#34;Facebook&#34;
-* @param {string} oauthId 調べる対象のOAuthId
-* @returns {bool} 存在したらtrue
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=8423:8471#L300">GetAllUser</a></h3>
+				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=8282:8330#L233">GetAllUser</a></h3>
 				<pre>func (this *Model) GetAllUser() map[string]*User</pre>
 				<p>
-*
+すべてのユーザを取得する
 </p>
-<pre>* すべてのユーザを取得する
-* @method
-* @memberof Model
-* @returns {map[string]*User} ユーザ一覧
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetBlob">func (*Model) <a href="/target/blob.go?s=1395:1450#L45">GetBlob</a></h3>
+				<h3 id="Model.GetBlob">func (*Model) <a href="/target/blob.go?s=1319:1374#L37">GetBlob</a></h3>
 				<pre>func (this *Model) GetBlob(key string) (string, []byte)</pre>
 				<p>
-*
+blobstore に保存したファイルを読み出す
+@param {string} key 読みだすファイルの blobkey
+@returns {string} ファイルの Content-Type
+@returns {[]byte} ファイルバイナリデータ
 </p>
-<pre>* blobstore に保存したファイルを読み出す
-* @method
-* @memberof Model
-* @param {string} key 読みだすファイルの blobkey
-* @returns {string} ファイルの Content-Type
-* @returns {[]byte} ファイルバイナリデータ
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1738:1793#L59">GetGame</a></h3>
+				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1631:1686#L30">GetGame</a></h3>
 				<pre>func (this *Model) GetGame(encodedGameKey string) *Game</pre>
 				<p>
-*
+エンコード済みのキーを指定してデータストアからゲームを取得する。
 </p>
-<pre>* データストアからゲームを取得する
-* @method
-* @memberof Model
-* @param {string} encodedGameKey エンコード済みのゲームキー
-* @returns {*Game} ゲームオブジェクト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=3127:3197#L106">GetGameList</a></h3>
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=2816:2886#L63">GetGameList</a></h3>
 				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
 				<p>
-*
+ユーザが所有しているゲーム一覧を返す。
+戻り値は、エンコード済みのゲームキーとゲームの対応表
 </p>
-<pre>* ユーザが所有しているゲーム一覧を返す
-* @method
-* @memberof Model
-* @param {string} encodedUserKey ユーザキー
-* @returns {map[string]*Game} エンコード済みのゲームキーとゲームの対応表
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=7857:7917#L276">GetInterimUsers</a></h3>
+				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=7801:7861#L214">GetInterimUsers</a></h3>
 				<pre>func (this *Model) GetInterimUsers() map[string]*InterimUser</pre>
 				<p>
-*
+仮登録ユーザ一覧を返す
 </p>
-<pre>* 仮登録ユーザ一覧を返す
-* @method
-* @memberof Model
-* @returns {map[string]*InterimUser} 仮登録ユーザリスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=4908:4959#L173">GetUser</a></h3>
+				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=5239:5290#L137">GetUser</a></h3>
 				<pre>func (this *Model) GetUser(encodedKey string) *User</pre>
 				<p>
-*
+引数として渡されたユーザキーのユーザをデータストアから取得する。
+成功したら取得したユーザオブジェクトを返す。
 </p>
-<pre>* ユーザの取得
-* @method
-* @memberof Model
-* @param {string} encodedKey エンコードされたキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=7410:7472#L257">GetUserKey</a></h3>
+				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=7458:7520#L200">GetUserKey</a></h3>
 				<pre>func (this *Model) GetUserKey(params map[string]string) string</pre>
 				<p>
-*
+パラメータで指定されたユーザを探してユーザキーを返す。
+存在しない場合は空文字を返す。
+params には検索条件をセットする。
 </p>
-<pre>* パラメータで指定されたユーザを探してキーを返す
-* 存在しない場合は空文字を返す
-* @method
-* @memberof Model
-* @param {map[string]string} 検索条件
-* @returns {string} 該当するユーザのキー、または空文字
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.GetUserKeyFromSession">func (*Model) <a href="/target/session.go?s=1462:1527#L52">GetUserKeyFromSession</a></h3>
+				<h3 id="Model.GetUserKeyFromSession">func (*Model) <a href="/target/session.go?s=1280:1345#L34">GetUserKeyFromSession</a></h3>
 				<pre>func (this *Model) GetUserKeyFromSession(sessionId string) string</pre>
 				<p>
-*
+memcache から指定されたセッションIDに関連づいているユーザキーを返す
+該当するユーザーキーが見つからなかったら空文字を返す
 </p>
-<pre>* memcache からユーザキーを返す
-* 該当するユーザーキーが見つからなかったら空文字を返す
-* @method
-* @memberof Model
-* @param {string} sessionId セッションID
-* @returns {string} ユーザキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=5523:5607#L195">InterimRegistration</a></h3>
+				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=5727:5811#L153">InterimRegistration</a></h3>
 				<pre>func (this *Model) InterimRegistration(name string, mail string, pass string) string</pre>
 				<p>
-*
+ユーザを仮登録データベースに登録する。
+仮登録されたユーザは24時間以内に本登録する。
+本登録されなかった場合は24時間後に削除される。
+仮登録ユーザのエンコードされたキーを返す。
 </p>
-<pre>* ユーザを仮登録する
-* 仮登録したユーザは24時間以内に本登録する
-* 本登録されなかった場合は24時間後に削除される
-* @method
-* @memberof Model
-* @param {string} name ユーザ名
-* @param {string} mail メールアドレス
-* @param {string} pass パスワード
-* @returns {string} 仮登録ユーザのエンコードされたキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=4108:4180#L145">LoginCheck</a></h3>
+				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=4390:4462#L113">LoginCheck</a></h3>
 				<pre>func (this *Model) LoginCheck(mail string, pass string) (string, string)</pre>
 				<p>
-*
+引数として渡したメールアドレスとパスワードのユーザがいるか調べる。
+存在した場合はユーザキーとユーザ名を返す。
+存在しない場合は戻り値がすべて空文字になる。
 </p>
-<pre>* 指定されたメールアドレスとパスワードのユーザがいるか調べる
-* 存在しない場合は戻り値がすべて空文字になる
-* @method
-* @memberof Member
-* @returns {string} エンコードされたキー
-* @returns {string} ユーザ名
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=842:900#L28">NewGame</a></h3>
+				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=949:1007#L11">NewGame</a></h3>
 				<pre>func (this *Model) NewGame(params map[string]string) *Game</pre>
 				<p>
-*
+新しいゲームオブジェクトを作成して返す。新しく作られるゲームのパラメータを格納した map 引数として渡す。
 </p>
-<pre>* ゲームインスタンスの作成
-* @method
-* @memberof Model
-* @param {map[string]string}
-* {
-*     name: string
-*     description: string
-*     thumbnail: string
-*     user_key: string
-*     first_scene: string
-* }
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2504:2589#L90">NewInterimUser</a></h3>
+				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2813:2898#L73">NewInterimUser</a></h3>
 				<pre>func (this *Model) NewInterimUser(name string, mail string, pass string) *InterimUser</pre>
 				<p>
-*
+仮登録ユーザを作成する。引数としてユーザ名、メールアドレス、パスワードを渡す。
+新規作成された仮登録ユーザオブジェクトを返す。
 </p>
-<pre>* 仮登録ユーザの作成
-* @function
-* @param {string} name ユーザ名
-* @param {string} mail メールアドレス
-* @param {string} pass パスワード
-* @returns {*InterimUser} 仮登録ユーザ
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=1001:1057#L33">NewUser</a></h3>
+				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=818:874#L24">NewUser</a></h3>
 				<pre>func (this *Model) NewUser(data map[string]string) *User</pre>
 				<p>
-*
+ユーザを作成する
+引数：
 </p>
-<pre>* ユーザを作成する
-* @method
-* @memberof Model
-* @param {map[string]string} ユーザの設定項目を含んだマップ
-* {
-*     user_type: string
-*     user_name: string
-*     user_mail: string
-*     user_oauth_id: string
-*     user_pass: string
-* }
-* @returns {*User} ユーザ、失敗したらnil
+<pre>data = {
+  user_type: string
+  user_name: string
+  user_mail: string
+  user_oauth_id: string
+  user_pass: string
+}
+</pre>
+<p>
+戻り値：
+</p>
+<pre>作成したユーザ、失敗したらnil
 </pre>
 
 				
 				
 			
 				
-				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=6016:6066#L210">Registration</a></h3>
+				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=6135:6185#L162">Registration</a></h3>
 				<pre>func (this *Model) Registration(encodedKey string)</pre>
 				<p>
-*
+仮登録ユーザキーを指定して、該当するユーザを登録する。
 </p>
-<pre>* ユーザを本登録する
-* 仮登録データベース
-* @method
-* @memberof Model
-* @param {string} encodedKey エンコード済みの仮登録キー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.RemoveSession">func (*Model) <a href="/target/session.go?s=1096:1146#L39">RemoveSession</a></h3>
+				<h3 id="Model.RemoveSession">func (*Model) <a href="/target/session.go?s=980:1030#L27">RemoveSession</a></h3>
 				<pre>func (this *Model) RemoveSession(sessionId string)</pre>
 				<p>
-*
+memcache から指定されたセッション情報を削除する
 </p>
-<pre>* memcache から指定されたセッション情報を削除する
-* @method
-* @memberof Model
-* @param {string} sessionId 対象のセッションID
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.StartSession">func (*Model) <a href="/target/session.go?s=443:497#L11">StartSession</a></h3>
+				<h3 id="Model.StartSession">func (*Model) <a href="/target/session.go?s=421:475#L4">StartSession</a></h3>
 				<pre>func (this *Model) StartSession(userKey string) string</pre>
 				<p>
-*
+セッションを開始する。サーバの memcache 内にセッションIDとユーザキーの対応を保存している。
+セッションは最後のページアクセスから24時間の有効で、24時間経過したものは cron で定期的に削除される。
+関数はセッションIDを返す。
 </p>
-<pre>* セッションを開始する
-* memcache にセッションIDとユーザキーの対応を保存する
-* セッションは最後のページアクセスから24時間有効
-* 24時間経過したものは cron で定期的に削除される
-* @method
-* @memberof Model
-* @param {string}
-* @returns {string} セッションID
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2178:2242#L77">UpdateGame</a></h3>
+				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2017:2081#L42">UpdateGame</a></h3>
 				<pre>func (this *Model) UpdateGame(encodedGameKey string, game *Game)</pre>
 				<p>
-*
+ゲームを更新する。引数として渡されたキー encodedGameKey のゲームを、ゲームオブジェクト game で上書きする。
 </p>
-<pre>* ゲームを更新する
-* @method
-* @memberof Model
-* @param {string} encodedGameKey エンコード済みのゲームキー
-* @param {*Game} game 上書きするゲームオブジェクト
-</pre>
 
 				
 				
@@ -635,26 +516,18 @@ c アプリケーションコンテキスト
 		
 			
 			
-			<h2 id="User">type <a href="/target/user.go?s=566:667#L10">User</a></h2>
+			<h2 id="User">type <a href="/target/user.go?s=116:560#L3">User</a></h2>
 			<pre>type User struct {
-    Type    string
-    Name    string
-    Pass    []byte
-    Mail    string
-    Salt    string
-    OAuthId string
+    Type    string <span class="comment">// ユーザアカウントの種類 &#34;Twitter&#34;/&#34;Facebook&#34;/&#34;normal&#34;</span>
+    Name    string <span class="comment">// ユーザ名</span>
+    Pass    []byte <span class="comment">// ユーザの暗号化済パスワード（user_type == &#34;normal&#34;の場合のみ）</span>
+    Mail    string <span class="comment">// ユーザのメールアドレス（user_type == &#34;normal&#34;の場合のみ）</span>
+    Salt    string <span class="comment">// パスワードソルト</span>
+    OAuthId string <span class="comment">// OAuthのサービスプロバイダが決めたユーザID</span>
 }</pre>
 			<p>
-*
+ユーザデータ
 </p>
-<pre>* ユーザデータ
-* @struct
-* @property {string} Type ユーザアカウントの種類 &#34;Twitter&#34;/&#34;Facebook&#34;/&#34;normal&#34;
-* @property {string} Name ユーザ名
-* @property {[]byte} Pass ユーザの暗号化済パスワード（user_type == &#34;normal&#34;の場合のみ）
-* @property {string} Mail ユーザのメールアドレス（user_type == &#34;normal&#34;の場合のみ）
-* @property {string} OAuthId OAuthのサービスプロバイダが決めたユーザID
-</pre>
 
 
 			
@@ -667,19 +540,14 @@ c アプリケーションコンテキスト
 
 			
 				
-				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3018:3091#L107">HashPassword</a></h3>
+				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3371:3444#L85">HashPassword</a></h3>
 				<pre>func (this *User) HashPassword(pass string, salt string) ([]byte, string)</pre>
 				<p>
-*
+ユーザのパスワードをハッシュ化する。引数として平文のパスワードと、ソルトを渡す。
+引数として渡すソルトが空文字の場合は自動でランダムな文字列を作成する。
+ハッシュ化が成功したら、ハッシュ化されたパスワードとソルトを返す。
+ハッシュは SHA-1 を使う。
 </p>
-<pre>* ユーザのパスワードをハッシュ化する
-* @method
-* @memberof User
-* @param {string} pass 平文パスワード
-* @param {string} salt ソルト。空文字が渡された場合は自動で作成する。
-* @returns {[]byte} 暗号化されたパスワード
-* @returns {string} 使用したソルト
-</pre>
 
 				
 				

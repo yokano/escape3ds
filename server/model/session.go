@@ -8,16 +8,9 @@ import (
 	. "server/lib"
 )
 
-/**
- * セッションを開始する
- * memcache にセッションIDとユーザキーの対応を保存する
- * セッションは最後のページアクセスから24時間有効
- * 24時間経過したものは cron で定期的に削除される
- * @method
- * @memberof Model
- * @param {string}
- * @returns {string} セッションID
- */
+// セッションを開始する。サーバの memcache 内にセッションIDとユーザキーの対応を保存している。
+// セッションは最後のページアクセスから24時間の有効で、24時間経過したものは cron で定期的に削除される。
+// 関数はセッションIDを返す。
 func (this *Model) StartSession(userKey string) string {
 	sessionId := ""
 	for i := 0; i < 4; i++ {
@@ -40,25 +33,14 @@ func (this *Model) StartSession(userKey string) string {
 	return sessionId
 }
 
-/**
- * memcache から指定されたセッション情報を削除する
- * @method
- * @memberof Model
- * @param {string} sessionId 対象のセッションID
- */
+// memcache から指定されたセッションIDのセッション情報を削除する
 func (this *Model) RemoveSession(sessionId string) {
 	err := memcache.Delete(this.c, sessionId)
 	Check(this.c, err)
 }
 
-/**
- * memcache からユーザキーを返す
- * 該当するユーザーキーが見つからなかったら空文字を返す
- * @method
- * @memberof Model
- * @param {string} sessionId セッションID
- * @returns {string} ユーザキー
- */
+// memcache から指定されたセッションIDに関連づいているユーザキーを返す
+// 該当するユーザーキーが見つからなかったら空文字を返す
 func (this *Model) GetUserKeyFromSession(sessionId string) string {
 	item, err := memcache.Get(this.c, sessionId)
 	Check(this.c, err)
