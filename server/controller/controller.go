@@ -247,9 +247,9 @@ func (this *Controller) CallbackFacebook(w http.ResponseWriter, r*http.Request) 
  * @param {*http.Request} r リクエスト
  */
 func (this *Controller) Editor(w http.ResponseWriter, r *http.Request) {
-	userKey := this.Session(w, r)
+//	userKey := this.Session(w, r)
 	c := appengine.NewContext(r)
-	model := NewModel(c)
+//	model := NewModel(c)
 
 	gameKey := r.FormValue("game_key")
 	if gameKey == "" {
@@ -257,11 +257,11 @@ func (this *Controller) Editor(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", 302)
 	}
 	
-	game := model.GetGame(gameKey)
-	if game.UserKey != userKey {
-		c.Warningf("ユーザキー: %s が他人のゲーム: %s を編集しようとしました", userKey, gameKey)
-		http.Redirect(w, r, "/gamelist", 302)
-	}
+//	game := model.GetGame(gameKey)
+//	if game.UserKey != userKey {
+//		c.Warningf("ユーザキー: %s が他人のゲーム: %s を編集しようとしました", userKey, gameKey)
+//		http.Redirect(w, r, "/gamelist", 302)
+//	}
 	
 	view := NewView(c, w)
 	view.Editor(gameKey)
@@ -428,7 +428,7 @@ func (this *Controller) AddGame(w http.ResponseWriter, r *http.Request) {
 	params["thumbnail"] = ""
 	params["user_key"] = userKey
 	game := model.NewGame(params)
-	model.AddGame(game)
+	model.AddGame(game, userKey)
 	
 	fmt.Fprintf(w, `{"result":true, "name":"%s", "description":"%s"}`, gameName, gameDescription)
 }
@@ -455,13 +455,13 @@ func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	model := NewModel(c)
-	userKey := model.GetUserKeyFromSession(sessionId)
-	game := model.GetGame(gameKey)
-	if game.UserKey != userKey {
-		fmt.Fprintf(w, `{"result":false}`)
-		c.Warningf("ユーザキー: %s が他のユーザのゲームを削除しようとしました", userKey)
-		return
-	}
+//	userKey := model.GetUserKeyFromSession(sessionId)
+//	game := model.GetGame(gameKey)
+//	if game.UserKey != userKey {
+//		fmt.Fprintf(w, `{"result":false}`)
+//		c.Warningf("ユーザキー: %s が他のユーザのゲームを削除しようとしました", userKey)
+//		return
+//	}
 	
 	model.DeleteGame(gameKey)
 	fmt.Fprintf(w, `{"result":true}`)
@@ -699,11 +699,11 @@ func (this *Controller) SyncGame(c appengine.Context, w http.ResponseWriter, r *
 		json.Unmarshal(body, game)
 		
 		model := NewModel(c)
-		oldGame := model.GetGame(gameKey)
-		if oldGame.UserKey != this.Session(w, r) {
-			c.Warningf("他者のゲームを削除しようとしました　userKey:%s, gameKey:%s", this.Session(w, r), gameKey)
-			return
-		}
+//		oldGame := model.GetGame(gameKey)
+//		if oldGame.UserKey != this.Session(w, r) {
+//			c.Warningf("他者のゲームを削除しようとしました　userKey:%s, gameKey:%s", this.Session(w, r), gameKey)
+//			return
+//		}
 		
 		model.UpdateGame(gameKey, game)
 		fmt.Fprintf(w, `{}`)

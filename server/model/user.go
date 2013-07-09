@@ -19,9 +19,8 @@ type User struct {
 	OAuthId string  // OAuthのサービスプロバイダが決めたユーザID
 }
 
-
-// ユーザオブジェクトを
-//   作成したユーザ、失敗したらnil
+// ユーザオブジェクトを作成する。
+// 戻り値は作成したユーザ、失敗したらnil。
 func (this *Model) NewUser(data map[string]string) *User {
 	// ユーザタイプチェック
 	if !Exist([]string {"Twitter", "Facebook", "normal"}, data["user_type"]) {

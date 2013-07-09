@@ -13,7 +13,6 @@ type Game struct {
 	Name string `json:"name"`  // ゲーム名
 	Description string `json:"description"`  // ゲームの説明
 	Thumbnail string `json:"thumbnail"`  // サムネイルの画像パス
-	UserKey string `json:"userKey"`  // 所有ユーザのエンコード済みキー
 	FirstScene string `json:"firstScene"`  // 最初のシーンのエンコード済みキー
 }
 
@@ -23,14 +22,18 @@ func (this *Model) NewGame(params map[string]string) *Game {
 	game.Name = params["name"]
 	game.Description = params["description"]
 	game.Thumbnail = params["thumbnail"]
-	game.UserKey = params["user_key"]
 	game.FirstScene = ""
 	return game
 }
 
 // データストアにゲームを追加してエンコード済みのキーを返す。
-func (this *Model) AddGame(game *Game) string {
-	incompleteKey := datastore.NewIncompleteKey(this.c, "Game", nil)
+// 引数として追加するゲームオブジェクトと、エンコード済みユーザキーを渡す。
+// 引数として渡したユーザキーにぶら下がる形でゲームが保存される。
+func (this *Model) AddGame(game *Game, encodedUserKey string) string {
+	userKey, err := datastore.DecodeKey(encodedUserKey)
+	Check(this.c, err)
+	
+	incompleteKey := datastore.NewIncompleteKey(this.c, "Game", userKey)
 	completeKey, err := datastore.Put(this.c, incompleteKey, game)
 	Check(this.c, err)
 	return completeKey.Encode()
@@ -71,7 +74,10 @@ func (this *Model) DeleteGame(encodedGameKey string) {
 // ユーザが所有しているゲーム一覧を返す。
 // 戻り値は、エンコード済みのゲームキーとゲームの対応表
 func (this *Model) GetGameList(encodedUserKey string) map[string]*Game {
-	query := datastore.NewQuery("Game").Filter("UserKey =", encodedUserKey)
+	userKey, err := datastore.DecodeKey(encodedUserKey)
+	Check(this.c, err)
+	
+	query := datastore.NewQuery("Game").Ancestor(userKey)
 	iterator := query.Run(this.c)
 	
 	count, err := query.Count(this.c)
