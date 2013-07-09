@@ -1,0 +1,265 @@
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "./server/view"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index">Index</a></dd>
+			
+			
+			
+				<dd><a href="#pkg-subdirectories">Subdirectories</a></dd>
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+*
+</p>
+<pre>* HTMLの表示
+* @file
+</pre>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="pkg-index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="#View">type View</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewView">func NewView(c appengine.Context, w http.ResponseWriter) *View</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#View.Debug">func (this *View) Debug()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#View.Editor">func (this *View) Editor(gameKey string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#View.Gamelist">func (this *View) Gamelist(userKey string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#View.InterimRegistration">func (this *View) InterimRegistration()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#View.Login">func (this *View) Login()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#View.Registration">func (this *View) Registration()</a></dd>
+				
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/view.go">view.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+		
+		
+			
+			
+			<h2 id="View">type <a href="/target/view.go?s=335:399#L12">View</a></h2>
+			<pre>type View struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+*
+</p>
+<pre>* 画面表示を行うクラス
+* @class
+* @property {appengine.Context} c コンテキスト
+* @property {http.ResponseWriter} w 応答先
+* @property {*http.Request} r リクエスト
+</pre>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewView">func <a href="/target/view.go?s=572:634#L24">NewView</a></h3>
+				<pre>func NewView(c appengine.Context, w http.ResponseWriter) *View</pre>
+				<p>
+*
+</p>
+<pre>* View の作成
+* @function
+* @param {appengine.Context} c コンテキスト
+* @param {http.ResponseWriter} w 応答先
+* @returns {*View} 作成したView
+</pre>
+
+				
+			
+
+			
+				
+				<h3 id="View.Debug">func (*View) <a href="/target/view.go?s=1447:1472#L70">Debug</a></h3>
+				<pre>func (this *View) Debug()</pre>
+				<p>
+*
+</p>
+<pre>* デバッグ画面の表示
+* @method
+* @memberof View
+</pre>
+
+				
+				
+			
+				
+				<h3 id="View.Editor">func (*View) <a href="/target/view.go?s=1024:1064#L48">Editor</a></h3>
+				<pre>func (this *View) Editor(gameKey string)</pre>
+				<p>
+*
+</p>
+<pre>* エディタ画面を表示する
+* @method
+* @memberof View
+* @param {string} gameKey ゲームキー
+</pre>
+
+				
+				
+			
+				
+				<h3 id="View.Gamelist">func (*View) <a href="/target/view.go?s=2135:2177#L104">Gamelist</a></h3>
+				<pre>func (this *View) Gamelist(userKey string)</pre>
+				<p>
+*
+</p>
+<pre>* ゲーム一覧の表示
+* @method
+* @memberof View
+* @param {string} userKey
+</pre>
+
+				
+				
+			
+				
+				<h3 id="View.InterimRegistration">func (*View) <a href="/target/view.go?s=1652:1691#L81">InterimRegistration</a></h3>
+				<pre>func (this *View) InterimRegistration()</pre>
+				<p>
+*
+</p>
+<pre>* 仮登録ページの表示
+* @method
+* @memberof View
+</pre>
+
+				
+				
+			
+				
+				<h3 id="View.Login">func (*View) <a href="/target/view.go?s=770:795#L36">Login</a></h3>
+				<pre>func (this *View) Login()</pre>
+				<p>
+*
+</p>
+<pre>* ログイン画面を表示する
+* @method
+* @memberof View
+</pre>
+
+				
+				
+			
+				
+				<h3 id="View.Registration">func (*View) <a href="/target/view.go?s=1892:1924#L92">Registration</a></h3>
+				<pre>func (this *View) Registration()</pre>
+				<p>
+*
+</p>
+<pre>* 本登録完了ページの表示
+* @method
+* @memberof View
+</pre>
+
+				
+				
+			
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+
+	
+	
+		<h2 id="pkg-subdirectories">Subdirectories</h2>
+	
+	<table class="dir">
+	<tr>
+	<th>Name</th>
+	<th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
+	<th style="text-align: left; width: auto">Synopsis</th>
+	</tr>
+	
+		<tr>
+		<td><a href="..">..</a></td>
+		</tr>
+	
+	
+		
+			<tr>
+			<td class="name"><a href="html/">html</a></td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td style="width: auto"></td>
+			</tr>
+		
+	
+	</table>
+	
+

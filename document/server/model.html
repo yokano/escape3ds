@@ -168,7 +168,7 @@
 		
 			
 			
-			<h2 id="Game">type <a href="/target/game.go?s=406:603#L7">Game</a></h2>
+			<h2 id="Game">type <a href="/target/game.go?s=402:599#L7">Game</a></h2>
 			<pre>type Game struct {
     Name        string `json:&#34;name&#34;`
     Description string `json:&#34;description&#34;`
@@ -201,7 +201,7 @@
 		
 			
 			
-			<h2 id="InterimUser">type <a href="/target/user.go?s=2219:2285#L76">InterimUser</a></h2>
+			<h2 id="InterimUser">type <a href="/target/user.go?s=2215:2281#L76">InterimUser</a></h2>
 			<pre>type InterimUser struct {
     Name string
     Mail string
@@ -230,7 +230,7 @@
 		
 			
 			
-			<h2 id="Model">type <a href="/target/model.go?s=212:254#L1">Model</a></h2>
+			<h2 id="Model">type <a href="/target/model.go?s=208:250#L1">Model</a></h2>
 			<pre>type Model struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
@@ -248,7 +248,7 @@ c: アプリケーションコンテキスト
 
 			
 				
-				<h3 id="NewModel">func <a href="/target/model.go?s=338:379#L6">NewModel</a></h3>
+				<h3 id="NewModel">func <a href="/target/model.go?s=334:375#L6">NewModel</a></h3>
 				<pre>func NewModel(c appengine.Context) *Model</pre>
 				<p>
 モデルの新規作成作成
@@ -260,7 +260,7 @@ c アプリケーションコンテキスト
 
 			
 				
-				<h3 id="Model.AddBlob">func (*Model) <a href="/target/blob.go?s=364:452#L8">AddBlob</a></h3>
+				<h3 id="Model.AddBlob">func (*Model) <a href="/target/blob.go?s=360:448#L8">AddBlob</a></h3>
 				<pre>func (this *Model) AddBlob(file multipart.File, fileHeader *multipart.FileHeader) string</pre>
 				<p>
 *
@@ -276,7 +276,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1300:1345#L45">AddGame</a></h3>
+				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1296:1341#L45">AddGame</a></h3>
 				<pre>func (this *Model) AddGame(game *Game) string</pre>
 				<p>
 *
@@ -292,7 +292,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=3481:3526#L125">AddUser</a></h3>
+				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=3477:3522#L125">AddUser</a></h3>
 				<pre>func (this *Model) AddUser(user *User) string</pre>
 				<p>
 *
@@ -308,7 +308,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2696:2748#L91">DeleteGame</a></h3>
+				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2692:2744#L91">DeleteGame</a></h3>
 				<pre>func (this *Model) DeleteGame(encodedGameKey string)</pre>
 				<p>
 *
@@ -323,7 +323,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=6862:6933#L239">ExistOAuthUser</a></h3>
+				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=6858:6929#L239">ExistOAuthUser</a></h3>
 				<pre>func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</pre>
 				<p>
 *
@@ -340,7 +340,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=8427:8475#L300">GetAllUser</a></h3>
+				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=8423:8471#L300">GetAllUser</a></h3>
 				<pre>func (this *Model) GetAllUser() map[string]*User</pre>
 				<p>
 *
@@ -355,7 +355,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetBlob">func (*Model) <a href="/target/blob.go?s=1399:1454#L45">GetBlob</a></h3>
+				<h3 id="Model.GetBlob">func (*Model) <a href="/target/blob.go?s=1395:1450#L45">GetBlob</a></h3>
 				<pre>func (this *Model) GetBlob(key string) (string, []byte)</pre>
 				<p>
 *
@@ -372,7 +372,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1742:1797#L59">GetGame</a></h3>
+				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1738:1793#L59">GetGame</a></h3>
 				<pre>func (this *Model) GetGame(encodedGameKey string) *Game</pre>
 				<p>
 *
@@ -388,7 +388,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=3131:3201#L106">GetGameList</a></h3>
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=3127:3197#L106">GetGameList</a></h3>
 				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
 				<p>
 *
@@ -404,7 +404,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=7861:7921#L276">GetInterimUsers</a></h3>
+				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=7857:7917#L276">GetInterimUsers</a></h3>
 				<pre>func (this *Model) GetInterimUsers() map[string]*InterimUser</pre>
 				<p>
 *
@@ -419,7 +419,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=4912:4963#L173">GetUser</a></h3>
+				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=4908:4959#L173">GetUser</a></h3>
 				<pre>func (this *Model) GetUser(encodedKey string) *User</pre>
 				<p>
 *
@@ -434,7 +434,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=7414:7476#L257">GetUserKey</a></h3>
+				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=7410:7472#L257">GetUserKey</a></h3>
 				<pre>func (this *Model) GetUserKey(params map[string]string) string</pre>
 				<p>
 *
@@ -451,7 +451,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.GetUserKeyFromSession">func (*Model) <a href="/target/session.go?s=1466:1531#L52">GetUserKeyFromSession</a></h3>
+				<h3 id="Model.GetUserKeyFromSession">func (*Model) <a href="/target/session.go?s=1462:1527#L52">GetUserKeyFromSession</a></h3>
 				<pre>func (this *Model) GetUserKeyFromSession(sessionId string) string</pre>
 				<p>
 *
@@ -468,7 +468,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=5527:5611#L195">InterimRegistration</a></h3>
+				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=5523:5607#L195">InterimRegistration</a></h3>
 				<pre>func (this *Model) InterimRegistration(name string, mail string, pass string) string</pre>
 				<p>
 *
@@ -488,7 +488,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=4112:4184#L145">LoginCheck</a></h3>
+				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=4108:4180#L145">LoginCheck</a></h3>
 				<pre>func (this *Model) LoginCheck(mail string, pass string) (string, string)</pre>
 				<p>
 *
@@ -505,7 +505,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=846:904#L28">NewGame</a></h3>
+				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=842:900#L28">NewGame</a></h3>
 				<pre>func (this *Model) NewGame(params map[string]string) *Game</pre>
 				<p>
 *
@@ -527,7 +527,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2508:2593#L90">NewInterimUser</a></h3>
+				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2504:2589#L90">NewInterimUser</a></h3>
 				<pre>func (this *Model) NewInterimUser(name string, mail string, pass string) *InterimUser</pre>
 				<p>
 *
@@ -544,7 +544,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=1005:1061#L33">NewUser</a></h3>
+				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=1001:1057#L33">NewUser</a></h3>
 				<pre>func (this *Model) NewUser(data map[string]string) *User</pre>
 				<p>
 *
@@ -567,7 +567,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=6020:6070#L210">Registration</a></h3>
+				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=6016:6066#L210">Registration</a></h3>
 				<pre>func (this *Model) Registration(encodedKey string)</pre>
 				<p>
 *
@@ -583,7 +583,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.RemoveSession">func (*Model) <a href="/target/session.go?s=1100:1150#L39">RemoveSession</a></h3>
+				<h3 id="Model.RemoveSession">func (*Model) <a href="/target/session.go?s=1096:1146#L39">RemoveSession</a></h3>
 				<pre>func (this *Model) RemoveSession(sessionId string)</pre>
 				<p>
 *
@@ -598,7 +598,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.StartSession">func (*Model) <a href="/target/session.go?s=447:501#L11">StartSession</a></h3>
+				<h3 id="Model.StartSession">func (*Model) <a href="/target/session.go?s=443:497#L11">StartSession</a></h3>
 				<pre>func (this *Model) StartSession(userKey string) string</pre>
 				<p>
 *
@@ -617,7 +617,7 @@ c アプリケーションコンテキスト
 				
 			
 				
-				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2182:2246#L77">UpdateGame</a></h3>
+				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2178:2242#L77">UpdateGame</a></h3>
 				<pre>func (this *Model) UpdateGame(encodedGameKey string, game *Game)</pre>
 				<p>
 *
@@ -635,7 +635,7 @@ c アプリケーションコンテキスト
 		
 			
 			
-			<h2 id="User">type <a href="/target/user.go?s=570:671#L10">User</a></h2>
+			<h2 id="User">type <a href="/target/user.go?s=566:667#L10">User</a></h2>
 			<pre>type User struct {
     Type    string
     Name    string
@@ -667,7 +667,7 @@ c アプリケーションコンテキスト
 
 			
 				
-				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3022:3095#L107">HashPassword</a></h3>
+				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3018:3091#L107">HashPassword</a></h3>
 				<pre>func (this *User) HashPassword(pass string, salt string) ([]byte, string)</pre>
 				<p>
 *

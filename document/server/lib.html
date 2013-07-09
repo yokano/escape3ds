@@ -1,0 +1,687 @@
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "./server/lib"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index">Index</a></dd>
+			
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+*
+</p>
+<pre>* Twitterとの通信
+* OAuth 1.0 Revision A を使う
+* @file
+</pre>
+<p>
+*
+</p>
+<pre>* OAuth 2.0 による通信
+* authorization code 方式のみ
+* @file
+</pre>
+<p>
+*
+</p>
+<pre>* Google App Engine + Go 言語用の汎用ライブラリ
+* package名を自分のアプリ名に合わせて設定してから使用すること
+* @author y.okano
+* @file
+</pre>
+
+			</div>
+		</div>
+		
+	
+		<h2 id="pkg-index">Index</h2>
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+		<div id="manual-nav">
+			<dl>
+			
+			
+			
+				
+				<dd><a href="#Check">func Check(c appengine.Context, err error)</a></dd>
+			
+				
+				<dd><a href="#Exist">func Exist(arr []string, target string) bool</a></dd>
+			
+				
+				<dd><a href="#GetRandomizedString">func GetRandomizedString() string</a></dd>
+			
+				
+				<dd><a href="#GetXML">func GetXML(c appengine.Context, url string) []byte</a></dd>
+			
+				
+				<dd><a href="#Join">func Join(str ...string) string</a></dd>
+			
+				
+				<dd><a href="#NewCookie">func NewCookie(name string, value string, domain string, path string, hour int) *http.Cookie</a></dd>
+			
+				
+				<dd><a href="#Prepend">func Prepend(dst []string, src []string) []string</a></dd>
+			
+				
+				<dd><a href="#RemoveItem">func RemoveItem(s []string, target string) []string</a></dd>
+			
+				
+				<dd><a href="#Request">func Request(c appengine.Context, method string, targetUrl string, params map[string]string, body string) *http.Response</a></dd>
+			
+				
+				<dd><a href="#SHA1">func SHA1(input string) []byte</a></dd>
+			
+				
+				<dd><a href="#SendMail">func SendMail(c appengine.Context, sender string, to string, subject string, body string)</a></dd>
+			
+			
+				
+				<dd><a href="#OAuth1">type OAuth1</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewOAuth1">func NewOAuth1(c appengine.Context, callback string) *OAuth1</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth1.Authenticate">func (this *OAuth1) Authenticate(w http.ResponseWriter, r *http.Request, targetUrl string, token string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth1.CreateHeader">func (this *OAuth1) CreateHeader() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth1.CreateNonce">func (this *OAuth1) CreateNonce() string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth1.CreateSignature">func (this *OAuth1) CreateSignature(targetUrl string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth1.ExchangeToken">func (this *OAuth1) ExchangeToken(token string, verifier string, targetUrl string) map[string]string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth1.Request">func (this *OAuth1) Request(targetUrl string, body string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth1.RequestToken">func (this *OAuth1) RequestToken(targetUrl string) map[string]string</a></dd>
+				
+			
+				
+				<dd><a href="#OAuth2">type OAuth2</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewOAuth2">func NewOAuth2(c appengine.Context, clientId string, clientSecret string) *OAuth2</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth2.RequestAPI">func (this *OAuth2) RequestAPI(w http.ResponseWriter, targetUri string, accessToken string) []byte</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth2.RequestAccessToken">func (this *OAuth2) RequestAccessToken(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string, code string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#OAuth2.RequestAuthorizationCode">func (this *OAuth2) RequestAuthorizationCode(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string)</a></dd>
+				
+			
+				
+				<dd><a href="#Reader">type Reader</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewReader">func NewReader(body string) *Reader</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Reader.Read">func (this *Reader) Read(p []byte) (int, error)</a></dd>
+				
+			
+			
+		</dl>
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="/target/oauth1.go">oauth1.go</a>
+			
+				<a href="/target/oauth2.go">oauth2.go</a>
+			
+				<a href="/target/okalib.go">okalib.go</a>
+			
+			</span>
+			</p>
+		
+	
+		
+		
+		
+			
+			
+			<h2 id="Check">func <a href="/target/okalib.go?s=599:641#L21">Check</a></h2>
+			<pre>func Check(c appengine.Context, err error)</pre>
+			<p>
+*
+</p>
+<pre>* エラーチェック
+* エラーがあればコンソールに出力する
+* @function
+* @param {appengine.Context} c コンテキスト
+* @param {error} err チェックするエラーオブジェクト
+</pre>
+
+			
+		
+			
+			
+			<h2 id="Exist">func <a href="/target/okalib.go?s=1543:1587#L60">Exist</a></h2>
+			<pre>func Exist(arr []string, target string) bool</pre>
+			<p>
+*
+</p>
+<pre>* 文字列配列の中に指定された文字列が存在するかどうか調べる
+* @function
+* @param {[]string} arr 文字列配列
+* @param {string} target 探す文字列
+* @returns {bool} 存在したらtrue,　それ以外はfalse
+</pre>
+
+			
+		
+			
+			
+			<h2 id="GetRandomizedString">func <a href="/target/okalib.go?s=6293:6326#L256">GetRandomizedString</a></h2>
+			<pre>func GetRandomizedString() string</pre>
+			<p>
+*
+</p>
+<pre>* ランダムな文字列を取得する
+* 64bit のランダムデータを Base64 エンコードして記号を抜いたもの
+* @function
+* @returns {string} ランダムな文字列
+</pre>
+
+			
+		
+			
+			
+			<h2 id="GetXML">func <a href="/target/okalib.go?s=1999:2050#L82">GetXML</a></h2>
+			<pre>func GetXML(c appengine.Context, url string) []byte</pre>
+			<p>
+*
+</p>
+<pre>* 指定されたURLからXMLファイルを受信して返す
+* @function
+* @param {appengine.Context} c コンテキスト
+* @param {string} url URL
+* @returns {[]byte} 受信したXMLデータ、取得できなかったら nil を返す
+</pre>
+
+			
+		
+			
+			
+			<h2 id="Join">func <a href="/target/okalib.go?s=2966:2997#L125">Join</a></h2>
+			<pre>func Join(str ...string) string</pre>
+			<p>
+*
+</p>
+<pre>* 文字列を結合する
+* @function
+* @param {string} str 結合する文字列(可変個)
+* @param {string} 結合した文字列
+</pre>
+
+			
+		
+			
+			
+			<h2 id="NewCookie">func <a href="/target/okalib.go?s=7675:7767#L308">NewCookie</a></h2>
+			<pre>func NewCookie(name string, value string, domain string, path string, hour int) *http.Cookie</pre>
+			<p>
+*
+</p>
+<pre>* クッキーを作成する
+* @function
+* @param {string} name クッキーの名前
+* @param {string} value クッキーの値
+* @param {string} domain 有効ドメイン
+* @param {string} path 有効ディレクトリ
+* @param {int} hour 有効期限（時間）
+</pre>
+
+			
+		
+			
+			
+			<h2 id="Prepend">func <a href="/target/okalib.go?s=2631:2680#L109">Prepend</a></h2>
+			<pre>func Prepend(dst []string, src []string) []string</pre>
+			<p>
+*
+</p>
+<pre>* スライスの先頭にスライスを挿入する
+* @function
+* @param {[]string} dst 追加されるリスト
+* @param {[]string} src 追加するリスト
+</pre>
+
+			
+		
+			
+			
+			<h2 id="RemoveItem">func <a href="/target/okalib.go?s=1015:1066#L36">RemoveItem</a></h2>
+			<pre>func RemoveItem(s []string, target string) []string</pre>
+			<p>
+*
+</p>
+<pre>* スライスから指定された要素を削除して返す
+* 存在しなければ何もしない
+* 削除するのは最初に出現した１つのみ
+* @function
+* @param {[]string} s 対象のスライス
+* @param {string} target 削除する文字列
+* @returns {[]string} 削除済みのスライス
+</pre>
+
+			
+		
+			
+			
+			<h2 id="Request">func <a href="/target/okalib.go?s=4768:4888#L201">Request</a></h2>
+			<pre>func Request(c appengine.Context, method string, targetUrl string, params map[string]string, body string) *http.Response</pre>
+			<p>
+*
+</p>
+<pre>* HTTP リクエストを送信してレスポンスを返す
+* @function
+* @param {appengine.Context} c コンテキスト
+* @param {string} method POST または GET
+* @param {string} targetUrl 送信先のURL
+* @param {map[string]string} params パラーメタリスト 指定しない場合は nil または空マップ
+* @param {string} body リクエストボディ GET の場合は無視される
+* @param {*http.Response} レスポンス
+</pre>
+
+			
+		
+			
+			
+			<h2 id="SHA1">func <a href="/target/okalib.go?s=6750:6780#L273">SHA1</a></h2>
+			<pre>func SHA1(input string) []byte</pre>
+			<p>
+*
+</p>
+<pre>* SHA-1で暗号化した文字列を返す
+* @function
+* @param {string} 暗号化する文字列
+* @returns {[]byte} 暗号化されたバイト列
+</pre>
+
+			
+		
+			
+			
+			<h2 id="SendMail">func <a href="/target/okalib.go?s=7121:7210#L288">SendMail</a></h2>
+			<pre>func SendMail(c appengine.Context, sender string, to string, subject string, body string)</pre>
+			<p>
+*
+</p>
+<pre>* メールの送信
+* @function
+* @param {appengine.Context} c コンテキスト
+* @param {string} sender 送信元アドレス
+* @param {string} to 送信先アドレス
+* @param {string} subject タイトル
+* @param {string} body メッセージ
+</pre>
+
+			
+		
+		
+			
+			
+			<h2 id="OAuth1">type <a href="/target/oauth1.go?s=435:510#L19">OAuth1</a></h2>
+			<pre>type OAuth1 struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+*
+</p>
+<pre>* OAuth1.0aの通信を行うクラス
+* @class
+* @param {map[string]string} params oauthパラメータの配列
+* @param {appengine.Context} context コンテキスト
+</pre>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewOAuth1">func <a href="/target/oauth1.go?s=733:793#L31">NewOAuth1</a></h3>
+				<pre>func NewOAuth1(c appengine.Context, callback string) *OAuth1</pre>
+				<p>
+*
+</p>
+<pre>* OAuthクラスのインスタンス化
+* @function
+* @params {appengine.Context} c コンテキスト
+* @params{appengine.Context} callback コールバックURL
+* @returns {*OAuth} OAuthインスタンス
+</pre>
+
+				
+			
+
+			
+				
+				<h3 id="OAuth1.Authenticate">func (*OAuth1) <a href="/target/oauth1.go?s=4524:4628#L164">Authenticate</a></h3>
+				<pre>func (this *OAuth1) Authenticate(w http.ResponseWriter, r *http.Request, targetUrl string, token string)</pre>
+				<p>
+*
+</p>
+<pre>* 認証ページヘリダイレクトする
+* @memberof OAuth1
+* @method
+* @param {http.ResponseWriter} w 応答先
+* @param {*http.Request} r リクエスト
+* @param {string} targetUrl リダイレクト先
+* @param {string} token 未認証リクエストトークン
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth1.CreateHeader">func (*OAuth1) <a href="/target/oauth1.go?s=2961:3002#L112">CreateHeader</a></h3>
+				<pre>func (this *OAuth1) CreateHeader() string</pre>
+				<p>
+*
+</p>
+<pre>* Aouthorization ヘッダを作成する
+* @method
+* @memberof OAuth1
+* @returns {string} ヘッダ
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth1.CreateNonce">func (*OAuth1) <a href="/target/oauth1.go?s=2631:2671#L97">CreateNonce</a></h3>
+				<pre>func (this *OAuth1) CreateNonce() string</pre>
+				<p>
+*
+</p>
+<pre>* oauth_nonce を作成する
+* @method
+* @memberof OAuth1
+* @returns {string} 作成したoauth_nonce
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth1.CreateSignature">func (*OAuth1) <a href="/target/oauth1.go?s=3474:3534#L132">CreateSignature</a></h3>
+				<pre>func (this *OAuth1) CreateSignature(targetUrl string) string</pre>
+				<p>
+*
+</p>
+<pre>* oauth_signature を作成する
+* @method
+* @memberof OAuth1
+* @param {string} targetUrl リクエスト送信先のURL
+* @returns {string} oauth_signature
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth1.ExchangeToken">func (*OAuth1) <a href="/target/oauth1.go?s=5101:5201#L179">ExchangeToken</a></h3>
+				<pre>func (this *OAuth1) ExchangeToken(token string, verifier string, targetUrl string) map[string]string</pre>
+				<p>
+*
+</p>
+<pre>* リクエストトークンをアクセストークンに変換する
+* @memberof OAuth1
+* @method
+* @param {string} token リクエストトークン
+* @param {string} verifier 認証データ
+* @param {string} targetUrl リクエストの送信先
+* @returns {map[string]string} アクセストークンとユーザデータ
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth1.Request">func (*OAuth1) <a href="/target/oauth1.go?s=1887:1952#L72">Request</a></h3>
+				<pre>func (this *OAuth1) Request(targetUrl string, body string) string</pre>
+				<p>
+*
+</p>
+<pre>* リクエストを送信してレスポンスを受信する
+* メソッドは POST 固定
+* @method
+* @memberof OAuth1
+* @param {string} targetUrl 送信先
+* @param {string} body リクエストボディ
+* @returns {string} レスポンス
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth1.RequestToken">func (*OAuth1) <a href="/target/oauth1.go?s=1305:1373#L51">RequestToken</a></h3>
+				<pre>func (this *OAuth1) RequestToken(targetUrl string) map[string]string</pre>
+				<p>
+*
+</p>
+<pre>* Twitter へリクエストトークンを要求する
+* @method
+* @memberof OAuth1
+* @param {string} targetUrl リクエスト要求先のURL
+* @returns {map[string]string} リクエスト結果
+</pre>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="OAuth2">type <a href="/target/oauth2.go?s=361:448#L12">OAuth2</a></h2>
+			<pre>type OAuth2 struct {
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+*
+</p>
+<pre>* OAuth 2.0
+* @class
+* @property {appengine.Context} context コンテキスト
+* @property {string} clientId クライアントID
+* @property {string} clientSecret クライアントパスワード
+</pre>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewOAuth2">func <a href="/target/oauth2.go?s=728:809#L26">NewOAuth2</a></h3>
+				<pre>func NewOAuth2(c appengine.Context, clientId string, clientSecret string) *OAuth2</pre>
+				<p>
+*
+</p>
+<pre>* OAuth2.0 インスタンスを返す
+* @function
+* @param {appengine.Context} c コンテキスト
+* @param {string} clientId OAuthクライアントID
+* @param {string} clientSecret OAuthクライアントパスワード
+* @returns {*OAuth2} インスタンス
+</pre>
+
+				
+			
+
+			
+				
+				<h3 id="OAuth2.RequestAPI">func (*OAuth2) <a href="/target/oauth2.go?s=2942:3040#L88">RequestAPI</a></h3>
+				<pre>func (this *OAuth2) RequestAPI(w http.ResponseWriter, targetUri string, accessToken string) []byte</pre>
+				<p>
+*
+</p>
+<pre>* アクセストークンを使ってAPIを呼び出す
+* @method
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth2.RequestAccessToken">func (*OAuth2) <a href="/target/oauth2.go?s=2057:2193#L64">RequestAccessToken</a></h3>
+				<pre>func (this *OAuth2) RequestAccessToken(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string, code string) string</pre>
+				<p>
+*
+</p>
+<pre>* アクセストークンをリクエストする
+* 引き換えとして認証コードを渡すこと
+* @method
+* @memberof OAuth2
+* @param {http.ResponseWriter} w 応答先
+* @param {*http.Request} r リクエスト
+* @param {string} targetUri
+* @param {string} redirectUri
+* @param {string} clientSecret
+* @param {string} code
+* @returns {string} アクセストークン
+</pre>
+
+				
+				
+			
+				
+				<h3 id="OAuth2.RequestAuthorizationCode">func (*OAuth2) <a href="/target/oauth2.go?s=1378:1500#L46">RequestAuthorizationCode</a></h3>
+				<pre>func (this *OAuth2) RequestAuthorizationCode(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string)</pre>
+				<p>
+*
+</p>
+<pre>* 認証コードをリクエストする
+* 認証ページヘのリダイレクトを行いユーザに認証してもらう
+* 認証が完了したらリダイレクトURIへ認証コードが返ってくる
+* @method
+* @memberof OAuth2
+* @param {http.ResponseWriter} w 応答先
+* @param {*http.Request} r リクエスト
+* @param {string} targetUri リクエスト先URI
+* @param {string} redirectUri リダイレクトURI
+</pre>
+
+				
+				
+			
+		
+			
+			
+			<h2 id="Reader">type <a href="/target/okalib.go?s=3388:3447#L143">Reader</a></h2>
+			<pre>type Reader struct {
+    io.Reader
+    <span class="comment">// contains filtered or unexported fields</span>
+}</pre>
+			<p>
+*
+</p>
+<pre>* リクエストボディ用のリーダー
+* request() で body を送信するために使う
+* @class
+* @member {[]byte} body 本文
+* @member {int} pointer 何バイト目まで読み込んだか表すポインタ
+</pre>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewReader">func <a href="/target/okalib.go?s=3588:3623#L154">NewReader</a></h3>
+				<pre>func NewReader(body string) *Reader</pre>
+				<p>
+*
+</p>
+<pre>* Reader のインスタンスを作成する
+* @param {string} body 本文
+* @returns {*Reader} 作成したインスタンス
+</pre>
+
+				
+			
+
+			
+				
+				<h3 id="Reader.Read">func (*Reader) <a href="/target/okalib.go?s=3973:4020#L171">Read</a></h3>
+				<pre>func (this *Reader) Read(p []byte) (int, error)</pre>
+				<p>
+*
+</p>
+<pre>* 本文を読み出す
+* ２回目以降は前回の続きから読み出せる
+* @method
+* @memberof *Reader
+* @param {[]byte} p 読みだしたデータの保存先
+* @returns {int} 読みだしたバイト数
+* @returns {error} エラー
+</pre>
+
+				
+				
+			
+		
+		</div>
+	
+
+	
+
+
+
+
+
+
+
