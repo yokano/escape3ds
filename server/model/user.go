@@ -72,7 +72,7 @@ func (this *Model) NewUser(data map[string]string) *User {
 	user.Name = data["user_name"]
 	user.Mail = data["user_mail"]
 	user.OAuthId = data["user_oauth_id"]
-	user.Pass, user.Salt = this.HashPassword(data["user_pass"], "")
+	user.Pass, user.Salt = user.HashPassword(data["user_pass"], "")
 	return user
 }
 
@@ -108,13 +108,13 @@ func (this *Model) NewInterimUser(name string, mail string, pass string) *Interi
 /**
  * ユーザのパスワードをハッシュ化する
  * @method
- * @memberof Model
+ * @memberof User
  * @param {string} pass 平文パスワード
  * @param {string} salt ソルト。空文字が渡された場合は自動で作成する。
  * @returns {[]byte} 暗号化されたパスワード
  * @returns {string} 使用したソルト
  */
-func (this *Model) HashPassword(pass string, salt string) ([]byte, string) {
+func (this *User) HashPassword(pass string, salt string) ([]byte, string) {
 	if salt == "" {
 		for i := 0; i < 4; i++ {
 			salt = strings.Join([]string{salt, GetRandomizedString()}, "")
@@ -128,7 +128,7 @@ func (this *Model) HashPassword(pass string, salt string) ([]byte, string) {
 /**
  * ユーザの追加
  * @method
- * @memberof Model
+ * @memberof User
  * @param {*User} user 追加するユーザ
  * @returns {string} エンコードされたユーザキー
  */
@@ -165,7 +165,7 @@ func (this *Model) LoginCheck(mail string, pass string) (string, string) {
 	encodedKey := key.Encode()
 	user := this.GetUser(encodedKey)
 	
-	hashedPass, _ := this.HashPassword(pass, user.Salt)
+	hashedPass, _ := user.HashPassword(pass, user.Salt)
 	if bytes.Compare(user.Pass, hashedPass) != 0 {
 		this.c.Warningf("間違ったパスワードが試されました。アドレス：%s", mail)
 		return "", ""

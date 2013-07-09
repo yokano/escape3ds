@@ -1,28 +1,18 @@
-/**
- * データモデルの定義
- * @file
- */
+// アプリケーションのデータ操作を行う
 package escape3ds
 
 import (
 	"appengine"
 )
 
-/**
- * モデル
- * @class
- * @property {appengine.Context} c コンテキスト
- */
+// アプリケーションのデータ操作を行うモデル
+// c: アプリケーションコンテキスト
 type Model struct {
 	c appengine.Context
 }
 
-/**
- * モデルの作成
- * @function
- * @param {appengine.Context} c コンテキスト
- * @returns {*Model} モデル
- */
+// モデルの新規作成作成
+// c アプリケーションコンテキスト
 func NewModel(c appengine.Context) *Model {
 	model := new(Model)
 	model.c = c
