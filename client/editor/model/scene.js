@@ -4,7 +4,6 @@
 var Scene = Backbone.Model.extend({
 	defaults: {
 		name: '',
-		gameKey: '',
 		background: '/client/editor/img/black.png',
 		enter: null,
 		leave: null,

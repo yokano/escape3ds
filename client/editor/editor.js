@@ -23,10 +23,5 @@ var rootView;
 //	description: '誕生日会の翌日に目が覚めると見知らぬ部屋に閉じ込められていた'
 //});
 
-game.get('sceneList').add([
-	{name: '押入れ１'},
-	{name: '押入れ２'}
-]);
-
 rootView = new RootView();
 $('body').html(rootView.render().el);

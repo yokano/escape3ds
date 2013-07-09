@@ -30,7 +30,7 @@ var SceneEditorView = Backbone.View.extend({
 		if(name == '') {
 			return;
 		}
-		game.set('sceneList').add({
+		game.get('sceneList').add({
 			name: name
 		});
 	}
