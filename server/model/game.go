@@ -124,6 +124,5 @@ func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []strin
 		model.UpdateGame(gameKey, game)
 		fmt.Fprintf(w, `{}`)
 	case "DELETE":
-		this.c.Debugf("DELETE GAME")
 	}
 }

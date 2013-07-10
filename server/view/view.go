@@ -32,17 +32,20 @@ func (this *View) Login() {
 }
 
 // エディタ画面を表示する。エディットするゲームのキーを引数として渡す。
-func (this *View) Editor(gameKey string) {
+func (this *View) Editor(encodedGameKey string) {
 	model := NewModel(this.c)
-	game := model.GetGame(gameKey)
+	game := model.GetGame(encodedGameKey)
 	
+	// ゲームやシーンの初期状態を JavaScript へ埋め込む
 	type Contents struct {
 		Game *Game
 		GameKey string
+		Scenes []*Scene
 	}
 	contents := new(Contents)
 	contents.Game = game
-	contents.GameKey = gameKey
+	contents.GameKey = encodedGameKey
+	contents.Scenes = model.GetScenes(encodedGameKey)
 	
 	t, err := template.ParseFiles("server/view/html/editor.html")
 	Check(this.c, err)
@@ -83,3 +86,4 @@ func (this *View) Gamelist(userKey string) {
 	Check(this.c, err)
 	t.Execute(this.w, gameList)
 }
+

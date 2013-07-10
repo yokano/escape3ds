@@ -44,6 +44,30 @@ func (this *Model) DeleteScene(id string) {
 	
 }
 
+// 引数として渡されたゲームキーにぶらさがっているシーンリストを取得する
+func (this *Model) GetScenes(encodedGameKey string) []*Scene {
+	gameKey, err := datastore.DecodeKey(encodedGameKey)
+	Check(this.c, err)
+	
+	query := datastore.NewQuery("Scene").Ancestor(gameKey)
+	count, err := query.Count(this.c)
+	Check(this.c, err)
+	
+	iterator := query.Run(this.c)
+	scene := new(Scene)
+	sceneList := make([]*Scene, count)
+	Check(this.c, err)
+	
+	for i := 0; i < count; i++ {
+		_, err := iterator.Next(scene)
+		if err != nil {
+			break
+		}
+		sceneList[i] = scene
+	}
+	return sceneList
+}
+
 // シーンデータの同期。
 // /sync/scene/[gamekey] というURLでリクエストが送られる。
 // リクエストのメソッドが CRUD に対応している。

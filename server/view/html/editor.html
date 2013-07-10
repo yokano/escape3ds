@@ -152,6 +152,15 @@
 				name: '{{.Game.Name}}',
 				description: '{{.Game.Description}}'
 			});
+			game.get('sceneList').add([
+				// ココにシーンリスト
+				{{range .Scenes}}
+					{name: {{.Name}}, background: {{.Background}}},
+				{{end}}
+			], {
+				silent: true
+			});
+			
 		</script>
 		<script src="/client/editor/editor.js"></script>
 	</body>
