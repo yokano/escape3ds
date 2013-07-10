@@ -335,3 +335,11 @@ func NewCookie(name string, value string, domain string, path string, hour int) 
 	
 	return cookie
 }
+
+// リクエストボディ(JSON形式)を読み込んでバイナリを返す。
+// 引数としてリクエストオブジェクトを渡す。
+func GetRequestBodyJSON(r *http.Request) []byte {
+	body := make([]byte, r.ContentLength)
+	r.Body.Read(body)
+	return body
+}

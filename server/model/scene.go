@@ -77,9 +77,7 @@ func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
 func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string) {
 	switch r.Method {
 	case "POST":
-		body := make([]byte, r.ContentLength)
-		r.Body.Read(body)
-		
+		body := GetRequestBodyJSON(r)
 		scene := new(Scene)
 		json.Unmarshal(body, scene)
 		
@@ -93,8 +91,21 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 		encodedSceneKey := sceneKey.Encode()
 		
 		fmt.Fprintf(w, `{"sceneKey":"%s"}`, encodedSceneKey)
-	case "GET":
+
 	case "PUT":
+		body := GetRequestBodyJSON(r)
+		scene := new(Scene)
+		json.Unmarshal(body, scene)
+		
+		encodedSceneKey := path[4]
+		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
+		Check(this.c, err)
+		
+		_, err = datastore.Put(this.c, sceneKey, scene)
+		Check(this.c, err)
+		
+		fmt.Fprintf(w, `{}`)
+
 	case "DELETE":
 		encodedSceneKey := path[4]
 		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
