@@ -62,7 +62,7 @@ HTML ファイルを出力するときは html ディレクトリからテンプ
 					<dd>&nbsp; &nbsp; <a href="#View.Debug">func (this *View) Debug()</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#View.Editor">func (this *View) Editor(gameKey string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#View.Editor">func (this *View) Editor(encodedGameKey string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#View.Gamelist">func (this *View) Gamelist(userKey string)</a></dd>
@@ -127,7 +127,7 @@ View オブジェクトを作成する。
 
 			
 				
-				<h3 id="View.Debug">func (*View) <a href="/target/view.go?s=1379:1404#L43">Debug</a></h3>
+				<h3 id="View.Debug">func (*View) <a href="/target/view.go?s=1540:1565#L46">Debug</a></h3>
 				<pre>func (this *View) Debug()</pre>
 				<p>
 デバッグ画面の表示。デバッグ画面ではユーザの登録をメールを介さずに行ったりするための画面。
@@ -137,8 +137,8 @@ View オブジェクトを作成する。
 				
 			
 				
-				<h3 id="View.Editor">func (*View) <a href="/target/view.go?s=885:925#L25">Editor</a></h3>
-				<pre>func (this *View) Editor(gameKey string)</pre>
+				<h3 id="View.Editor">func (*View) <a href="/target/view.go?s=885:932#L25">Editor</a></h3>
+				<pre>func (this *View) Editor(encodedGameKey string)</pre>
 				<p>
 エディタ画面を表示する。エディットするゲームのキーを引数として渡す。
 </p>
@@ -147,7 +147,7 @@ View オブジェクトを作成する。
 				
 			
 				
-				<h3 id="View.Gamelist">func (*View) <a href="/target/view.go?s=2496:2538#L68">Gamelist</a></h3>
+				<h3 id="View.Gamelist">func (*View) <a href="/target/view.go?s=2657:2699#L71">Gamelist</a></h3>
 				<pre>func (this *View) Gamelist(userKey string)</pre>
 				<p>
 ゲーム一覧の表示。ログイン後に表示される最初のページ。
@@ -159,7 +159,7 @@ View オブジェクトを作成する。
 				
 			
 				
-				<h3 id="View.InterimRegistration">func (*View) <a href="/target/view.go?s=1728:1767#L51">InterimRegistration</a></h3>
+				<h3 id="View.InterimRegistration">func (*View) <a href="/target/view.go?s=1889:1928#L54">InterimRegistration</a></h3>
 				<pre>func (this *View) InterimRegistration()</pre>
 				<p>
 仮登録ページの表示。ユーザがトップページでメールアドレスとパスワードを入力した後に表示される。
@@ -180,7 +180,7 @@ View オブジェクトを作成する。
 				
 			
 				
-				<h3 id="View.Registration">func (*View) <a href="/target/view.go?s=2082:2114#L59">Registration</a></h3>
+				<h3 id="View.Registration">func (*View) <a href="/target/view.go?s=2243:2275#L62">Registration</a></h3>
 				<pre>func (this *View) Registration()</pre>
 				<p>
 本登録完了ページの表示。仮登録状態のユーザの元へ送られたメールからジャンプしてくる。

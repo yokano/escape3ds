@@ -7,8 +7,16 @@ var SceneList = Backbone.Collection.extend({
 	select: function(cid) {
 		this.selected = cid;
 	},
-	removed: function() {
+	removed: function(scene) {
 		this.selected = null;
+		Backbone.sync('delete', scene, {
+			success: function() {
+				console.log('success');
+			},
+			error: function() {
+				console.log('error');
+			}
+		})
 	},
 	added: function(scene) {
 		// シーンが追加されたらデータベースへ追加する

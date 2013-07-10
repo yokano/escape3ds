@@ -44,8 +44,9 @@ func (this *Model) DeleteScene(id string) {
 	
 }
 
-// 引数として渡されたゲームキーにぶらさがっているシーンリストを取得する
-func (this *Model) GetScenes(encodedGameKey string) []*Scene {
+// ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
+// 戻り値としてシーンID(エンコード済みキー)を key、シーンオブジェクトを value とした map を返す。
+func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
 	gameKey, err := datastore.DecodeKey(encodedGameKey)
 	Check(this.c, err)
 	
@@ -55,17 +56,18 @@ func (this *Model) GetScenes(encodedGameKey string) []*Scene {
 	
 	iterator := query.Run(this.c)
 	scene := new(Scene)
-	sceneList := make([]*Scene, count)
-	Check(this.c, err)
+	scenes := make(map[string]*Scene, count)
 	
-	for i := 0; i < count; i++ {
-		_, err := iterator.Next(scene)
+	for ;; {
+		sceneKey, err := iterator.Next(scene)
 		if err != nil {
 			break
 		}
-		sceneList[i] = scene
+		encodedSceneKey := sceneKey.Encode()
+		scenes[encodedSceneKey] = scene
 	}
-	return sceneList
+	
+	return scenes
 }
 
 // シーンデータの同期。
@@ -94,5 +96,13 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 	case "GET":
 	case "PUT":
 	case "DELETE":
+		encodedSceneKey := path[4]
+		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
+		Check(this.c, err)
+		
+		err = datastore.Delete(this.c, sceneKey)
+		Check(this.c, err)
+
+		fmt.Fprintf(w, `{}`)
 	}
 }

@@ -132,13 +132,7 @@
 					<dd>&nbsp; &nbsp; <a href="#Controller.StartSession">func (this *Controller) StartSession(w http.ResponseWriter, r *http.Request, key string)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Controller.SyncGame">func (this *Controller) SyncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameKey string)</a></dd>
-				
-					
 					<dd>&nbsp; &nbsp; <a href="#Controller.SyncHandler">func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request)</a></dd>
-				
-					
-					<dd>&nbsp; &nbsp; <a href="#Controller.SyncScene">func (this *Controller) SyncScene(c appengine.Context, w http.ResponseWriter, r *http.Request, sceneId string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.Top">func (this *Controller) Top(w http.ResponseWriter, r *http.Request)</a></dd>
@@ -206,7 +200,7 @@ Controller オブジェクトを作成して返す
 
 			
 				
-				<h3 id="Controller.AddGame">func (*Controller) <a href="/target/api.go?s=2991:3062#L90">AddGame</a></h3>
+				<h3 id="Controller.AddGame">func (*Controller) <a href="/target/api.go?s=2974:3045#L89">AddGame</a></h3>
 				<pre>func (this *Controller) AddGame(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 ゲームの新規追加
@@ -216,7 +210,7 @@ Controller オブジェクトを作成して返す
 				
 			
 				
-				<h3 id="Controller.AddUser">func (*Controller) <a href="/target/api.go?s=214:285#L6">AddUser</a></h3>
+				<h3 id="Controller.AddUser">func (*Controller) <a href="/target/api.go?s=197:268#L5">AddUser</a></h3>
 				<pre>func (this *Controller) AddUser(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 ユーザの追加。Ajax で呼び出す API。
@@ -276,7 +270,7 @@ Twitter でユーザが許可をした時に呼び出されるコールバック
 				
 			
 				
-				<h3 id="Controller.DeleteGame">func (*Controller) <a href="/target/api.go?s=4163:4237#L124">DeleteGame</a></h3>
+				<h3 id="Controller.DeleteGame">func (*Controller) <a href="/target/api.go?s=4146:4220#L123">DeleteGame</a></h3>
 				<pre>func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 ゲームの削除。
@@ -287,7 +281,7 @@ Twitter でユーザが許可をした時に呼び出されるコールバック
 				
 			
 				
-				<h3 id="Controller.Download">func (*Controller) <a href="/target/api.go?s=5601:5673#L168">Download</a></h3>
+				<h3 id="Controller.Download">func (*Controller) <a href="/target/api.go?s=5581:5653#L167">Download</a></h3>
 				<pre>func (this *Controller) Download(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 blobstore から blogkey に関連付いたファイルをクライアントへ渡す。
@@ -371,7 +365,7 @@ http.HandleFunc() は引数として func(http.ResponseWriter, *http.Request) �
 				
 			
 				
-				<h3 id="Controller.InterimRegistration">func (*Controller) <a href="/target/api.go?s=2091:2174#L60">InterimRegistration</a></h3>
+				<h3 id="Controller.InterimRegistration">func (*Controller) <a href="/target/api.go?s=2074:2157#L59">InterimRegistration</a></h3>
 				<pre>func (this *Controller) InterimRegistration(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 Ajax のリクエストパラメータとして渡されたユーザを仮登録データベースに保存して、
@@ -382,7 +376,7 @@ Ajax のリクエストパラメータとして渡されたユーザを仮登録
 				
 			
 				
-				<h3 id="Controller.Login">func (*Controller) <a href="/target/api.go?s=941:1010#L24">Login</a></h3>
+				<h3 id="Controller.Login">func (*Controller) <a href="/target/api.go?s=924:993#L23">Login</a></h3>
 				<pre>func (this *Controller) Login(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 ログイン。成功か失敗か判断してからページを遷移するために Ajax で呼び出す。
@@ -414,7 +408,7 @@ Twitter ボタンが押された時の処理
 				
 			
 				
-				<h3 id="Controller.Logout">func (*Controller) <a href="/target/api.go?s=1619:1689#L45">Logout</a></h3>
+				<h3 id="Controller.Logout">func (*Controller) <a href="/target/api.go?s=1602:1672#L44">Logout</a></h3>
 				<pre>func (this *Controller) Logout(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 ログアウト。クッキーと memcache に保存されたセッション情報を削除する。
@@ -424,7 +418,7 @@ Twitter ボタンが押された時の処理
 				
 			
 				
-				<h3 id="Controller.Registration">func (*Controller) <a href="/target/api.go?s=2729:2805#L78">Registration</a></h3>
+				<h3 id="Controller.Registration">func (*Controller) <a href="/target/api.go?s=2712:2788#L77">Registration</a></h3>
 				<pre>func (this *Controller) Registration(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 仮登録済みのユーザを本登録する。
@@ -473,32 +467,12 @@ Facebook へアクセストークンを要求する。
 				
 			
 				
-				<h3 id="Controller.SyncGame">func (*Controller) <a href="/target/api.go?s=6733:6842#L208">SyncGame</a></h3>
-				<pre>func (this *Controller) SyncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameKey string)</pre>
-				<p>
-ゲームデータの同期
-</p>
-
-				
-				
-			
-				
-				<h3 id="Controller.SyncHandler">func (*Controller) <a href="/target/api.go?s=6244:6319#L189">SyncHandler</a></h3>
+				<h3 id="Controller.SyncHandler">func (*Controller) <a href="/target/api.go?s=6224:6299#L188">SyncHandler</a></h3>
 				<pre>func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 /sync/* にマッチしたら呼び出される。
 エディタで編集したゲーム情報をサーバと同期するための処理。
 URL を解析して更に細かいハンドラへ処理を割り振る。
-</p>
-
-				
-				
-			
-				
-				<h3 id="Controller.SyncScene">func (*Controller) <a href="/target/api.go?s=7412:7522#L235">SyncScene</a></h3>
-				<pre>func (this *Controller) SyncScene(c appengine.Context, w http.ResponseWriter, r *http.Request, sceneId string)</pre>
-				<p>
-シーンデータの同期
 </p>
 
 				
@@ -515,10 +489,10 @@ URL を解析して更に細かいハンドラへ処理を割り振る。
 				
 			
 				
-				<h3 id="Controller.Upload">func (*Controller) <a href="/target/api.go?s=5189:5259#L154">Upload</a></h3>
+				<h3 id="Controller.Upload">func (*Controller) <a href="/target/api.go?s=5169:5239#L153">Upload</a></h3>
 				<pre>func (this *Controller) Upload(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-クライアントからアップロードされたファイルを blobstore に保存して blobkey を返す。。
+クライアントからアップロードされたファイルを blobstore に保存して blobkey を返す。
 Ajax で使う。method は POST。
 </p>
 

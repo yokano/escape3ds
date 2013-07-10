@@ -154,8 +154,8 @@
 			});
 			game.get('sceneList').add([
 				// ココにシーンリスト
-				{{range .Scenes}}
-					{name: {{.Name}}, background: {{.Background}}},
+				{{range $key, $val := .Scenes}}
+					{id: {{$key}}, name: {{$val.Name}}, background: {{$val.Background}}},
 				{{end}}
 			], {
 				silent: true

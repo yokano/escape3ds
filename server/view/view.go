@@ -40,7 +40,7 @@ func (this *View) Editor(encodedGameKey string) {
 	type Contents struct {
 		Game *Game
 		GameKey string
-		Scenes []*Scene
+		Scenes map[string]*Scene
 	}
 	contents := new(Contents)
 	contents.Game = game

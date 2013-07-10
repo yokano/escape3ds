@@ -104,6 +104,9 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.GetInterimUsers">func (this *Model) GetInterimUsers() map[string]*InterimUser</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetScenes">func (this *Model) GetScenes(encodedGameKey string) []*Scene</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetUser">func (this *Model) GetUser(encodedKey string) *User</a></dd>
 				
 					
@@ -138,6 +141,12 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.StartSession">func (this *Model) StartSession(userKey string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.SyncGame">func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.SyncScene">func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.UpdateGame">func (this *Model) UpdateGame(encodedGameKey string, game *Game)</a></dd>
@@ -188,7 +197,7 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 		
 			
 			
-			<h2 id="Game">type <a href="/target/game.go?s=416:708#L2">Game</a></h2>
+			<h2 id="Game">type <a href="/target/game.go?s=452:744#L5">Game</a></h2>
 			<pre>type Game struct {
     Name        string `json:&#34;name&#34;`        <span class="comment">// ゲーム名</span>
     Description string `json:&#34;description&#34;` <span class="comment">// ゲームの説明</span>
@@ -283,7 +292,7 @@ datastore の ancestor path を参照。
 				
 			
 				
-				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1392:1460#L22">AddGame</a></h3>
+				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1428:1496#L25">AddGame</a></h3>
 				<pre>func (this *Model) AddGame(game *Game, encodedUserKey string) string</pre>
 				<p>
 データストアにゲームを追加してエンコード済みのキーを返す。
@@ -295,7 +304,7 @@ datastore の ancestor path を参照。
 				
 			
 				
-				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=953:1035#L20">AddScene</a></h3>
+				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=989:1071#L23">AddScene</a></h3>
 				<pre>func (this *Model) AddScene(scene *Scene, id string, encodedGameKey string) string</pre>
 				<p>
 シーンをデータストアへ追加する。
@@ -320,7 +329,7 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
-				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2672:2724#L56">DeleteGame</a></h3>
+				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2708:2760#L59">DeleteGame</a></h3>
 				<pre>func (this *Model) DeleteGame(encodedGameKey string)</pre>
 				<p>
 データストアから指定したキーのゲームを削除する。
@@ -332,7 +341,7 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
-				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=1380:1421#L30">DeleteScene</a></h3>
+				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=1416:1457#L33">DeleteScene</a></h3>
 				<pre>func (this *Model) DeleteScene(id string)</pre>
 				<p>
 引数として指定された id のシーンをデータストアから削除する。
@@ -377,7 +386,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1824:1879#L33">GetGame</a></h3>
+				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1860:1915#L36">GetGame</a></h3>
 				<pre>func (this *Model) GetGame(encodedGameKey string) *Game</pre>
 				<p>
 エンコード済みのキーを指定してデータストアからゲームを取得する。
@@ -387,7 +396,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=3009:3079#L66">GetGameList</a></h3>
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=3045:3115#L69">GetGameList</a></h3>
 				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
 				<p>
 ユーザが所有しているゲーム一覧を返す。
@@ -402,6 +411,16 @@ blobstore に保存したファイルを読み出す。
 				<pre>func (this *Model) GetInterimUsers() map[string]*InterimUser</pre>
 				<p>
 仮登録ユーザ一覧を返す
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=1571:1631#L38">GetScenes</a></h3>
+				<pre>func (this *Model) GetScenes(encodedGameKey string) []*Scene</pre>
+				<p>
+引数として渡されたゲームキーにぶらさがっているシーンリストを取得する
 </p>
 
 				
@@ -467,7 +486,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=866:924#L10">NewGame</a></h3>
+				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=902:960#L13">NewGame</a></h3>
 				<pre>func (this *Model) NewGame(params map[string]string) *Game</pre>
 				<p>
 新しいゲームオブジェクトを作成して返す。新しく作られるゲームのパラメータを格納した map 引数として渡す。
@@ -488,7 +507,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=365:431#L8">NewScene</a></h3>
+				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=401:467#L11">NewScene</a></h3>
 				<pre>func (this *Model) NewScene(name string, background string) *Scene</pre>
 				<p>
 シーンオブジェクトを新しく作成する。
@@ -541,7 +560,32 @@ memcache から指定されたセッションIDのセッション情報を削除
 				
 			
 				
-				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2210:2274#L45">UpdateGame</a></h3>
+				<h3 id="Model.SyncGame">func (*Model) <a href="/target/game.go?s=3688:3770#L95">SyncGame</a></h3>
+				<pre>func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []string)</pre>
+				<p>
+ゲームデータの同期。
+リクエストのメソッドが CRUD に対応している。
+POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2300:2383#L65">SyncScene</a></h3>
+				<pre>func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</pre>
+				<p>
+シーンデータの同期。
+/sync/scene/[gamekey] というURLでリクエストが送られる。
+リクエストのメソッドが CRUD に対応している。
+POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2246:2310#L48">UpdateGame</a></h3>
 				<pre>func (this *Model) UpdateGame(encodedGameKey string, game *Game)</pre>
 				<p>
 ゲームを更新する。引数として渡されたキー encodedGameKey のゲームを、ゲームオブジェクト game で上書きする。
@@ -553,7 +597,7 @@ memcache から指定されたセッションIDのセッション情報を削除
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.go?s=224:305#L1">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.go?s=260:341#L3">Scene</a></h2>
 			<pre>type Scene struct {
     Name       string
     Background string
