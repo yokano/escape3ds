@@ -104,7 +104,7 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.GetInterimUsers">func (this *Model) GetInterimUsers() map[string]*InterimUser</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Model.GetScenes">func (this *Model) GetScenes(encodedGameKey string) []*Scene</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Model.GetScenes">func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetUser">func (this *Model) GetUser(encodedKey string) *User</a></dd>
@@ -417,10 +417,11 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=1571:1631#L38">GetScenes</a></h3>
-				<pre>func (this *Model) GetScenes(encodedGameKey string) []*Scene</pre>
+				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=1694:1763#L39">GetScenes</a></h3>
+				<pre>func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene</pre>
 				<p>
-引数として渡されたゲームキーにぶらさがっているシーンリストを取得する
+ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
+戻り値としてシーンID(エンコード済みキー)を key、シーンオブジェクトを value とした map を返す。
 </p>
 
 				
@@ -572,13 +573,13 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
 				
 			
 				
-				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2300:2383#L65">SyncScene</a></h3>
+				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2455:2538#L67">SyncScene</a></h3>
 				<pre>func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
 シーンデータの同期。
 /sync/scene/[gamekey] というURLでリクエストが送られる。
 リクエストのメソッドが CRUD に対応している。
-POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
+POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 </p>
 
 				

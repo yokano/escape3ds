@@ -55,10 +55,10 @@ func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
 	Check(this.c, err)
 	
 	iterator := query.Run(this.c)
-	scene := new(Scene)
 	scenes := make(map[string]*Scene, count)
 	
 	for ;; {
+		scene := new(Scene)
 		sceneKey, err := iterator.Next(scene)
 		if err != nil {
 			break
@@ -73,7 +73,7 @@ func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
 // シーンデータの同期。
 // /sync/scene/[gamekey] というURLでリクエストが送られる。
 // リクエストのメソッドが CRUD に対応している。
-// POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
+// POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string) {
 	switch r.Method {
 	case "POST":

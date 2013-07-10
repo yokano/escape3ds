@@ -152,6 +152,7 @@
 				name: '{{.Game.Name}}',
 				description: '{{.Game.Description}}'
 			});
+			
 			game.get('sceneList').add([
 				// ココにシーンリスト
 				{{range $key, $val := .Scenes}}
