@@ -10,6 +10,7 @@ var Scene = Backbone.Model.extend({
 		eventList: null,
 	},
 	initialize: function() {
+		this.urlRoot = '/sync/scene/' + game.id;
 		this.set('eventList', new EventList());
 	}
 });

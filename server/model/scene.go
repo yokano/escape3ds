@@ -2,6 +2,9 @@ package model
 
 import (
 	"appengine/datastore"
+	"net/http"
+	"encoding/json"
+	"fmt"
 	. "server/lib"
 )
 
@@ -39,4 +42,33 @@ func (this *Model) AddScene(scene *Scene, id string, encodedGameKey string) stri
 // 引数として指定された id のシーンをデータストアから削除する。
 func (this *Model) DeleteScene(id string) {
 	
+}
+
+// シーンデータの同期。
+// /sync/scene/[gamekey] というURLでリクエストが送られる。
+// リクエストのメソッドが CRUD に対応している。
+// POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
+func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string) {
+	switch r.Method {
+	case "POST":
+		body := make([]byte, r.ContentLength)
+		r.Body.Read(body)
+		
+		scene := new(Scene)
+		json.Unmarshal(body, scene)
+		
+		gameKey, err := datastore.DecodeKey(path[3])
+		Check(this.c, err)
+		
+		sceneKey := datastore.NewIncompleteKey(this.c, "Scene", gameKey)
+		_, err = datastore.Put(this.c, sceneKey, scene)
+		Check(this.c, err)
+		
+		encodedSceneKey := sceneKey.Encode()
+		
+		fmt.Fprintf(w, `{"sceneKey":"%s"}`, encodedSceneKey)
+	case "GET":
+	case "PUT":
+	case "DELETE":
+	}
 }

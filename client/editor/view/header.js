@@ -28,6 +28,7 @@ var HeaderView = Backbone.View.extend({
 		console.log('ゲームリストへ戻る');
 	},
 	save: function() {
+		// ゲーム更新
 		Backbone.sync('update', game, {
 			success: function() {
 				console.log('success');

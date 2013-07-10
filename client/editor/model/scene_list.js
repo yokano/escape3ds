@@ -10,8 +10,16 @@ var SceneList = Backbone.Collection.extend({
 	removed: function() {
 		this.selected = null;
 	},
-	added: function() {
-		console.log('added');
+	added: function(scene) {
+		// シーンが追加されたらデータベースへ追加する
+		Backbone.sync('create', scene, {
+			success: function(data) {
+				scene.set('id', data.sceneKey);
+			},
+			error: function() {
+				console.log('error');
+			}
+		});
 	},
 	initialize: function() {
 		this.on('select', this.select);

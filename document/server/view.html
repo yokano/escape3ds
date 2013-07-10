@@ -35,11 +35,9 @@
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
-*
+画面表示全般を行う。必要に応じてモデルからデータを取り出し整形する。
+HTML ファイルを出力するときは html ディレクトリからテンプレートを取り出して使う。
 </p>
-<pre>* HTMLの表示
-* @file
-</pre>
 
 			</div>
 		</div>
@@ -101,19 +99,13 @@
 		
 			
 			
-			<h2 id="View">type <a href="/target/view.go?s=335:399#L12">View</a></h2>
+			<h2 id="View">type <a href="/target/view.go?s=370:434#L4">View</a></h2>
 			<pre>type View struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-*
+画面表示を行うオブジェクト
 </p>
-<pre>* 画面表示を行うクラス
-* @class
-* @property {appengine.Context} c コンテキスト
-* @property {http.ResponseWriter} w 応答先
-* @property {*http.Request} r リクエスト
-</pre>
 
 
 			
@@ -124,104 +116,76 @@
 
 			
 				
-				<h3 id="NewView">func <a href="/target/view.go?s=572:634#L24">NewView</a></h3>
+				<h3 id="NewView">func <a href="/target/view.go?s=481:543#L10">NewView</a></h3>
 				<pre>func NewView(c appengine.Context, w http.ResponseWriter) *View</pre>
 				<p>
-*
+View オブジェクトを作成する。
 </p>
-<pre>* View の作成
-* @function
-* @param {appengine.Context} c コンテキスト
-* @param {http.ResponseWriter} w 応答先
-* @returns {*View} 作成したView
-</pre>
 
 				
 			
 
 			
 				
-				<h3 id="View.Debug">func (*View) <a href="/target/view.go?s=1447:1472#L70">Debug</a></h3>
+				<h3 id="View.Debug">func (*View) <a href="/target/view.go?s=1379:1404#L43">Debug</a></h3>
 				<pre>func (this *View) Debug()</pre>
 				<p>
-*
+デバッグ画面の表示。デバッグ画面ではユーザの登録をメールを介さずに行ったりするための画面。
 </p>
-<pre>* デバッグ画面の表示
-* @method
-* @memberof View
-</pre>
 
 				
 				
 			
 				
-				<h3 id="View.Editor">func (*View) <a href="/target/view.go?s=1024:1064#L48">Editor</a></h3>
+				<h3 id="View.Editor">func (*View) <a href="/target/view.go?s=885:925#L25">Editor</a></h3>
 				<pre>func (this *View) Editor(gameKey string)</pre>
 				<p>
-*
+エディタ画面を表示する。エディットするゲームのキーを引数として渡す。
 </p>
-<pre>* エディタ画面を表示する
-* @method
-* @memberof View
-* @param {string} gameKey ゲームキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="View.Gamelist">func (*View) <a href="/target/view.go?s=2135:2177#L104">Gamelist</a></h3>
+				<h3 id="View.Gamelist">func (*View) <a href="/target/view.go?s=2496:2538#L68">Gamelist</a></h3>
 				<pre>func (this *View) Gamelist(userKey string)</pre>
 				<p>
-*
+ゲーム一覧の表示。ログイン後に表示される最初のページ。
+引数としてユーザキーを渡す。
+セッションIDがブラウザに保存されている場合は、トップページではなくこちらが表示される。
 </p>
-<pre>* ゲーム一覧の表示
-* @method
-* @memberof View
-* @param {string} userKey
-</pre>
 
 				
 				
 			
 				
-				<h3 id="View.InterimRegistration">func (*View) <a href="/target/view.go?s=1652:1691#L81">InterimRegistration</a></h3>
+				<h3 id="View.InterimRegistration">func (*View) <a href="/target/view.go?s=1728:1767#L51">InterimRegistration</a></h3>
 				<pre>func (this *View) InterimRegistration()</pre>
 				<p>
-*
+仮登録ページの表示。ユーザがトップページでメールアドレスとパスワードを入力した後に表示される。
+本登録のためのメールアドレスが送信される。
 </p>
-<pre>* 仮登録ページの表示
-* @method
-* @memberof View
-</pre>
 
 				
 				
 			
 				
-				<h3 id="View.Login">func (*View) <a href="/target/view.go?s=770:795#L36">Login</a></h3>
+				<h3 id="View.Login">func (*View) <a href="/target/view.go?s=642:667#L18">Login</a></h3>
 				<pre>func (this *View) Login()</pre>
 				<p>
-*
+ログイン画面を表示する
 </p>
-<pre>* ログイン画面を表示する
-* @method
-* @memberof View
-</pre>
 
 				
 				
 			
 				
-				<h3 id="View.Registration">func (*View) <a href="/target/view.go?s=1892:1924#L92">Registration</a></h3>
+				<h3 id="View.Registration">func (*View) <a href="/target/view.go?s=2082:2114#L59">Registration</a></h3>
 				<pre>func (this *View) Registration()</pre>
 				<p>
-*
+本登録完了ページの表示。仮登録状態のユーザの元へ送られたメールからジャンプしてくる。
+このページが表示されたら登録が完了。
 </p>
-<pre>* 本登録完了ページの表示
-* @method
-* @memberof View
-</pre>
 
 				
 				

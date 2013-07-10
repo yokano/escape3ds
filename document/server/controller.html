@@ -33,13 +33,9 @@
 			<div class="expanded">
 				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
 				<p>
-*
+リクエスト URL のパターンに該当する処理をする。
+必要に応じて Model と View を使って処理を進める。
 </p>
-<pre>+ controller.go
-* http.HandleFunc() を書きやすくするためクラス化はしない
-* URL パターンに該当する処理を書く
-* クラス化されたModelとViewを使って処理を進める
-</pre>
 
 			</div>
 		</div>
@@ -142,6 +138,9 @@
 					<dd>&nbsp; &nbsp; <a href="#Controller.SyncHandler">func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Controller.SyncScene">func (this *Controller) SyncScene(c appengine.Context, w http.ResponseWriter, r *http.Request, sceneId string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Controller.Top">func (this *Controller) Top(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
@@ -158,7 +157,17 @@
 			<p>
 			<span style="font-size:90%">
 			
+				<a href="/target/admin.go">admin.go</a>
+			
+				<a href="/target/api.go">api.go</a>
+			
 				<a href="/target/controller.go">controller.go</a>
+			
+				<a href="/target/login.go">login.go</a>
+			
+				<a href="/target/page.go">page.go</a>
+			
+				<a href="/target/session.go">session.go</a>
 			
 			</span>
 			</p>
@@ -170,10 +179,13 @@
 		
 			
 			
-			<h2 id="Controller">type <a href="/target/controller.go?s=391:417#L12">Controller</a></h2>
+			<h2 id="Controller">type <a href="/target/controller.go?s=227:253#L1">Controller</a></h2>
 			<pre>type Controller struct {
 }</pre>
-			
+			<p>
+コントローラオブジェクト
+</p>
+
 
 			
 
@@ -183,465 +195,332 @@
 
 			
 				
-				<h3 id="NewController">func <a href="/target/controller.go?s=538:570#L19">NewController</a></h3>
+				<h3 id="NewController">func <a href="/target/controller.go?s=309:341#L4">NewController</a></h3>
 				<pre>func NewController() *Controller</pre>
 				<p>
-*
+Controller オブジェクトを作成して返す
 </p>
-<pre>* Controller オブジェクトを作成して返す
-* @returns {*Controller} 作成したオブジェクト
-</pre>
 
 				
 			
 
 			
 				
-				<h3 id="Controller.AddGame">func (*Controller) <a href="/target/controller.go?s=11974:12045#L394">AddGame</a></h3>
+				<h3 id="Controller.AddGame">func (*Controller) <a href="/target/api.go?s=2991:3062#L90">AddGame</a></h3>
 				<pre>func (this *Controller) AddGame(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ゲームの新規追加
 </p>
-<pre>* ゲームの新規追加
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.AddUser">func (*Controller) <a href="/target/controller.go?s=8456:8527#L265">AddUser</a></h3>
+				<h3 id="Controller.AddUser">func (*Controller) <a href="/target/api.go?s=214:285#L6">AddUser</a></h3>
 				<pre>func (this *Controller) AddUser(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ユーザの追加。Ajax で呼び出す API。
 </p>
-<pre>* ユーザの追加
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.CallbackFacebook">func (*Controller) <a href="/target/controller.go?s=6793:6872#L203">CallbackFacebook</a></h3>
+				<h3 id="Controller.CallbackFacebook">func (*Controller) <a href="/target/login.go?s=3360:3439#L89">CallbackFacebook</a></h3>
 				<pre>func (this *Controller) CallbackFacebook(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+Facebook でユーザがアクセスを許可した時に呼び出されるコールバック関数
 </p>
-<pre>* Facebookからのコールバック
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.CallbackTwitter">func (*Controller) <a href="/target/controller.go?s=3911:3990#L115">CallbackTwitter</a></h3>
+				<h3 id="Controller.CallbackTwitter">func (*Controller) <a href="/target/login.go?s=670:749#L14">CallbackTwitter</a></h3>
 				<pre>func (this *Controller) CallbackTwitter(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+Twitter でユーザが許可をした時に呼び出されるコールバック関数
 </p>
-<pre>* Twitter からのコールバック * @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.CloseSession">func (*Controller) <a href="/target/controller.go?s=16485:16582#L550">CloseSession</a></h3>
+				<h3 id="Controller.CloseSession">func (*Controller) <a href="/target/session.go?s=1244:1341#L29">CloseSession</a></h3>
 				<pre>func (this *Controller) CloseSession(c appengine.Context, w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+セッションを終了する。
 </p>
-<pre>* セッションを終了する
-* @function
-* @param
-* @param {string} sessionId
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Debug">func (*Controller) <a href="/target/controller.go?s=9056:9125#L285">Debug</a></h3>
+				<h3 id="Controller.Debug">func (*Controller) <a href="/target/admin.go?s=166:235#L4">Debug</a></h3>
 				<pre>func (this *Controller) Debug(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+デバッグツールの表示
 </p>
-<pre>* デバッグツールの表示
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.DeleteCookie">func (*Controller) <a href="/target/controller.go?s=16888:16968#L564">DeleteCookie</a></h3>
+				<h3 id="Controller.DeleteCookie">func (*Controller) <a href="/target/session.go?s=1533:1613#L38">DeleteCookie</a></h3>
 				<pre>func (this *Controller) DeleteCookie(c appengine.Context, w http.ResponseWriter)</pre>
 				<p>
-*
+セッション ID が保存されたクッキーを削除する
 </p>
-<pre>* セッションIDが保存されたクッキーを削除する
-* @function
-* @param {appengine.Context} c コンテキスト
-* @param {http.ResponseWriter} w 応答先
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.DeleteGame">func (*Controller) <a href="/target/controller.go?s=13227:13301#L432">DeleteGame</a></h3>
+				<h3 id="Controller.DeleteGame">func (*Controller) <a href="/target/api.go?s=4163:4237#L124">DeleteGame</a></h3>
 				<pre>func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ゲームの削除。
+ゲームは所有者しか削除することはできない。
 </p>
-<pre>* ゲームの削除
-* ゲームの所有者しか削除することはできない
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Download">func (*Controller) <a href="/target/controller.go?s=18823:18895#L631">Download</a></h3>
+				<h3 id="Controller.Download">func (*Controller) <a href="/target/api.go?s=5601:5673#L168">Download</a></h3>
 				<pre>func (this *Controller) Download(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+blobstore から blogkey に関連付いたファイルをクライアントへ渡す。
+Ajax で使う。method は GET。
 </p>
-<pre>* ファイルのダウンロード
-* blob key に対応するファイルを提供する
-* Ajax で使う
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Editor">func (*Controller) <a href="/target/controller.go?s=7736:7806#L239">Editor</a></h3>
+				<h3 id="Controller.Editor">func (*Controller) <a href="/target/page.go?s=480:550#L13">Editor</a></h3>
 				<pre>func (this *Controller) Editor(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+エディタの表示
 </p>
-<pre>* エディタの表示
-* @param {http.ResponseWRiter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Gamelist">func (*Controller) <a href="/target/controller.go?s=11664:11736#L382">Gamelist</a></h3>
+				<h3 id="Controller.Gamelist">func (*Controller) <a href="/target/page.go?s=1208:1280#L35">Gamelist</a></h3>
 				<pre>func (this *Controller) Gamelist(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ゲーム一覧の表示。ログインした状態でトップページを表示するとここへ飛ぶ。
 </p>
-<pre>* ゲーム一覧の表示
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.GetHandler">func (*Controller) <a href="/target/controller.go?s=1172:1320#L33">GetHandler</a></h3>
+				<h3 id="Controller.GetHandler">func (*Controller) <a href="/target/controller.go?s=735:883#L12">GetHandler</a></h3>
 				<pre>func (this *Controller) GetHandler(callback func(this *Controller, w http.ResponseWriter, r *http.Request)) func(http.ResponseWriter, *http.Request)</pre>
 				<p>
-*
+メソッドを http.HandleFunc() で呼び出し可能な関数型に変換して返す。
+http.HandleFunc() は引数として func(http.ResponseWriter, *http.Request) 型の関数しか渡せない。
+コントローラのメソッドをこの関数型で包むことで http.HandleFunc() から呼び出し可能にする。
 </p>
-<pre>* メソッドを http.HandleFunc() で呼び出し可能な関数型に変換して返す
-* http.HandleFunc() は引数として func(http.ResponseWriter, *http.Request) 型の関数しか渡せない
-* コントローラのメソッドをこの関数型で包むことで http.HandleFunc() から呼び出し可能にする
-* @method
-* @memberof Controller
-* @param {func(*Controller, http.ResponseWriter, *http.Request)} メソッド
-* @returns {func(http.ResponseWRiter, *http.Request)} 呼び出し可能にしたメソッド
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.GetInterimUsers">func (*Controller) <a href="/target/controller.go?s=14250:14329#L467">GetInterimUsers</a></h3>
+				<h3 id="Controller.GetInterimUsers">func (*Controller) <a href="/target/admin.go?s=368:447#L11">GetInterimUsers</a></h3>
 				<pre>func (this *Controller) GetInterimUsers(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+仮登録ユーザ一覧の取得。Ajax で呼び出す
 </p>
-<pre>* 仮登録ユーザ一覧の取得
-* Ajax で呼び出す
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.GetSession">func (*Controller) <a href="/target/controller.go?s=16091:16170#L530">GetSession</a></h3>
+				<h3 id="Controller.GetSession">func (*Controller) <a href="/target/session.go?s=907:986#L14">GetSession</a></h3>
 				<pre>func (this *Controller) GetSession(c appengine.Context, r *http.Request) string</pre>
 				<p>
-*
+ブラウザの Cookie に保存されているセッションIDを取得する。
+セッションが存在しない場合は空文字を返す。
 </p>
-<pre>* Cookieに保存されているセッションIDを取得する
-* セッションが存在しない場合は空文字を返す
-* @function
-* @param {appengine.Context} c コンテキスト
-* @param {*http.Request} r リクエスト
-* @returns {string} セッションIDまたは空文字
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.GetUsers">func (*Controller) <a href="/target/controller.go?s=14828:14900#L490">GetUsers</a></h3>
+				<h3 id="Controller.GetUsers">func (*Controller) <a href="/target/admin.go?s=836:908#L28">GetUsers</a></h3>
 				<pre>func (this *Controller) GetUsers(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ユーザ一覧の取得。Ajax で呼び出す
 </p>
-<pre>* ユーザ一覧の取得
-* Ajax で呼び出す
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Handle">func (*Controller) <a href="/target/controller.go?s=1513:1545#L44">Handle</a></h3>
+				<h3 id="Controller.Handle">func (*Controller) <a href="/target/controller.go?s=1033:1065#L19">Handle</a></h3>
 				<pre>func (this *Controller) Handle()</pre>
 				<p>
-*
+リクエスト URL に合わせて処理を振り分ける
 </p>
-<pre>* リクエスト URL に合わせて処理を振り分ける
-* @method
-* @memberof Controller
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.InterimRegistration">func (*Controller) <a href="/target/controller.go?s=10698:10781#L344">InterimRegistration</a></h3>
+				<h3 id="Controller.InterimRegistration">func (*Controller) <a href="/target/api.go?s=2091:2174#L60">InterimRegistration</a></h3>
 				<pre>func (this *Controller) InterimRegistration(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+Ajax のリクエストパラメータとして渡されたユーザを仮登録データベースに保存して、
+本登録のためのメールを送信する。
 </p>
-<pre>* 仮登録
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Login">func (*Controller) <a href="/target/controller.go?s=9506:9575#L299">Login</a></h3>
+				<h3 id="Controller.Login">func (*Controller) <a href="/target/api.go?s=941:1010#L24">Login</a></h3>
 				<pre>func (this *Controller) Login(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ログイン。成功か失敗か判断してからページを遷移するために Ajax で呼び出す。
+成功したらリダイレクト先の URL を含む JSON を返す。
+失敗したらエラーメッセージを含む JSON を返す。
 </p>
-<pre>* ログイン
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-* @returns {Ajax JSON} result 成功したらtrue
-* @returns {Ajax JSON} to 成功した時のリダイレクト先URL
-* @returns {Ajax JSON} message 失敗した時のエラーメッセージ
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.LoginFacebook">func (*Controller) <a href="/target/controller.go?s=5236:5313#L161">LoginFacebook</a></h3>
+				<h3 id="Controller.LoginFacebook">func (*Controller) <a href="/target/login.go?s=1935:2012#L56">LoginFacebook</a></h3>
 				<pre>func (this *Controller) LoginFacebook(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+Facebook のログインボタンが押された時の処理
 </p>
-<pre>* Facebook でログイン
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.LoginTwitter">func (*Controller) <a href="/target/controller.go?s=3407:3483#L104">LoginTwitter</a></h3>
+				<h3 id="Controller.LoginTwitter">func (*Controller) <a href="/target/login.go?s=210:286#L6">LoginTwitter</a></h3>
 				<pre>func (this *Controller) LoginTwitter(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+Twitter ボタンが押された時の処理
 </p>
-<pre>* Twitter でログイン
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Logout">func (*Controller) <a href="/target/controller.go?s=10289:10359#L326">Logout</a></h3>
+				<h3 id="Controller.Logout">func (*Controller) <a href="/target/api.go?s=1619:1689#L45">Logout</a></h3>
 				<pre>func (this *Controller) Logout(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ログアウト。クッキーと memcache に保存されたセッション情報を削除する。
 </p>
-<pre>* ログアウト
-* クッキーとmemcacheに保存されたセッション情報を削除する
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Registration">func (*Controller) <a href="/target/controller.go?s=11306:11382#L366">Registration</a></h3>
+				<h3 id="Controller.Registration">func (*Controller) <a href="/target/api.go?s=2729:2805#L78">Registration</a></h3>
 				<pre>func (this *Controller) Registration(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+仮登録済みのユーザを本登録する。
+仮登録データベースからユーザを削除してユーザデータベースへ追加する。
 </p>
-<pre>* 本登録する
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.RequestFacebookToken">func (*Controller) <a href="/target/controller.go?s=5866:5968#L174">RequestFacebookToken</a></h3>
+				<h3 id="Controller.RequestFacebookToken">func (*Controller) <a href="/target/login.go?s=2478:2580#L65">RequestFacebookToken</a></h3>
 				<pre>func (this *Controller) RequestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]string</pre>
 				<p>
-*
+Facebook へアクセストークンを要求する。
+この関数は Facebook から認証コードをリダイレクトで渡された時に呼ばれる。
+ユーザ情報を格納した map を返す。
 </p>
-<pre>* Facebook へアクセストークンを要求する
-* この関数は Facebook から認証コードをリダイレクトで渡された時に呼ばれる
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-* @returns {map[string]string} ユーザ情報
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Session">func (*Controller) <a href="/target/controller.go?s=17492:17570#L580">Session</a></h3>
+				<h3 id="Controller.Session">func (*Controller) <a href="/target/session.go?s=2064:2142#L48">Session</a></h3>
 				<pre>func (this *Controller) Session(w http.ResponseWriter, r *http.Request) string</pre>
 				<p>
-*
+現在の通信にセッションが存在するかどうかを調べる。
+ページ表示時に必ず実行する。
+持っていなければトップページへ飛ばして空文字を返す。
+持っていたら対応するユーザIDを返す。
+これによってログインせずに内部ページを表示することを防止する。
 </p>
-<pre>* セッションチェック
-* ページ表示時に必ず実行する
-* クライアントがセッションIDを持っているかどうか調べて
-* 持っていなければトップページへ飛ばして空文字を返す
-* 持っていたら対応するユーザIDを返す
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-* @returns {string} ユーザキー
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.StartSession">func (*Controller) <a href="/target/controller.go?s=15513:15601#L514">StartSession</a></h3>
+				<h3 id="Controller.StartSession">func (*Controller) <a href="/target/session.go?s=479:567#L4">StartSession</a></h3>
 				<pre>func (this *Controller) StartSession(w http.ResponseWriter, r *http.Request, key string)</pre>
 				<p>
-*
+引数として渡されたユーザキーに該当するユーザのセッションを開始する。
+ユーザーキーに関連付いたセッションIDを生成して memcache と cookie に保存する。
+ブラウザが提供する cookie に保存されたセッションIDを memcache に保存されたセッションIDを比較して認証する。
 </p>
-<pre>* セッションを開始する
-* ユーザーキーに関連付いたセッションIDを生成して memcache, cookie に保存する。
-* @function
-* @param w {http.ResponseWriter} w 応答先
-* @param r {*http.Request} r リクエスト
-* @param {string} key ユーザのキー
-* @returns {string} セッションID
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.SyncGame">func (*Controller) <a href="/target/controller.go?s=20078:20187#L679">SyncGame</a></h3>
+				<h3 id="Controller.SyncGame">func (*Controller) <a href="/target/api.go?s=6733:6842#L208">SyncGame</a></h3>
 				<pre>func (this *Controller) SyncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameKey string)</pre>
 				<p>
-*
+ゲームデータの同期
 </p>
-<pre>* ゲームデータの同期
-* @param {appengine.Context} c コンテキストs
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-* @param {}
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.SyncHandler">func (*Controller) <a href="/target/controller.go?s=19478:19553#L656">SyncHandler</a></h3>
+				<h3 id="Controller.SyncHandler">func (*Controller) <a href="/target/api.go?s=6244:6319#L189">SyncHandler</a></h3>
 				<pre>func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+/sync/* にマッチしたら呼び出される。
+エディタで編集したゲーム情報をサーバと同期するための処理。
+URL を解析して更に細かいハンドラへ処理を割り振る。
 </p>
-<pre>* /sync/* にマッチしたら呼び出される
-* URL を解析して更に細かいハンドラへ処理を割り振る
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Top">func (*Controller) <a href="/target/controller.go?s=3030:3097#L87">Top</a></h3>
+				<h3 id="Controller.SyncScene">func (*Controller) <a href="/target/api.go?s=7412:7522#L235">SyncScene</a></h3>
+				<pre>func (this *Controller) SyncScene(c appengine.Context, w http.ResponseWriter, r *http.Request, sceneId string)</pre>
+				<p>
+シーンデータの同期
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.Top">func (*Controller) <a href="/target/page.go?s=201:268#L1">Top</a></h3>
 				<pre>func (this *Controller) Top(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+ログインページの表示。セッションが既に開始されている場合はゲームリストを表示する。
 </p>
-<pre>* ログインページの表示
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				
 			
 				
-				<h3 id="Controller.Upload">func (*Controller) <a href="/target/controller.go?s=18322:18392#L611">Upload</a></h3>
+				<h3 id="Controller.Upload">func (*Controller) <a href="/target/api.go?s=5189:5259#L154">Upload</a></h3>
 				<pre>func (this *Controller) Upload(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-*
+クライアントからアップロードされたファイルを blobstore に保存して blobkey を返す。。
+Ajax で使う。method は POST。
 </p>
-<pre>* ファイルのアップロード
-* ファイルを blobstore に保存して blob key を返す
-* Ajax で使う
-* method: POST
-*
-* @function
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-</pre>
 
 				
 				

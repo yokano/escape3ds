@@ -5,7 +5,6 @@ import (
 	"appengine"
 	"fmt"
 	"strings"
-	"encoding/json"
 	. "server/model"
 	. "server/view"
 	. "server/lib"
@@ -159,7 +158,7 @@ func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `{"result":true}`)
 }
 
-// クライアントからアップロードされたファイルを blobstore に保存して blobkey を返す。。
+// クライアントからアップロードされたファイルを blobstore に保存して blobkey を返す。
 // Ajax で使う。method は POST。
 func (this *Controller) Upload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
@@ -198,50 +197,13 @@ func (this *Controller) Download(w http.ResponseWriter, r *http.Request) {
 // URL を解析して更に細かいハンドラへ処理を割り振る。
 func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	path := strings.Split(r.URL.String(), "/") // "/sync/[kind]/[id]"
+	path := strings.Split(r.URL.String(), "/") // "[0]/[1]sync/[2]kind/[3]id"
 	
-	// 先頭の "/" も含まれるため
-	if len(path) != 4 {
-		c.Warningf("パラメータが不足した状態でsyncが実行されました")
-		return
-	}
-	
+	model := NewModel(c)
 	switch path[2] {
 	case "game":
-		this.SyncGame(c, w, r, path[3])
+		model.SyncGame(w, r, path)
 	case "scene":
-		this.SyncScene(c, w, r, path[3])
+		model.SyncScene(w, r, path)
 	}
-}
-
-// ゲームデータの同期
-func (this *Controller) SyncGame(c appengine.Context, w http.ResponseWriter, r *http.Request, gameKey string) {
-	switch r.Method {
-	case "POST":
-	case "GET":
-	case "PUT":
-		
-		body := make([]byte, r.ContentLength)
-		r.Body.Read(body)
-		
-		game := new(Game)
-		json.Unmarshal(body, game)
-		
-		model := NewModel(c)
-//		oldGame := model.GetGame(gameKey)
-//		if oldGame.UserKey != this.Session(w, r) {
-//			c.Warningf("他者のゲームを削除しようとしました　userKey:%s, gameKey:%s", this.Session(w, r), gameKey)
-//			return
-//		}
-		
-		model.UpdateGame(gameKey, game)
-		fmt.Fprintf(w, `{}`)
-	case "DELETE":
-		c.Debugf("DELETE GAME")
-	}
-}
-
-// シーンデータの同期
-func (this *Controller) SyncScene(c appengine.Context, w http.ResponseWriter, r *http.Request, sceneId string) {
-
 }

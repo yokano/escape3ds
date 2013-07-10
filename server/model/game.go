@@ -2,6 +2,9 @@ package model
 
 import (
 	"appengine/datastore"
+	"net/http"
+	"encoding/json"
+	"fmt"
 	. "server/lib"
 )
 
@@ -94,4 +97,33 @@ func (this *Model) GetGameList(encodedUserKey string) map[string]*Game {
 	}
 	
 	return result
+}
+
+// ゲームデータの同期。
+// リクエストのメソッドが CRUD に対応している。
+// POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
+func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []string) {
+	switch r.Method {
+	case "POST":
+	case "GET":
+	case "PUT":
+		gameKey := path[3]
+		body := make([]byte, r.ContentLength)
+		r.Body.Read(body)
+		
+		game := new(Game)
+		json.Unmarshal(body, game)
+		
+		model := NewModel(this.c)
+//		oldGame := model.GetGame(gameKey)
+//		if oldGame.UserKey != this.Session(w, r) {
+//			c.Warningf("他者のゲームを削除しようとしました　userKey:%s, gameKey:%s", this.Session(w, r), gameKey)
+//			return
+//		}
+		
+		model.UpdateGame(gameKey, game)
+		fmt.Fprintf(w, `{}`)
+	case "DELETE":
+		this.c.Debugf("DELETE GAME")
+	}
 }
