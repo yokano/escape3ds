@@ -21,14 +21,14 @@
 		
 		<section id="scene_editor">
 			<script type="text/template" id="scene_li_view_template">
-				<img class="scene_img" src="<%= background %>">
+				<img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>">
 				<div class="scene_name"><%= name %></div>
 				<div class="is_first_scene"></div>
 			</script>
 			
 			<script type="text/template" id="scene_view_template">
 				<div class="dropbox" dropzone="copy f:image/*">
-					<div id="scene" style="background-image: url('<%= background %>')">
+					<div id="scene" style="background-image: url('<% if(background == "") { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>')">
 					</div>
 				</div>
 				
@@ -40,7 +40,7 @@
 					<div>背景画像:
 						<label>
 							<input id="change_scene_img" name="file" type="file"></input>
-							<div><img class="scene_img" src="<%= background %>"></div>
+							<div><img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>"></div>
 						</label>
 					</div>
 					<div><button id="edit_enter_event">シーン開始時のイベント</button></div>

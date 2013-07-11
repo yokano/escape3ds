@@ -27,8 +27,15 @@ var SceneListItemView = Backbone.View.extend({
 		this.parent.collection.trigger('select', this.model.cid)
 	},
 	sceneHasChanged: function() {
+		var url;
+		if(this.model.get('background') == '') {
+			url = '/client/editor/img/black.png';
+		} else {
+			url = '/download?blobkey=' + this.model.get('background');
+		}
+
 		this.$el.find('.scene_name').html(this.model.get('name'));
-		this.$el.find('.scene_img').attr('src', this.model.get('background'));
+		this.$el.find('.scene_img').attr('src', url);
 	},
 	sceneHasRemoved: function() {
 		this.remove();

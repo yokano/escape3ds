@@ -178,9 +178,9 @@ func (this *Controller) Upload(w http.ResponseWriter, r *http.Request) {
 func (this *Controller) Download(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
-	blobKey := r.FormValue("blobKey")
+	blobKey := r.FormValue("blobkey")
 	if blobKey == "" {
-		c.Warningf("blobKey なしで download が実行されました")
+		c.Warningf("blobkey なしで download が実行されました")
 		return
 	}
 	

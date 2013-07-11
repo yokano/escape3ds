@@ -4,13 +4,12 @@
 var Scene = Backbone.Model.extend({
 	defaults: {
 		name: '',
-		background: '/client/editor/img/black.png',
+		background: '',  // blobkey又は画像のURL
 		enter: null,
 		leave: null,
 		eventList: null,
 	},
 	sceneHasChanged: function() {
-		console.log('シーンが更新されました');
 		Backbone.sync('update', this, {
 			success: function() {
 				console.log('success');

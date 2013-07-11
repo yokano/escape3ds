@@ -14,6 +14,8 @@ var SceneView = Backbone.View.extend({
 		this.listenTo(game.get('sceneList'), 'remove', this.sceneHasRemoved);
 		this.children = [];
 	},
+	
+	// 描画処理
 	render: function() {
 		if(this.model == null) {
 			this.$el.hide();
@@ -62,6 +64,7 @@ var SceneView = Backbone.View.extend({
 		var formData = new FormData(form.get(0));
 		
 		// 画像ファイルのアップロード
+		var self = this;
 		$.ajax('/upload', {
 			method: 'POST',
 			contentType: false,
@@ -72,7 +75,7 @@ var SceneView = Backbone.View.extend({
 				console.log('error');
 			},
 			success: function(data) {
-				console.log('blobkey', data.blobkey);
+				self.model.set('background', data.blobkey);
 			}
 		});
 	},
@@ -158,8 +161,14 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	sceneHasChanged: function() {
-		this.$el.find('#scene').css('background-image', 'url(' + this.model.get('background') + ')');
-		this.$el.find('#scene_info .scene_img').attr('src', this.model.get('background'));
+		var url;
+		if(this.model.get('background') == '') {
+			url = '/client/editor/img/black.png';
+		} else {
+			url = '/download?blobkey=' + this.model.get('background');
+		}
+		this.$el.find('#scene').css('background-image', 'url("' + url + '")');
+		this.$el.find('#scene_info .scene_img').attr('src', url);
 	},
 	
 	/**
