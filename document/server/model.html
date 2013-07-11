@@ -151,6 +151,9 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.UpdateGame">func (this *Model) UpdateGame(encodedGameKey string, game *Game)</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.UpdateScene">func (this *Model) UpdateScene(id string, scene *Scene)</a></dd>
+				
 			
 				
 				<dd><a href="#Scene">type Scene</a></dd>
@@ -417,7 +420,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=1694:1763#L39">GetScenes</a></h3>
+				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=1837:1906#L44">GetScenes</a></h3>
 				<pre>func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene</pre>
 				<p>
 ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
@@ -573,13 +576,14 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
 				
 			
 				
-				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2455:2538#L67">SyncScene</a></h3>
+				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2696:2779#L73">SyncScene</a></h3>
 				<pre>func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
-シーンデータの同期。
+シーンデータの同期処理を行う。
 /sync/scene/[gamekey] というURLでリクエストが送られる。
 リクエストのメソッドが CRUD に対応している。
 POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
+リクエストのメソッドに合わせて適切な関数を使用する。
 </p>
 
 				
@@ -590,6 +594,16 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				<pre>func (this *Model) UpdateGame(encodedGameKey string, game *Game)</pre>
 				<p>
 ゲームを更新する。引数として渡されたキー encodedGameKey のゲームを、ゲームオブジェクト game で上書きする。
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.UpdateScene">func (*Model) <a href="/target/scene.go?s=1545:1600#L38">UpdateScene</a></h3>
+				<pre>func (this *Model) UpdateScene(id string, scene *Scene)</pre>
+				<p>
+id で指定されたシーンを新しいシーン scene で更新する。
 </p>
 
 				

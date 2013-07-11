@@ -58,27 +58,23 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	sceneImageHasChanged: function() {
-		var file = $('#change_scene_img').get(0).files[0];
-		getFileURL(file, this, function(result) {
-			this.model.set('background', result);
+		var form = $('<form></form>').append($('#change_scene_img'));
+		var formData = new FormData(form.get(0));
+		
+		// 画像ファイルのアップロード
+		$.ajax('/upload', {
+			method: 'POST',
+			contentType: false,
+			processData: false,
+			data: formData,
+			dataType: 'json',
+			error: function() {
+				console.log('error');
+			},
+			success: function(data) {
+				console.log('blobkey', data.blobkey);
+			}
 		});
-
-//		保存処理へ移動させる
-//		var form = $('#change_scene_img_form').get()[0];
-//		var formData = new FormData(form);
-//		$.ajax('/upload', {
-//			method: 'POST',
-//			contentType: false,
-//			processData: false,
-//			data: formData,
-//			dataType: 'json',
-//			error: function() {
-//				console.log('error');
-//			},er
-//			success: function(data) {
-//				console.log('blobkey', data.blobkey);
-//			}
-//		});
 	},
 	
 	/**

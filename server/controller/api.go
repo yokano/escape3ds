@@ -162,8 +162,9 @@ func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request) {
 // Ajax で使う。method は POST。
 func (this *Controller) Upload(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-
+	
 	file, fileHeader, err := r.FormFile("file")
+	c.Debugf("file: %#v, fileHeader: %#v, err: %#v", file, fileHeader, err)
 	Check(c, err)
 	
 	model := NewModel(c)

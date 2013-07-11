@@ -44,6 +44,11 @@ func (this *Model) DeleteScene(id string) {
 	
 }
 
+// id で指定されたシーンを新しいシーン scene で更新する。
+func (this *Model) UpdateScene(id string, scene *Scene) {
+	
+}
+
 // ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
 // 戻り値としてシーンID(エンコード済みキー)を key、シーンオブジェクトを value とした map を返す。
 func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
@@ -70,10 +75,11 @@ func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
 	return scenes
 }
 
-// シーンデータの同期。
+// シーンデータの同期処理を行う。
 // /sync/scene/[gamekey] というURLでリクエストが送られる。
 // リクエストのメソッドが CRUD に対応している。
 // POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
+// リクエストのメソッドに合わせて適切な関数を使用する。
 func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string) {
 	switch r.Method {
 	case "POST":
@@ -85,7 +91,7 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 		Check(this.c, err)
 		
 		sceneKey := datastore.NewIncompleteKey(this.c, "Scene", gameKey)
-		_, err = datastore.Put(this.c, sceneKey, scene)
+		sceneKey, err = datastore.Put(this.c, sceneKey, scene)
 		Check(this.c, err)
 		
 		encodedSceneKey := sceneKey.Encode()
@@ -101,7 +107,7 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
 		Check(this.c, err)
 		
-		_, err = datastore.Put(this.c, sceneKey, scene)
+		sceneKey, err = datastore.Put(this.c, sceneKey, scene)
 		Check(this.c, err)
 		
 		fmt.Fprintf(w, `{}`)
