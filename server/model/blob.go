@@ -85,6 +85,7 @@ func (this *Model) DeleteBlob(key string) {
 
 // すべてのblobを削除する。管理者専用。
 func (this *Model) ClearBlob() {
+	// __BlobInfo__ のクリア
 	q := datastore.NewQuery("__BlobInfo__").KeysOnly()
 	
 	blobInfoKeys, err := q.GetAll(this.c, nil)
@@ -96,5 +97,12 @@ func (this *Model) ClearBlob() {
 	}
 	
 	err = blobstore.DeleteMulti(this.c, blobKeys)
+	Check(this.c, err)
+	
+	
+	// __BlobFileIndex__ のクリア
+	q = datastore.NewQuery("__BlobFileIndex__").KeysOnly()
+	indexKeys, err := q.GetAll(this.c, nil)
+	err = datastore.DeleteMulti(this.c, indexKeys)
 	Check(this.c, err)
 }
