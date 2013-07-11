@@ -60,6 +60,12 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	sceneImageHasChanged: function() {
+		// 以前の画像ファイルをサーバ上から削除
+		if(this.model.get('background') != '') {
+			
+		}
+		
+		
 		var form = $('<form></form>').append($('#change_scene_img'));
 		var formData = new FormData(form.get(0));
 		

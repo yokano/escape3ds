@@ -71,3 +71,30 @@ func (this *Model) GetBlob(key string) (string, []byte) {
 	
 	return blobInfo.ContentType, bytes
 }
+
+// blogstore に保存されているフィアルを削除する。
+// 引数として削除する blobkey を渡す。
+func (this *Model) DeleteBlob(key string) {
+	blobKey := appengine.BlobKey(key)
+	err := blobstore.Delete(this.c, blobKey)
+	Check(this.c, err)
+	if err != nil {
+		this.c.Warningf("存在しないblobを削除しようとしました")
+	}
+}
+
+// すべてのblobを削除する。管理者専用。
+func (this *Model) ClearBlob() {
+	q := datastore.NewQuery("__BlobInfo__").KeysOnly()
+	
+	blobInfoKeys, err := q.GetAll(this.c, nil)
+	Check(this.c, err)
+
+	blobKeys := make([]appengine.BlobKey, len(blobInfoKeys))
+	for i := 0; i < len(blobInfoKeys); i++ {
+		blobKeys[i] = appengine.BlobKey(blobInfoKeys[i].StringID())
+	}
+	
+	err = blobstore.DeleteMulti(this.c, blobKeys)
+	Check(this.c, err)
+}

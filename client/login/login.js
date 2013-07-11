@@ -19,7 +19,6 @@ $(function() {
 				if(data.result == false) {
 					alert(data.message);
 				} else {
-					console.log(data.to);
 					location.href = data.to;
 				}
 			},

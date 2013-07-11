@@ -49,3 +49,11 @@ func (this *Controller) GetUsers(w http.ResponseWriter, r *http.Request) {
 	Check(c, err)
 	fmt.Fprintf(w, "%s", bytes)
 }
+
+// blobsotre のクリア。管理者専用。
+func (this *Controller) ClearBlob(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	model := NewModel(c)
+	model.ClearBlob()
+	fmt.Fprintf(w, "{}")
+}

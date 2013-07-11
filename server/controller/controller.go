@@ -27,7 +27,7 @@ func (this *Controller) GetHandler(callback func(this *Controller, w http.Respon
 
 // リクエスト URL に合わせて処理を振り分ける
 func (this *Controller) Handle() {
-	table := make(map[string]func(this *Controller, w http.ResponseWriter, r *http.Request), 21)
+	table := make(map[string]func(this *Controller, w http.ResponseWriter, r *http.Request), 22)
 
 	// page
 	table["/"]         = (*Controller).Top
@@ -36,8 +36,8 @@ func (this *Controller) Handle() {
 	table["/logout"]   = (*Controller).Logout
 
 	// oauth
-	table["/login_twitter"]     = (*Controller).CallbackTwitter
-	table["/callback_twitter"]  = (*Controller).LoginTwitter
+	table["/login_twitter"]     = (*Controller).LoginTwitter
+	table["/callback_twitter"]  = (*Controller).CallbackTwitter
 	table["/login_facebook"]    = (*Controller).LoginFacebook
 	table["/callback_facebook"] = (*Controller).CallbackFacebook
 
@@ -46,16 +46,20 @@ func (this *Controller) Handle() {
 	table["/login"]       = (*Controller).Login
 	table["/add_game"]    = (*Controller).AddGame
 	table["/delete_game"] = (*Controller).DeleteGame
-	table["/upload"]      = (*Controller).Upload
-	table["/download"]    = (*Controller).Download
 	table["/sync/"]       = (*Controller).SyncHandler
 	table["/interim_registration"] = (*Controller).InterimRegistration
 	table["/registration"]         = (*Controller).Registration
+	
+	// blob
+	table["/upload"]      = (*Controller).Upload
+	table["/download"]    = (*Controller).Download
+	table["/delete"]      = (*Controller).Delete
 
 	// admin
 	table["/debug"]             = (*Controller).Debug
 	table["/get_users"]         = (*Controller).GetUsers
 	table["/get_interim_users"] = (*Controller).GetInterimUsers
+	table["/clear_blob"]        = (*Controller).ClearBlob
 
 	for url, callback := range table {
 		http.HandleFunc(url, this.GetHandler(callback))

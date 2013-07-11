@@ -158,41 +158,6 @@ func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, `{"result":true}`)
 }
 
-// クライアントからアップロードされたファイルを blobstore に保存して blobkey を返す。
-// Ajax で使う。method は POST。
-func (this *Controller) Upload(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	
-	file, fileHeader, err := r.FormFile("file")
-	c.Debugf("file: %#v, fileHeader: %#v, err: %#v", file, fileHeader, err)
-	Check(c, err)
-	
-	model := NewModel(c)
-	blobKey := model.AddBlob(file, fileHeader)
-	
-	fmt.Fprintf(w, `{"blobkey":"%s"}`, blobKey)
-}
-
-// blobstore から blogkey に関連付いたファイルをクライアントへ渡す。
-// Ajax で使う。method は GET。
-func (this *Controller) Download(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
-	
-	blobKey := r.FormValue("blobkey")
-	if blobKey == "" {
-		c.Warningf("blobkey なしで download が実行されました")
-		return
-	}
-	
-	model := NewModel(c)
-	contentType, bytes := model.GetBlob(blobKey)
-	
-	header := w.Header()
-	header.Add("Content-Type", contentType)
-	_, err := w.Write(bytes)
-	Check(c, err)
-}
-
 // /sync/* にマッチしたら呼び出される。
 // エディタで編集したゲーム情報をサーバと同期するための処理。
 // URL を解析して更に細かいハンドラへ処理を割り振る。

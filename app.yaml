@@ -9,5 +9,10 @@ inbound_services:
 handlers:
 - url: /client
   static_dir: client
+
+- url: /debug
+  login: admin
+  script: _go_app
+
 - url: /.*
   script: _go_app

@@ -131,6 +131,20 @@ $(function() {
 		return false;
 	});
 	
+	// Blobstore のクリア
+	$('#clear_blobstore').click(function() {
+		$.ajax('/clear_blob', {
+			method: 'GET',
+			dataType: 'json',
+			success: function() {
+				alert('all cleared');
+			},
+			error: function(xhr, err) {
+				alert('error');
+			}
+		});
+	});
+	
 	// データの更新
 	var update = function() {
 		var interimUsers = $('#interim_users');
@@ -166,6 +180,6 @@ $(function() {
 			}
 		});
 	};
-		
+	
 	update();
 });
