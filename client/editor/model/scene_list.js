@@ -11,7 +11,6 @@ var SceneList = Backbone.Collection.extend({
 		this.selected = null;
 		Backbone.sync('delete', scene, {
 			success: function() {
-				console.log('success');
 			},
 			error: function() {
 				console.log('error');

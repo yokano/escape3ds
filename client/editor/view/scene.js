@@ -43,8 +43,6 @@ var SceneView = Backbone.View.extend({
 			}
 		});
 		
-		this.$el.find('form').attr('action', uploadURL);
-		
 		return this;
 	},
 	events: {
@@ -62,18 +60,26 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	sceneImageHasChanged: function() {
-		// 以前の画像ファイルをサーバ上から削除
-//		if(this.model.get('background') != '') {
-//			
-//		}
-//		
-//		
-		var form = $('<form name="form"></form>').append($('#change_scene_img'));
-		var formData = new FormData(form.get(0));
-		
+	
+		// アップロード先URLを発行してもらう
+		var url;
+		$.ajax('/geturl', {
+			method: 'GET',
+			dataType: 'json',
+			async: false,
+			error: function() {
+				console.log('アップロード先URLの取得に失敗しました');
+			},
+			success: function(data) {
+				url = data.url;
+			}
+		});
+	
 		// 画像ファイルのアップロード
+		var form = this.$el.find('#change_scene_img_form');
+		var formData = new FormData(form.get(0));
 		var self = this;
-		$.ajax(uploadURL, {
+		$.ajax(url, {
 			method: 'POST',
 			contentType: false,
 			processData: false,
@@ -147,7 +153,8 @@ var SceneView = Backbone.View.extend({
 			return;
 		}
 		var clone = this.model.clone();
-		clone.set('name', name);
+		clone.set('name', name, {silent: true});
+		clone.set('id', '', {silent: true});
 		game.get('sceneList').add(clone);
 	},
 	
@@ -175,7 +182,6 @@ var SceneView = Backbone.View.extend({
 		} else {
 			url = '/download?blobkey=' + this.model.get('background');
 		}
-		console.log(url);
 		this.$el.find('#scene').css('background-image', 'url("' + url + '")');
 		this.$el.find('#scene_info .scene_img').attr('src', url);
 	},

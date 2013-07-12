@@ -12,7 +12,6 @@ var Scene = Backbone.Model.extend({
 	sceneHasChanged: function() {
 		Backbone.sync('update', this, {
 			success: function() {
-				console.log('success');
 			},
 			error: function() {
 				console.log('error');

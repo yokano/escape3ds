@@ -48,7 +48,6 @@ $(function() {
 				console.log('delete game error');
 			},
 			success: function() {
-				console.log('success');
 			}
 		});
 	});

@@ -31,7 +31,6 @@ var HeaderView = Backbone.View.extend({
 		// ゲーム更新
 		Backbone.sync('update', game, {
 			success: function() {
-				console.log('success');
 			},
 			error: function() {
 				console.log('error');

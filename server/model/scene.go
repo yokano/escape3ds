@@ -11,10 +11,10 @@ import (
 // シーンオブジェクト。ゲームを構成する場面を表す。
 // 背景画像、開始時のイベント、終了時のイベントを持つ。
 type Scene struct {
-	Name string
-	Background string
-	Enter string
-	Leave string
+	Name string        // シーン名
+	Background string  // 背景画像のBlobkey、設定していなければ空文字
+	Enter string       // シーン開始時のイベント
+	Leave string       // シーン終了時のイベント
 }
 
 // シーンオブジェクトを新しく作成する。
@@ -100,14 +100,22 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 
 	case "PUT":
 		body := GetRequestBodyJSON(r)
-		scene := new(Scene)
-		json.Unmarshal(body, scene)
+		newScene := new(Scene)
+		json.Unmarshal(body, newScene)
 		
 		encodedSceneKey := path[4]
 		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
 		Check(this.c, err)
 		
-		sceneKey, err = datastore.Put(this.c, sceneKey, scene)
+		oldScene := new(Scene)
+		err = datastore.Get(this.c, sceneKey, oldScene)
+		Check(this.c, err)
+		
+		if oldScene.Background != "" && oldScene.Background != newScene.Background && !this.CheckDuplicateBackground(oldScene.Background) {
+			this.DeleteBlob(oldScene.Background)
+		}
+		
+		sceneKey, err = datastore.Put(this.c, sceneKey, newScene)
 		Check(this.c, err)
 		
 		fmt.Fprintf(w, `{}`)
@@ -117,9 +125,35 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
 		Check(this.c, err)
 		
+		scene := new(Scene)
+		err = datastore.Get(this.c, sceneKey, scene)
+		Check(this.c, err)
+		
+		// 他のシーンから画像が参照されていなければ画像を削除する
+		if scene.Background != "" && !this.CheckDuplicateBackground(scene.Background) {
+			this.DeleteBlob(scene.Background)
+		}
+		
 		err = datastore.Delete(this.c, sceneKey)
 		Check(this.c, err)
 
 		fmt.Fprintf(w, `{}`)
 	}
+}
+
+// 指定された背景画像が２つ以上のシーンから参照されているかどうかを調べる。
+// 複数から参照されていれば ture, それ以外は false を返す。
+// background は blobkey。
+func (this *Model) CheckDuplicateBackground(background string) bool {
+	q := datastore.NewQuery("Scene").Filter("Background =", background)
+	count, err := q.Count(this.c)
+	Check(this.c, err)
+	
+	var result bool
+	if count > 1 {
+		result = true
+	} else {
+		result = false
+	}
+	return result
 }

@@ -38,7 +38,7 @@
 					</div>
 					<div><label>ゲーム開始時のシーンにする <input class="is_first_scene" type="checkbox"></input></label></div>
 					<div>背景画像:
-						<form action="{{.UploadURL}}" method="POST" name="form" enctype="multipart/form-data">
+						<form id="change_scene_img_form">
 							<label>
 								<input id="change_scene_img" name="file" type="file"></input>
 								<div><img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>"></div>
@@ -163,8 +163,6 @@
 			], {
 				silent: true
 			});
-			
-			var uploadURL = '{{.UploadURL}}';
 		</script>
 		<script src="/client/editor/editor.js"></script>
 	</body>

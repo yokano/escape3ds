@@ -6,7 +6,6 @@ import(
 	"net/http"
 	"html/template"
 	"appengine"
-	"appengine/blobstore"
 	. "server/model"
 	. "server/lib"
 )
@@ -42,18 +41,11 @@ func (this *View) Editor(encodedGameKey string) {
 		Game *Game
 		GameKey string
 		Scenes map[string]*Scene
-		UploadURL template.URL
 	}
 	contents := new(Contents)
 	contents.Game = game
 	contents.GameKey = encodedGameKey
 	contents.Scenes = model.GetScenes(encodedGameKey)
-	
-	// Blobstore へのアップロード URL
-	url, err := blobstore.UploadURL(this.c, "/uploaded", nil)
-	Check(this.c, err)
-	contents.UploadURL = template.URL(url.String())
-	this.c.Debugf("url: %v", contents.UploadURL)
 	
 	t, err := template.ParseFiles("server/view/html/editor.html")
 	Check(this.c, err)
