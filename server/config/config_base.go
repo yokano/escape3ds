@@ -1,17 +1,20 @@
-/**
- * 設定ファイル
- */
+// 設定ファイルのテンプレート。
+// このファイルをコピーして config.go にする。
+// Twitter, Facebook にアプリを登録した際に発行されるデータを入力する。
 package config
 
-//var HOSTNAME = ""
-//
+//var HOSTNAME = ""  // アプリが動作するホスト名
+
+// Twitter の OAuth 設定項目
 //var TWITTER_CONSUMER_KEY = ""
 //var TWITTER_CALLBACK_URL = ""
 //var TWITTER_CONSUMER_SECRET = ""
-//
+
+// Facebook の OAuth 設定項目
 //var FACEBOOK_CLIENT_ID = ""
 //var FACEBOOK_CLIENT_SECRET = ""
-//
+
+// ユーザ新規登録時に送られるメールテンプレート
 //var INTERIM_MAIL_BODY = `
 //
 //%s 様
