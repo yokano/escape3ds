@@ -51,9 +51,8 @@ func (this *Controller) Handle() {
 	table["/registration"]         = (*Controller).Registration
 	
 	// blob
-	table["/upload"]      = (*Controller).Upload
+	table["/uploaded"]    = (*Controller).Uploaded
 	table["/download"]    = (*Controller).Download
-	table["/delete"]      = (*Controller).Delete
 
 	// admin
 	table["/debug"]             = (*Controller).Debug

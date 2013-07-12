@@ -34,14 +34,16 @@
 				
 				<div id="scene_info">
 					<div>
-						シーン名: <input class="scene_name" type="text" value="<%= name %>"></input>
+							シーン名: <input class="scene_name" type="text" value="<%= name %>">
 					</div>
 					<div><label>ゲーム開始時のシーンにする <input class="is_first_scene" type="checkbox"></input></label></div>
 					<div>背景画像:
-						<label>
-							<input id="change_scene_img" name="file" type="file"></input>
-							<div><img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>"></div>
-						</label>
+						<form action="{{.UploadURL}}" method="POST" name="form" enctype="multipart/form-data">
+							<label>
+								<input id="change_scene_img" name="file" type="file"></input>
+								<div><img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>"></div>
+							</label>
+						</form>
 					</div>
 					<div><button id="edit_enter_event">シーン開始時のイベント</button></div>
 					<div><button id="edit_leave_event">シーン終了時のイベント</button></div>
@@ -162,6 +164,7 @@
 				silent: true
 			});
 			
+			var uploadURL = '{{.UploadURL}}';
 		</script>
 		<script src="/client/editor/editor.js"></script>
 	</body>

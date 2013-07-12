@@ -20,7 +20,6 @@ var Scene = Backbone.Model.extend({
 		});
 	},
 	backgroundHasChanged: function() {
-		console.log('background changed');
 	},
 	initialize: function() {
 		this.urlRoot = '/sync/scene/' + game.id;

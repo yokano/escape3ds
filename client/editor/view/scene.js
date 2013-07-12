@@ -43,6 +43,8 @@ var SceneView = Backbone.View.extend({
 			}
 		});
 		
+		this.$el.find('form').attr('action', uploadURL);
+		
 		return this;
 	},
 	events: {
@@ -61,17 +63,17 @@ var SceneView = Backbone.View.extend({
 	 */
 	sceneImageHasChanged: function() {
 		// 以前の画像ファイルをサーバ上から削除
-		if(this.model.get('background') != '') {
-			
-		}
-		
-		
-		var form = $('<form></form>').append($('#change_scene_img'));
+//		if(this.model.get('background') != '') {
+//			
+//		}
+//		
+//		
+		var form = $('<form name="form"></form>').append($('#change_scene_img'));
 		var formData = new FormData(form.get(0));
 		
 		// 画像ファイルのアップロード
 		var self = this;
-		$.ajax('/upload', {
+		$.ajax(uploadURL, {
 			method: 'POST',
 			contentType: false,
 			processData: false,
@@ -81,7 +83,7 @@ var SceneView = Backbone.View.extend({
 				console.log('error');
 			},
 			success: function(data) {
-				self.model.set('background', data.blobkey);
+				self.model.set('background', data.blobkey)
 			}
 		});
 	},
@@ -173,6 +175,7 @@ var SceneView = Backbone.View.extend({
 		} else {
 			url = '/download?blobkey=' + this.model.get('background');
 		}
+		console.log(url);
 		this.$el.find('#scene').css('background-image', 'url("' + url + '")');
 		this.$el.find('#scene_info .scene_img').attr('src', url);
 	},
