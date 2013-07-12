@@ -2,6 +2,8 @@
  * エントリポイント
  * こちらは開発用のコード
  * デプロイ時にはミニファイしたものを使う
+ * @author y.okano
+ * @file
  */
 
 // ファイル読み込み関数
@@ -13,10 +15,6 @@ var getFileURL = function(file, caller, callback) {
 	fileReader.readAsDataURL(file);
 };
 
-//var game;
-var sceneList;
-var eventList;
-var rootView;
-
-rootView = new RootView();
+// ビューを画面に表示
+var rootView = new RootView();
 $('body').html(rootView.render().el);
