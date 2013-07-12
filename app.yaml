@@ -7,10 +7,25 @@ inbound_services:
 - mail
 
 handlers:
+# /client 内のファイルは Web ブラウザからアクセスされる
 - url: /client
   static_dir: client
 
+# 管理者専用の API を設定 #
+# デバッグモード
 - url: /debug
+  login: admin
+  script: _go_app
+# ユーザ一覧の取得
+- url: /get_users
+  login: admin
+  script: _go_app
+# 仮登録ユーザ一覧の取得
+- url: /get_interim_users
+  login: admin
+  script: _go_app
+# blobstore のクリア
+- url: /clear_blob
   login: admin
   script: _go_app
 
