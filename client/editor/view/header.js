@@ -19,10 +19,12 @@ var HeaderView = Backbone.View.extend({
 		'click #save' : 'save'
 	},
 	changeToSceneMode: function() {
-		console.log('シーン管理画面を表示');
+		$('#item_editor').hidden();
+		$('#scene_editor').show();
 	},
 	changeToItemMode: function() {
-		console.log('アイテム管理画面を表示');
+		$('#item_editor').show();
+		$('#scene_editor').hidden();
 	},
 	backToGameList: function() {
 		console.log('ゲームリストへ戻る');

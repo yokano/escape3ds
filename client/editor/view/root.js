@@ -16,9 +16,11 @@ var RootView = Backbone.View.extend({
 	render: function() {
 		var headerView = new HeaderView({model: game});
 		var sceneEditorView = new SceneEditorView()
+		var itemEditorView = new ItemEditorView();
 		this.$el.append(
 			headerView.render().el,
-			sceneEditorView.render().el
+//			sceneEditorView.render().el
+			itemEditorView.render().el
 		);
 		return this;
 	}

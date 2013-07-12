@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="/client/lib/jcrop/jquery.Jcrop.min.css"></link>
 	</head>
 	<body>
+		<!-- ヘッダ -->
 		<script type="text/template" id="header_view_template">
 			<h1 id="game_title"><%= name %></h1>
 			<div id="buttons">
@@ -19,108 +20,118 @@
 			<hr>
 		</script>
 		
-		<section id="scene_editor">
-			<script type="text/template" id="scene_li_view_template">
-				<img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>">
-				<div class="scene_name"><%= name %></div>
-				<div class="is_first_scene"></div>
-			</script>
-			
-			<script type="text/template" id="scene_view_template">
-				<div class="dropbox" dropzone="copy f:image/*">
-					<div id="scene" style="background-image: url('<% if(background == "") { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>')">
-					</div>
-				</div>
-				
-				<div id="scene_info">
-					<div>
-							シーン名: <input class="scene_name" type="text" value="<%= name %>">
-					</div>
-					<div><label>ゲーム開始時のシーンにする <input class="is_first_scene" type="checkbox"></input></label></div>
-					<div>背景画像:
-						<form id="change_scene_img_form">
-							<label>
-								<input id="change_scene_img" name="file" type="file"></input>
-								<div><img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>"></div>
-							</label>
-						</form>
-					</div>
-					<div><button id="edit_enter_event">シーン開始時のイベント</button></div>
-					<div><button id="edit_leave_event">シーン終了時のイベント</button></div>
-					<div><button id="add_event">イベントを追加</button></div>
-					<div><button id="copy_scene">シーンをコピー</button><button id="delete_scene">シーンを削除</button></div>
-				</div>
-			</script>
-			
-			<script type="text/template" id="event_view_template">
-				<div id="event">
-					<div>
-						イベント名: <input class="event_name" type="text" value="<%= name %>"></input>
-					</div>
-					<div>
-						色（開発用）：
-						<select id="color">
-							<option value="red">赤</option>
-							<option value="blue" selected>青</option>
-							<option value="green">緑</option>
-							<option value="yellow">黄</option>
-							<option value="pink">桃</option>
-							<option value="purple">紫</option>
-							<option value="black">黒</option>
-							<option value="white">白</option>
-						</select>
-					</div>
-					<div>
-						<div>
-							画像
-						</div>
-							<input id="change_event_img" type="file"></input>
-							<div>
-								<button id="remove_img">画像を削除</button>
-							</div>
-						</div>
-					<div><button id="remove_event">イベントを削除</button></div>
-					<div id="event_editor">
-						<div>内容</div>
-						<textarea rows="25" cols="35"></textarea>
-					</div>
-				</div>
-			</script>
-		</section>
+		<!-- シーンリスト -->
+		<script type="text/template" id="scene_li_view_template">
+			<img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>">
+			<div class="scene_name"><%= name %></div>
+			<div class="is_first_scene"></div>
+		</script>
 		
-		<!--
-		<section id="itemeditor">
-			<ul id="item_list">
-				<li>
-					<img class="item_img" src="">
-					<div class="item_name">かなづち</div>
-					<div class="has_default"></div>
-				</li>
-				<li>
-					<img class="item_img" src="">
-					<div class="item_name">白い皿</div>
-					<div class="has_default"></div>
-				</li>
-			</ul>
+		<!-- シーン設定 -->
+		<script type="text/template" id="scene_view_template">
+			<div class="dropbox" dropzone="copy f:image/*">
+				<div id="scene" style="background-image: url('<% if(background == "") { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>')">
+				</div>
+			</div>
 			
+			<div id="scene_info">
+				<div>
+						シーン名: <input class="scene_name" type="text" value="<%= name %>">
+				</div>
+				<div><label>ゲーム開始時のシーンにする <input class="is_first_scene" type="checkbox"></input></label></div>
+				<div>背景画像:
+					<form id="change_scene_img_form">
+						<label>
+							<input id="change_scene_img" name="file" type="file"></input>
+							<div><img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>"></div>
+						</label>
+					</form>
+				</div>
+				<div><button id="edit_enter_event">シーン開始時のイベント</button></div>
+				<div><button id="edit_leave_event">シーン終了時のイベント</button></div>
+				<div><button id="add_event">イベントを追加</button></div>
+				<div><button id="copy_scene">シーンをコピー</button><button id="delete_scene">シーンを削除</button></div>
+			</div>
+		</script>
+		
+		<!-- イベント -->
+		<script type="text/template" id="event_view_template">
+			<div id="event">
+				<div>
+					イベント名: <input class="event_name" type="text" value="<%= name %>"></input>
+				</div>
+				<div>
+					色（開発用）：
+					<select id="color">
+						<option value="red">赤</option>
+						<option value="blue" selected>青</option>
+						<option value="green">緑</option>
+						<option value="yellow">黄</option>
+						<option value="pink">桃</option>
+						<option value="purple">紫</option>
+						<option value="black">黒</option>
+						<option value="white">白</option>
+					</select>
+				</div>
+				<div>
+					<div>
+						画像
+					</div>
+						<input id="change_event_img" type="file"></input>
+						<div>
+							<button id="remove_img">画像を削除</button>
+						</div>
+					</div>
+				<div><button id="remove_event">イベントを削除</button></div>
+				<div id="event_editor">
+					<div>内容</div>
+					<textarea rows="25" cols="35"></textarea>
+				</div>
+			</div>
+		</script>
+
+		<!-- アイテムエディタ -->
+		<script type="text/template" id="item_editor_template">
+			<!--
 			<div id="item_preview">
-				<img src="/client/img/upper.png">
+				<img src="/client/editor/img/upper.png">
 				<div class="item"></div>
 			</div>
 			
-			<div id="item_info">
 				<div>
-					<label>アイテム名: <input class="item_name" type="text"></input></label>
-					<button id="change_item_name">変更</button>
-				</div>
-				<div>
-					<img class="item_img" src="">
-					<input id="change_item_img" type="file"></input>
 				</div>
 				<div><label>最初から持っている: <input id="has_default" type="checkbox"></input></label></div>
 			</div>
-		</section>
-		-->
+			-->
+		</script>
+		
+		<!-- アイテムリスト -->
+		<script type="text/template" id="item_list_template">
+		</script>
+		
+		<!-- アイテムリストのli要素 -->
+		<script type="text/template" id="item_list_item_template">
+			<img class="item_img" src="/client/editor/img/hummer.png">
+			<div>ハンマー</div>
+		</script>
+		
+		<!-- アイテム(上画面)のプレビュー -->
+		<script type="text/template" id="item_preview_template">
+			
+		</script>
+		
+		<!-- アイテムの情報編集ビュー -->
+		<script type="text/template" id="item_info_template">
+			<div>
+				<label>アイテム名:<input type="text" id="item_name"></label>
+			</div>
+			<div>
+				<label>最初から持っている: <input type="checkbox"></label>
+			</div>
+			<div>
+				<button id="delete_item">アイテムを削除</button>
+			</div>
+		</script>
 		
 		<!-- lib -->
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -137,7 +148,7 @@
 		<script src="/client/editor/model/item.js"></script>
 		<script src="/client/editor/model/item_list.js"></script>
 		
-		<!-- view -->
+		<!-- view: scene editor -->
 		<script src="/client/editor/view/root.js"></script>
 		<script src="/client/editor/view/header.js"></script>
 		<script src="/client/editor/view/scene_editor.js"></script>
@@ -146,6 +157,13 @@
 		<script src="/client/editor/view/scene.js"></script>
 		<script src="/client/editor/view/event_area.js"></script>
 		<script src="/client/editor/view/event_editor.js"></script>
+
+		<!-- view: item editor -->
+		<script src="/client/editor/view/item_editor.js"></script>
+		<script src="/client/editor/view/item_list.js"></script>
+		<script src="/client/editor/view/item_list_item.js"></script>
+		<script src="/client/editor/view/item_preview.js"></script>
+		<script src="/client/editor/view/item_info.js"></script>
 		
 		<!-- from datastore -->
 		<script>
