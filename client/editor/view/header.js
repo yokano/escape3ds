@@ -10,6 +10,12 @@ var HeaderView = Backbone.View.extend({
 	template: _.template($('#header_view_template').html()),
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
+		
+		if(rootView.mode == 'scene_editor') {
+			this.$el.find('#scene_mode')
+			
+		}
+		
 		return this;
 	},
 	events: {
