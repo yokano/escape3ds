@@ -20,5 +20,19 @@ var ItemEditorView = Backbone.View.extend({
 		this.$el.append(itemInfoView.render().el);
 		
 		return this;
+	},
+	events: {
+		'click #add_item': 'addItem'
+	},
+	addItem: function() {
+		var name = window.prompt('新しいアイテムの名前を入力してください');
+		if(name == '') {
+			return;
+		}
+		
+		game.get('itemList').add({
+			name: name,
+			img: '/client/editor/img/blank_item.png'
+		});
 	}
 })

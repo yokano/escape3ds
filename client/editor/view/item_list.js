@@ -9,9 +9,7 @@ var ItemListView = Backbone.View.extend({
 	template: _.template($('#item_list_template').html()),
 	initialize: function() {
 		this.model = game.get('itemList');
-		this.listenTo(this.model, 'change', function() {
-			console.log('changed');
-		});
+		this.listenTo(this.model, 'add', this.render);
 	},
 	render: function() {
 		this.$el.html(this.template());

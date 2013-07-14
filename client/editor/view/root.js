@@ -13,7 +13,7 @@
 var RootView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'root_view',
-	mode: 'scene_editor',  // 表示中のエディタ
+	mode: 'item_editor',  // 表示中のエディタ
 	render: function() {
 		this.$el.empty();
 		
