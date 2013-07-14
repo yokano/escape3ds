@@ -163,6 +163,9 @@ button {
 #item_list li.selected {
 	background-color: yellow;
 }
+#item_list li .has_first_icon {
+	float: right;
+}
 
 #item_list .item_img {
 	width: 50px;

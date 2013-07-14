@@ -16,7 +16,8 @@ var ItemInfoView = Backbone.View.extend({
 		});
 	},
 	events: {
-		'click #delete_item': 'deleteItemButtonHasClicked'
+		'click #delete_item': 'deleteItemButtonHasClicked',
+		'click #has_first': 'hasFirstCheckboxHasClicked'
 	},
 	render: function() {
 		if(this.model == null) {
@@ -32,5 +33,13 @@ var ItemInfoView = Backbone.View.extend({
 	},
 	deleteItemButtonHasClicked: function() {
 		game.get('itemList').remove(this.model);
+	},
+	hasFirstCheckboxHasClicked: function() {
+		this.model.set('hasFirst', !this.model.get('hasFirst'));
+		if(this.model.get('hasFirst')) {
+			this.$el.find('has_first').attr('checked', 'true');
+		} else {
+			this.$el.find('has_first').attr('checked', 'false');
+		}
 	}
 });

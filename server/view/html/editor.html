@@ -103,6 +103,9 @@
 		<script type="text/template" id="item_list_item_template">
 			<img class="item_img" src="<%= img %>">
 			<div><%= name %></div>
+			<% if(hasFirst) { %>
+				<img class="has_first_icon" src="/client/editor/img/has_first_icon.png">
+			<% } %>
 		</script>
 		
 		<!-- アイテム(上画面)のプレビュー -->
@@ -120,13 +123,13 @@
 				<div class="item_img"></div>
 			</div>
 			<div>
-				<label>最初から持っている: <input type="checkbox"></label>
+				<label>最初から持っている: <input id="has_first" type="checkbox" <% if(hasFirst) { %>checked<% } %>></label>
 			</div>
 			<div>
 				<button id="delete_item">アイテムを削除</button>
 			</div>
 		</script>
-		
+	
 		<!-- lib -->
 		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 		<script src="/client/lib/underscorejs/underscore-min.js"></script>
@@ -178,7 +181,7 @@
 			
 			// アイテムデータサンプル
 			game.get('itemList').add([
-				{name: 'ハンマー', img: '/client/editor/img/hummer.png'},
+				{name: 'ハンマー', img: '/client/editor/img/hummer.png', hasFirst: true},
 				{name: '皿', img: '/client/editor/img/dish.png'}
 			]);
 		</script>

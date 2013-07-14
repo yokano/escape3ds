@@ -8,6 +8,7 @@ var ItemListItem = Backbone.View.extend({
 	template: _.template($('#item_list_item_template').html()),
 	initialize: function() {
 		this.listenTo(this.model, 'change:selected', this.render);
+		this.listenTo(this.model, 'change:hasFirst', this.render);
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
