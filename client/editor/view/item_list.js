@@ -9,7 +9,7 @@ var ItemListView = Backbone.View.extend({
 	template: _.template($('#item_list_template').html()),
 	initialize: function() {
 		this.model = game.get('itemList');
-		this.listenTo(this.model, 'add', this.render);
+		this.listenTo(this.model, 'add remove', this.render);
 	},
 	render: function() {
 		this.$el.html(this.template());

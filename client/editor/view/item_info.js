@@ -15,6 +15,9 @@ var ItemInfoView = Backbone.View.extend({
 			}
 		});
 	},
+	events: {
+		'click #delete_item': 'deleteItemButtonHasClicked'
+	},
 	render: function() {
 		if(this.model == null) {
 			this.$el.hide();
@@ -24,7 +27,10 @@ var ItemInfoView = Backbone.View.extend({
 		this.$el.html(this.template(this.model.toJSON()));
 		this.$el.find('.item_img').css('background-image', 'url("' + this.model.get('img') + '")');
 		this.$el.show();
-	
+		
 		return this;
+	},
+	deleteItemButtonHasClicked: function() {
+		game.get('itemList').remove(this.model);
 	}
 });
