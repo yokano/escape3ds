@@ -113,7 +113,11 @@
 		<!-- アイテムの情報編集ビュー -->
 		<script type="text/template" id="item_info_template">
 			<div>
-				<label>アイテム名:<input type="text" id="item_name"></label>
+				<label>アイテム名:<input type="text" id="item_name" value="<%= name %>"></label>
+			</div>
+			<div>
+				<label>画像: <input type="file"></input></label>
+				<div class="item_img"></div>
 			</div>
 			<div>
 				<label>最初から持っている: <input type="checkbox"></label>

@@ -6,8 +6,25 @@ var ItemInfoView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'item_info',
 	template: _.template($('#item_info_template').html()),
+	initialize: function() {
+		this.model = null;
+		this.listenTo(game.get('itemList'), 'change:selected', function(item) {
+			if(item.get('selected')) {
+				this.model = item;
+				this.render();
+			}
+		});
+	},
 	render: function() {
-		this.$el.html(this.template());
+		if(this.model == null) {
+			this.$el.hide();
+			return this;
+		}
+		
+		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.find('.item_img').css('background-image', 'url("' + this.model.get('img') + '")');
+		this.$el.show();
+	
 		return this;
 	}
 });

@@ -4,6 +4,7 @@
 var Item = Backbone.Model.extend({
 	defaults: {
 		name: '',
-		img: ''
+		img: '',
+		selected: false  // 現在選択されているかどうか
 	}
 });
