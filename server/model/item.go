@@ -109,6 +109,8 @@ func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []strin
 		err = datastore.Get(this.c, itemKey, item)
 		Check(this.c, err)
 		
+		this.DeleteBlob(item.Img)
+		
 		err = datastore.Delete(this.c, itemKey)
 		Check(this.c, err)
 
