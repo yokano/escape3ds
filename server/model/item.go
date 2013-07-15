@@ -88,7 +88,19 @@ func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []strin
 		this.c.Debugf("PUT")
 	case "GET":
 		this.c.Debugf("GET")
+		
 	case "DELETE":
-		this.c.Debugf("DELETE")
+		encodedItemKey := path[4]
+		itemKey, err := datastore.DecodeKey(encodedItemKey)
+		Check(this.c, err)
+		
+		item := new(Item)
+		err = datastore.Get(this.c, itemKey, item)
+		Check(this.c, err)
+		
+		err = datastore.Delete(this.c, itemKey)
+		Check(this.c, err)
+
+		fmt.Fprintf(w, `{}`)
 	}
 }
