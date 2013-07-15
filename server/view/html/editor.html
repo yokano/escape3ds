@@ -110,7 +110,13 @@
 		
 		<!-- アイテム(上画面)のプレビュー -->
 		<script type="text/template" id="item_preview_template">
-			
+			<% _.each(items, function(item) { %>
+				<% if(item.get('img') == '') { %>
+					<div class="item_img" style="background-image: url('/client/editor/img/blank_item.png')"></div>
+				<% } else { %>
+					<div class="item_img" style="background-image: url('/download?blobkey=<%= item.get('img') %>')"></div>
+				<% } %>
+			<% }) %>
 		</script>
 		
 		<!-- アイテムの情報編集ビュー -->

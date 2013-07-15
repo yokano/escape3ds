@@ -8,7 +8,7 @@ var ItemList = Backbone.Collection.extend({
 		this.on('change:selected', this.itemHasSelected);
 		this.on('add', this.itemHasAdded);
 		this.on('remove', this.itemHasRemoved);
-		this.on('change:name change:img', this.itemHasChanged);
+		this.on('change:name change:img change:hasFirst', this.itemHasChanged);
 	},
 	
 	/**

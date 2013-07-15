@@ -180,6 +180,15 @@ button {
 	width: 320px;
 	height: 213px;
 	background-image: url("/client/editor/img/upper.png");
+	padding-top: 12px;
+	padding-left: 23px;
+}
+#item_preview .item_img {
+	width: 50px;
+	height: 50px;
+	margin-right: 7px;
+	margin-bottom: 6px;
+	float: left;
 }
 
 #item_info {

@@ -13,7 +13,7 @@ var ItemEditorView = Backbone.View.extend({
 		var itemListView = new ItemListView();
 		this.$el.append(itemListView.render().el);
 		
-		var itemPreview = new ItemPreview();
+		var itemPreview = new ItemPreview({model: game.get('itemList')});
 		this.$el.append(itemPreview.render().el);
 		
 		var itemInfoView = new ItemInfoView();
