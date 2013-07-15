@@ -17,7 +17,8 @@ var ItemInfoView = Backbone.View.extend({
 	},
 	events: {
 		'click #delete_item': 'deleteItemButtonHasClicked',
-		'click #has_first': 'hasFirstCheckboxHasClicked'
+		'click #has_first': 'hasFirstCheckboxHasClicked',
+		'change #item_name': 'itemNameHasChanged'
 	},
 	render: function() {
 		if(this.model == null) {
@@ -41,5 +42,8 @@ var ItemInfoView = Backbone.View.extend({
 		} else {
 			this.$el.find('has_first').attr('checked', 'false');
 		}
+	},
+	itemNameHasChanged: function(event) {
+		this.model.set('name', $(event.target).val());
 	}
 });
