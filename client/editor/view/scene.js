@@ -60,20 +60,7 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 */
 	sceneImageHasChanged: function() {
-	
-		// アップロード先URLを発行してもらう
-		var url;
-		$.ajax('/geturl', {
-			method: 'GET',
-			dataType: 'json',
-			async: false,
-			error: function() {
-				console.log('アップロード先URLの取得に失敗しました');
-			},
-			success: function(data) {
-				url = data.url;
-			}
-		});
+		var url = geturl();
 	
 		// 画像ファイルのアップロード
 		var form = this.$el.find('#change_scene_img_form');

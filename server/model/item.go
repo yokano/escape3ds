@@ -85,7 +85,18 @@ func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []strin
 		fmt.Fprintf(w, `{"itemKey":"%s"}`, encodedItemKey)
 		
 	case "PUT":
-		this.c.Debugf("PUT")
+		body := GetRequestBodyJSON(r)
+		item := new(Item)
+		json.Unmarshal(body, item)
+		
+		itemKey, err := datastore.DecodeKey(path[4])
+		Check(this.c, err)
+
+		itemKey, err = datastore.Put(this.c, itemKey, item)
+		Check(this.c, err)
+		
+		fmt.Fprintf(w, `{}`)
+		
 	case "GET":
 		this.c.Debugf("GET")
 		

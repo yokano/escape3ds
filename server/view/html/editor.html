@@ -101,7 +101,7 @@
 		
 		<!-- アイテムリストのli要素 -->
 		<script type="text/template" id="item_list_item_template">
-			<img class="item_img" src="<%= img %>">
+			<img class="item_img" src="<% if(img == '') { %>/client/editor/img/blank_item.png<% } else { %>/download?blobkey=<%= img %><% } %>">
 			<div><%= name %></div>
 			<% if(hasFirst) { %>
 				<img class="has_first_icon" src="/client/editor/img/has_first_icon.png">
@@ -119,8 +119,11 @@
 				<label>アイテム名:<input type="text" id="item_name" value="<%= name %>"></label>
 			</div>
 			<div>
-				<label>画像: <input type="file"></input></label>
-				<div class="item_img"></div>
+				<form id="item_img_form">
+					<label>画像: <input name="file" type="file"></input></label>
+				</form>
+				<div class="item_img">
+				</div>
 			</div>
 			<div>
 				<label>最初から持っている: <input id="has_first" type="checkbox" <% if(hasFirst) { %>checked<% } %>></label>
@@ -189,6 +192,8 @@
 				silent: true
 			});
 		</script>
+		
+		<script src="/client/editor/functions.js"></script>
 		<script src="/client/editor/editor.js"></script>
 	</body>
 </html>

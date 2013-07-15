@@ -18,7 +18,9 @@ var ItemInfoView = Backbone.View.extend({
 	events: {
 		'click #delete_item': 'deleteItemButtonHasClicked',
 		'click #has_first': 'hasFirstCheckboxHasClicked',
-		'change #item_name': 'itemNameHasChanged'
+		'change #item_name': 'itemNameHasChanged',
+		'change #item_img_form input': 'itemImgHasChanged',
+		'click .item_img': function() { $('#item_img_form input').click(); }
 	},
 	render: function() {
 		if(this.model == null) {
@@ -27,14 +29,24 @@ var ItemInfoView = Backbone.View.extend({
 		}
 		
 		this.$el.html(this.template(this.model.toJSON()));
-		this.$el.find('.item_img').css('background-image', 'url("' + this.model.get('img') + '")');
+		
+		var url = (this.model.get('img') == '') ? '/client/editor/img/blank_item.png' : '/download?blobkey=' + this.model.get('img');
+		this.$el.find('.item_img').css('background-image', 'url("' + url + '")');
 		this.$el.show();
 		
 		return this;
 	},
+	
+	/**
+	 * アイテムの削除ボタンが押された
+	 */
 	deleteItemButtonHasClicked: function() {
 		game.get('itemList').remove(this.model);
 	},
+	
+	/**
+	 * 「最初から持っている」がチェックされた
+	 */
 	hasFirstCheckboxHasClicked: function() {
 		this.model.set('hasFirst', !this.model.get('hasFirst'));
 		if(this.model.get('hasFirst')) {
@@ -43,7 +55,36 @@ var ItemInfoView = Backbone.View.extend({
 			this.$el.find('has_first').attr('checked', 'false');
 		}
 	},
+	
+	/**
+	 * アイテム名が変更された
+	 */
 	itemNameHasChanged: function(event) {
 		this.model.set('name', $(event.target).val());
+	},
+	
+	/**
+	 * アイテムの画像が変更された
+	 */
+	itemImgHasChanged: function(event) {
+		var form = this.$el.find('#item_img_form').get(0);
+		var formData = new FormData(form);
+		var url = geturl();
+		
+		var self = this;
+		$.ajax(url, {
+			method: 'POST',
+			contentType: false,
+			processData: false,
+			data: formData,
+			dataType: 'json',
+			error: function() {
+				console.log('error');
+			},
+			success: function(data) {
+				self.model.set('img', data.blobkey)
+				self.$el.find('.item_img').css('background-image', 'url("/download?blobkey=' + data.blobkey + '")');
+			}
+		});
 	}
 });

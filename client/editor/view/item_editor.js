@@ -31,8 +31,7 @@ var ItemEditorView = Backbone.View.extend({
 		}
 		
 		game.get('itemList').add({
-			name: name,
-			img: '/client/editor/img/blank_item.png'
+			name: name
 		});
 	}
 })

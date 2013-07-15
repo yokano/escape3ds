@@ -8,7 +8,12 @@ var ItemList = Backbone.Collection.extend({
 		this.on('change:selected', this.itemHasSelected);
 		this.on('add', this.itemHasAdded);
 		this.on('remove', this.itemHasRemoved);
+		this.on('change:name change:img', this.itemHasChanged);
 	},
+	
+	/**
+	 * アイテムが選択された
+	 */
 	itemHasSelected: function(selected) {
 		if(selected.get('selected') == false) {
 			return;
@@ -20,6 +25,10 @@ var ItemList = Backbone.Collection.extend({
 			}
 		});
 	},
+	
+	/**
+	 * アイテムが追加された
+	 */
 	itemHasAdded: function(item) {
 		Backbone.sync('create', item, {
 			success: function() {
@@ -30,10 +39,28 @@ var ItemList = Backbone.Collection.extend({
 			}
 		});
 	},
+	
+	/**
+	 * アイテムが削除された
+	 */
 	itemHasRemoved: function(item) {
 		Backbone.sync('delete', item, {
 			success: function() {
 				console.log('success');
+			},
+			error: function() {
+				console.log('error');
+			}
+		});
+	},
+	
+	/**
+	 * アイテムの内容が更新された
+	 */
+	itemHasChanged: function(item) {
+		Backbone.sync('update', item, {
+			success: function() {
+				console.log('updating item successed');
 			},
 			error: function() {
 				console.log('error');

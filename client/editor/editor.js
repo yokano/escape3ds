@@ -6,15 +6,6 @@
  * @file
  */
 
-// ファイル読み込み関数
-var getFileURL = function(file, caller, callback) {
-	var fileReader = new FileReader();
-	fileReader.onload = function(data) {
-		callback.call(caller, data.target.result);
-	};
-	fileReader.readAsDataURL(file);
-};
-
 // ビューを画面に表示
 var rootView = new RootView();
 $('body').html(rootView.render().el);
