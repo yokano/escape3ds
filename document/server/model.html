@@ -80,6 +80,15 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.AddUser">func (this *Model) AddUser(user *User) string</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.CheckDuplicateBackground">func (this *Model) CheckDuplicateBackground(background string) bool</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.ClearBlob">func (this *Model) ClearBlob()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.DeleteBlob">func (this *Model) DeleteBlob(key string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.DeleteGame">func (this *Model) DeleteGame(encodedGameKey string)</a></dd>
 				
 					
@@ -307,7 +316,7 @@ datastore の ancestor path を参照。
 				
 			
 				
-				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=989:1071#L23">AddScene</a></h3>
+				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=1164:1246#L23">AddScene</a></h3>
 				<pre>func (this *Model) AddScene(scene *Scene, id string, encodedGameKey string) string</pre>
 				<p>
 シーンをデータストアへ追加する。
@@ -332,6 +341,39 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
+				<h3 id="Model.CheckDuplicateBackground">func (*Model) <a href="/target/scene.go?s=4744:4811#L137">CheckDuplicateBackground</a></h3>
+				<pre>func (this *Model) CheckDuplicateBackground(background string) bool</pre>
+				<p>
+指定された背景画像が２つ以上のシーンから参照されているかどうかを調べる。
+複数から参照されていれば ture, それ以外は false を返す。
+background は blobkey。
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.ClearBlob">func (*Model) <a href="/target/blob.go?s=2788:2818#L77">ClearBlob</a></h3>
+				<pre>func (this *Model) ClearBlob()</pre>
+				<p>
+すべてのblobを削除する。管理者専用。
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.DeleteBlob">func (*Model) <a href="/target/blob.go?s=2494:2535#L67">DeleteBlob</a></h3>
+				<pre>func (this *Model) DeleteBlob(key string)</pre>
+				<p>
+blogstore に保存されているフィアルを削除する。
+引数として削除する blobkey を渡す。
+</p>
+
+				
+				
+			
+				
 				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2708:2760#L59">DeleteGame</a></h3>
 				<pre>func (this *Model) DeleteGame(encodedGameKey string)</pre>
 				<p>
@@ -344,7 +386,7 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
-				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=1416:1457#L33">DeleteScene</a></h3>
+				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=1591:1632#L33">DeleteScene</a></h3>
 				<pre>func (this *Model) DeleteScene(id string)</pre>
 				<p>
 引数として指定された id のシーンをデータストアから削除する。
@@ -420,7 +462,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=1837:1906#L44">GetScenes</a></h3>
+				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=2012:2081#L44">GetScenes</a></h3>
 				<pre>func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene</pre>
 				<p>
 ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
@@ -511,7 +553,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=401:467#L11">NewScene</a></h3>
+				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=576:642#L11">NewScene</a></h3>
 				<pre>func (this *Model) NewScene(name string, background string) *Scene</pre>
 				<p>
 シーンオブジェクトを新しく作成する。
@@ -576,7 +618,7 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
 				
 			
 				
-				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2696:2779#L73">SyncScene</a></h3>
+				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2871:2954#L73">SyncScene</a></h3>
 				<pre>func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
 シーンデータの同期処理を行う。
@@ -600,7 +642,7 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				
 			
 				
-				<h3 id="Model.UpdateScene">func (*Model) <a href="/target/scene.go?s=1545:1600#L38">UpdateScene</a></h3>
+				<h3 id="Model.UpdateScene">func (*Model) <a href="/target/scene.go?s=1720:1775#L38">UpdateScene</a></h3>
 				<pre>func (this *Model) UpdateScene(id string, scene *Scene)</pre>
 				<p>
 id で指定されたシーンを新しいシーン scene で更新する。
@@ -612,12 +654,12 @@ id で指定されたシーンを新しいシーン scene で更新する。
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.go?s=260:341#L3">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.go?s=260:516#L3">Scene</a></h2>
 			<pre>type Scene struct {
-    Name       string
-    Background string
-    Enter      string
-    Leave      string
+    Name       string <span class="comment">// シーン名</span>
+    Background string <span class="comment">// 背景画像のBlobkey、設定していなければ空文字</span>
+    Enter      string <span class="comment">// シーン開始時のイベント</span>
+    Leave      string <span class="comment">// シーン終了時のイベント</span>
 }</pre>
 			<p>
 シーンオブジェクト。ゲームを構成する場面を表す。

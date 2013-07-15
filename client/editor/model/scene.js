@@ -21,7 +21,7 @@ var Scene = Backbone.Model.extend({
 	backgroundHasChanged: function() {
 	},
 	initialize: function() {
-		this.urlRoot = '/sync/scene/' + game.id;
+		this.urlRoot = '/sync/scene/' + GAME_ID;
 		this.set('eventList', new EventList());
 		this.on('change', this.sceneHasChanged);
 		this.on('change:background', this.backgroundHasChanged);

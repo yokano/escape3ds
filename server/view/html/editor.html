@@ -164,8 +164,9 @@
 		
 		<!-- from datastore -->
 		<script>
+			var GAME_ID = {{.GameKey}};
 			var game = new Game({
-				id: '{{.GameKey}}',
+				id: 'GAME_ID',
 				name: '{{.Game.Name}}',
 				description: '{{.Game.Description}}'
 			});
@@ -183,7 +184,9 @@
 			game.get('itemList').add([
 				{name: 'ハンマー', img: '/client/editor/img/hummer.png', hasFirst: true},
 				{name: '皿', img: '/client/editor/img/dish.png'}
-			]);
+			], {
+				silent: true
+			});
 		</script>
 		<script src="/client/editor/editor.js"></script>
 	</body>

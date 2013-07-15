@@ -69,10 +69,16 @@
 					<dd>&nbsp; &nbsp; <a href="#Controller.CallbackTwitter">func (this *Controller) CallbackTwitter(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Controller.ClearBlob">func (this *Controller) ClearBlob(w http.ResponseWriter, r *http.Request)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Controller.CloseSession">func (this *Controller) CloseSession(c appengine.Context, w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.Debug">func (this *Controller) Debug(w http.ResponseWriter, r *http.Request)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.Delete">func (this *Controller) Delete(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.DeleteCookie">func (this *Controller) DeleteCookie(c appengine.Context, w http.ResponseWriter)</a></dd>
@@ -97,6 +103,9 @@
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.GetSession">func (this *Controller) GetSession(c appengine.Context, r *http.Request) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.GetURL">func (this *Controller) GetURL(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.GetUsers">func (this *Controller) GetUsers(w http.ResponseWriter, r *http.Request)</a></dd>
@@ -138,7 +147,7 @@
 					<dd>&nbsp; &nbsp; <a href="#Controller.Top">func (this *Controller) Top(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Controller.Upload">func (this *Controller) Upload(w http.ResponseWriter, r *http.Request)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Controller.Uploaded">func (this *Controller) Uploaded(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 			
 			
@@ -155,9 +164,11 @@
 			
 				<a href="/target/api.go">api.go</a>
 			
+				<a href="/target/blob.go">blob.go</a>
+			
 				<a href="/target/controller.go">controller.go</a>
 			
-				<a href="/target/login.go">login.go</a>
+				<a href="/target/oauth.go">oauth.go</a>
 			
 				<a href="/target/page.go">page.go</a>
 			
@@ -220,7 +231,7 @@ Controller オブジェクトを作成して返す
 				
 			
 				
-				<h3 id="Controller.CallbackFacebook">func (*Controller) <a href="/target/login.go?s=3360:3439#L89">CallbackFacebook</a></h3>
+				<h3 id="Controller.CallbackFacebook">func (*Controller) <a href="/target/oauth.go?s=3360:3439#L89">CallbackFacebook</a></h3>
 				<pre>func (this *Controller) CallbackFacebook(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 Facebook でユーザがアクセスを許可した時に呼び出されるコールバック関数
@@ -230,10 +241,20 @@ Facebook でユーザがアクセスを許可した時に呼び出されるコ�
 				
 			
 				
-				<h3 id="Controller.CallbackTwitter">func (*Controller) <a href="/target/login.go?s=670:749#L14">CallbackTwitter</a></h3>
+				<h3 id="Controller.CallbackTwitter">func (*Controller) <a href="/target/oauth.go?s=670:749#L14">CallbackTwitter</a></h3>
 				<pre>func (this *Controller) CallbackTwitter(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 Twitter でユーザが許可をした時に呼び出されるコールバック関数
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.ClearBlob">func (*Controller) <a href="/target/admin.go?s=1232:1305#L44">ClearBlob</a></h3>
+				<pre>func (this *Controller) ClearBlob(w http.ResponseWriter, r *http.Request)</pre>
+				<p>
+blobsotre のクリア。管理者専用。
 </p>
 
 				
@@ -254,6 +275,17 @@ Twitter でユーザが許可をした時に呼び出されるコールバック
 				<pre>func (this *Controller) Debug(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 デバッグツールの表示
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.Delete">func (*Controller) <a href="/target/blob.go?s=1042:1112#L26">Delete</a></h3>
+				<pre>func (this *Controller) Delete(w http.ResponseWriter, r *http.Request)</pre>
+				<p>
+blobstore から指定された blobkey の Blob を削除する。
+既に設定されている画像を変更した時に、以前の画像を削除するために使う。
 </p>
 
 				
@@ -281,7 +313,7 @@ Twitter でユーザが許可をした時に呼び出されるコールバック
 				
 			
 				
-				<h3 id="Controller.Download">func (*Controller) <a href="/target/api.go?s=5581:5653#L167">Download</a></h3>
+				<h3 id="Controller.Download">func (*Controller) <a href="/target/blob.go?s=568:640#L12">Download</a></h3>
 				<pre>func (this *Controller) Download(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 blobstore から blogkey に関連付いたファイルをクライアントへ渡す。
@@ -345,6 +377,16 @@ http.HandleFunc() は引数として func(http.ResponseWriter, *http.Request) �
 				
 			
 				
+				<h3 id="Controller.GetURL">func (*Controller) <a href="/target/blob.go?s=1334:1404#L35">GetURL</a></h3>
+				<pre>func (this *Controller) GetURL(w http.ResponseWriter, r *http.Request)</pre>
+				<p>
+blobstore にファイルをアップロードするためのURLを返す。
+</p>
+
+				
+				
+			
+				
 				<h3 id="Controller.GetUsers">func (*Controller) <a href="/target/admin.go?s=836:908#L28">GetUsers</a></h3>
 				<pre>func (this *Controller) GetUsers(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
@@ -388,7 +430,7 @@ Ajax のリクエストパラメータとして渡されたユーザを仮登録
 				
 			
 				
-				<h3 id="Controller.LoginFacebook">func (*Controller) <a href="/target/login.go?s=1935:2012#L56">LoginFacebook</a></h3>
+				<h3 id="Controller.LoginFacebook">func (*Controller) <a href="/target/oauth.go?s=1935:2012#L56">LoginFacebook</a></h3>
 				<pre>func (this *Controller) LoginFacebook(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 Facebook のログインボタンが押された時の処理
@@ -398,7 +440,7 @@ Facebook のログインボタンが押された時の処理
 				
 			
 				
-				<h3 id="Controller.LoginTwitter">func (*Controller) <a href="/target/login.go?s=210:286#L6">LoginTwitter</a></h3>
+				<h3 id="Controller.LoginTwitter">func (*Controller) <a href="/target/oauth.go?s=210:286#L6">LoginTwitter</a></h3>
 				<pre>func (this *Controller) LoginTwitter(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 Twitter ボタンが押された時の処理
@@ -429,7 +471,7 @@ Twitter ボタンが押された時の処理
 				
 			
 				
-				<h3 id="Controller.RequestFacebookToken">func (*Controller) <a href="/target/login.go?s=2478:2580#L65">RequestFacebookToken</a></h3>
+				<h3 id="Controller.RequestFacebookToken">func (*Controller) <a href="/target/oauth.go?s=2478:2580#L65">RequestFacebookToken</a></h3>
 				<pre>func (this *Controller) RequestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]string</pre>
 				<p>
 Facebook へアクセストークンを要求する。
@@ -467,7 +509,7 @@ Facebook へアクセストークンを要求する。
 				
 			
 				
-				<h3 id="Controller.SyncHandler">func (*Controller) <a href="/target/api.go?s=6224:6299#L188">SyncHandler</a></h3>
+				<h3 id="Controller.SyncHandler">func (*Controller) <a href="/target/api.go?s=5235:5310#L154">SyncHandler</a></h3>
 				<pre>func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 /sync/* にマッチしたら呼び出される。
@@ -489,11 +531,10 @@ URL を解析して更に細かいハンドラへ処理を割り振る。
 				
 			
 				
-				<h3 id="Controller.Upload">func (*Controller) <a href="/target/api.go?s=5169:5239#L153">Upload</a></h3>
-				<pre>func (this *Controller) Upload(w http.ResponseWriter, r *http.Request)</pre>
+				<h3 id="Controller.Uploaded">func (*Controller) <a href="/target/blob.go?s=210:282#L3">Uploaded</a></h3>
+				<pre>func (this *Controller) Uploaded(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-クライアントからアップロードされたファイルを blobstore に保存して blobkey を返す。
-Ajax で使う。method は POST。
+クライアントからファイルがアップロードされたらblobkeyを返す
 </p>
 
 				
