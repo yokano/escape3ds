@@ -32,7 +32,7 @@ var ItemList = Backbone.Collection.extend({
 	itemHasAdded: function(item) {
 		Backbone.sync('create', item, {
 			success: function(data) {
-				item.id = data.itemKey;
+				item.set('id', data.itemKey);
 			},
 			error: function() {
 				console.log('error');

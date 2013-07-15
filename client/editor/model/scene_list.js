@@ -18,7 +18,6 @@ var SceneList = Backbone.Collection.extend({
 		})
 	},
 	added: function(scene) {
-		console.log('シーンが新規追加されました');
 		// シーンが追加されたらデータベースへ追加する
 		Backbone.sync('create', scene, {
 			success: function(data) {
