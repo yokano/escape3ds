@@ -40,6 +40,31 @@ func (this *Model) AddItem(item *Item, encodedGameKey string) string {
 	return encodedItemKey
 }
 
+// アイテム一覧の取得。
+func (this *Model) GetItems(encodedGameKey string) map[string]*Item {
+	gameKey, err := datastore.DecodeKey(encodedGameKey)
+	Check(this.c, err)
+	
+	query := datastore.NewQuery("Item").Ancestor(gameKey)
+	count, err := query.Count(this.c)
+	Check(this.c, err)
+
+	iterator := query.Run(this.c)
+	items := make(map[string]*Item, count)
+	
+	for ;; {
+		item := new(Item)
+		itemKey, err := iterator.Next(item)
+		if err != nil {
+			break
+		}
+		encodedItemKey := itemKey.Encode()
+		items[encodedItemKey] = item
+	}
+	
+	return items
+}
+
 // アイテムの同期
 func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []string) {
 	switch r.Method {
@@ -58,7 +83,6 @@ func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []strin
 		encodedItemKey := itemKey.Encode()
 		
 		fmt.Fprintf(w, `{"itemKey":"%s"}`, encodedItemKey)
-		
 		
 	case "PUT":
 		this.c.Debugf("PUT")

@@ -171,8 +171,8 @@
 				description: '{{.Game.Description}}'
 			});
 			
+			// シーンリスト初期化
 			game.get('sceneList').add([
-				// ココにシーンリスト
 				{{range $key, $val := .Scenes}}
 					{id: {{$key}}, name: {{$val.Name}}, background: {{$val.Background}}},
 				{{end}}
@@ -180,10 +180,11 @@
 				silent: true
 			});
 			
-			// アイテムデータサンプル
+			// アイテムリスト初期化
 			game.get('itemList').add([
-				{name: 'ハンマー', img: '/client/editor/img/hummer.png', hasFirst: true},
-				{name: '皿', img: '/client/editor/img/dish.png'}
+				{{range $key, $val := .Items}}
+					{id: {{$key}}, name: {{$val.Name}}, img: {{$val.Img}}, hasFirst: {{$val.HasFirst}}},
+				{{end}}
 			], {
 				silent: true
 			});

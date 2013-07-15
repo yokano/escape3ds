@@ -41,12 +41,14 @@ func (this *View) Editor(encodedGameKey string) {
 		Game *Game
 		GameKey string
 		Scenes map[string]*Scene
+		Items map[string]*Item
 	}
 	contents := new(Contents)
 	contents.Game = game
 	contents.GameKey = encodedGameKey
 	contents.Scenes = model.GetScenes(encodedGameKey)
-	
+	contents.Items = model.GetItems(encodedGameKey)
+		
 	t, err := template.ParseFiles("server/view/html/editor.html")
 	Check(this.c, err)
 	
