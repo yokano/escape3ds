@@ -45,9 +45,20 @@ var ItemInfoView = Backbone.View.extend({
 	},
 	
 	/**
-	 * 「最初から持っている」がチェックされた
+	 * 「最初から持っている」がクリックされた
 	 */
-	hasFirstCheckboxHasClicked: function() {
+	hasFirstCheckboxHasClicked: function(event) {
+		// 最初から持てるアイテムは 10 個まで
+		if(!this.model.get('hasFirst')) {
+			var hasFirstItems = game.get('itemList').filter(function(item) {
+				return item.get('hasFirst');
+			});
+			if(hasFirstItems.length >= 10) {
+				alert('最初から持てるアイテムは１０個までです。既に１０個のアイテムが設定されています。');
+				return false;
+			}
+		}
+
 		this.model.set('hasFirst', !this.model.get('hasFirst'));
 		if(this.model.get('hasFirst')) {
 			this.$el.find('has_first').attr('checked', 'true');

@@ -10,5 +10,4 @@ var Item = Backbone.Model.extend({
 	},
 	initialize: function() {
 		this.urlRoot = '/sync/item/' + GAME_ID;
-	}
-});
+	}});

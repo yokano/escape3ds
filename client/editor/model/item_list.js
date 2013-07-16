@@ -45,9 +45,6 @@ var ItemList = Backbone.Collection.extend({
 	 */
 	itemHasRemoved: function(item) {
 		Backbone.sync('delete', item, {
-			success: function() {
-				console.log('success');
-			},
 			error: function() {
 				console.log('error');
 			}
@@ -59,9 +56,6 @@ var ItemList = Backbone.Collection.extend({
 	 */
 	itemHasChanged: function(item) {
 		Backbone.sync('update', item, {
-			success: function() {
-				console.log('updating item successed');
-			},
 			error: function() {
 				console.log('error');
 			}
