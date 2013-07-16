@@ -41,7 +41,10 @@ var ItemInfoView = Backbone.View.extend({
 	 * アイテムの削除ボタンが押された
 	 */
 	deleteItemButtonHasClicked: function() {
-		game.get('itemList').remove(this.model);
+		var message = 'アイテム「' + this.model.get('name') + '」を削除しますか';
+		if(window.confirm(message)) {
+			game.get('itemList').remove(this.model);
+		}
 	},
 	
 	/**
