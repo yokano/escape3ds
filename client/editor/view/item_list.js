@@ -10,6 +10,7 @@ var ItemListView = Backbone.View.extend({
 	initialize: function() {
 		this.model = game.get('itemList');
 		this.listenTo(this.model, 'add remove', this.render);
+		this.$el.sortable();
 	},
 	render: function() {
 		this.$el.html(this.template());
