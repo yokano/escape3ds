@@ -44,6 +44,8 @@ var ItemInfoView = Backbone.View.extend({
 		var message = 'アイテム「' + this.model.get('name') + '」を削除しますか';
 		if(window.confirm(message)) {
 			game.get('itemList').remove(this.model);
+			this.model = null;
+			this.render();
 		}
 	},
 	
