@@ -167,28 +167,28 @@ button {
 #item_list li .has_first_icon {
 	float: right;
 }
-
 #item_list .item_img {
 	width: 50px;
 	height: 50px;
 	float: left;
+	margin-right: 5px;
 }
 
 #item_preview {
-	margin-top: 15px;
-	position: absolute;
-	left: 250px;
-	width: 320px;
-	height: 213px;
 	background-image: url("/client/editor/img/upper.png");
-	padding-top: 12px;
-	padding-left: 23px;
+	width: 305px;
+	height: 200px;
+	position: absolute;
+	top: 80px;
+	left: 250px;
+	padding-top: 13px;
+	padding-left: 15px;
 }
 #item_preview .item_img {
 	width: 50px;
 	height: 50px;
-	margin-right: 7px;
-	margin-bottom: 6px;
+	margin-right: 10px;
+	margin-bottom: 5px;
 	float: left;
 	background-size: 50px 50px;
 }

@@ -101,7 +101,7 @@
 		
 		<!-- アイテムリストのli要素 -->
 		<script type="text/template" id="item_list_item_template">
-			<img class="item_img" src="<% if(img == '') { %>/client/editor/img/blank_item.png<% } else { %>/download?blobkey=<%= img %><% } %>">
+			<img class="item_img" src="<% if(img == '') { %>/client/editor/img/item_background.png<% } else { %>/download?blobkey=<%= img %><% } %>">
 			<div><%= name %></div>
 			<% if(hasFirst) { %>
 				<img class="has_first_icon" src="/client/editor/img/has_first_icon.png">
@@ -112,7 +112,7 @@
 		<script type="text/template" id="item_preview_template">
 			<% _.each(items, function(item) { %>
 				<% if(item.get('img') == '') { %>
-					<div class="item_img" style="background-image: url('/client/editor/img/blank_item.png')"></div>
+					<div class="item_img" style="background-image: url('/client/editor/img/item_background.png')"></div>
 				<% } else { %>
 					<div class="item_img" style="background-image: url('/download?blobkey=<%= item.get('img') %>')"></div>
 				<% } %>
