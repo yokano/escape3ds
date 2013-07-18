@@ -184,7 +184,7 @@
 			// シーンリスト初期化
 			game.get('sceneList').add([
 				{{range $key, $val := .Scenes}}
-					{id: {{$key}}, name: {{$val.Name}}, background: {{$val.Background}}},
+					{id: {{$key}}, name: {{$val.Name}}, background: {{$val.Background}}, sort: {{$val.Sort}}},
 				{{end}}
 			], {
 				silent: true

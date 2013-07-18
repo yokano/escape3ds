@@ -15,6 +15,7 @@ var SceneListItemView = Backbone.View.extend({
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.attr('id', this.model.cid);
 		return this;
 	},
 	events: {

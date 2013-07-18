@@ -20,6 +20,13 @@ var SceneListView = Backbone.View.extend({
 			});
 			this.$el.append(sceneView.render().el);
 		}, this);
+		
+		var self = this;
+		this.$el.sortable({
+			stop: function() {
+				self.sortHasStopped();
+			}
+		});
 		return this;
 	},
 	select: function(cid) {
@@ -35,5 +42,12 @@ var SceneListView = Backbone.View.extend({
 			return;
 		}
 		this.$el.children().eq(index).find('.is_first_scene').show();
+	},
+	sortHasStopped: function() {
+		var self = this;
+		this.$el.children().each(function(index) {
+			var cid = $(this).attr('id');
+			self.collection.get(cid).set('sort', index);
+		});
 	}
 });

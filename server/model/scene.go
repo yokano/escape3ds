@@ -15,6 +15,7 @@ type Scene struct {
 	Background string  // 背景画像のBlobkey、設定していなければ空文字
 	Enter string       // シーン開始時のイベント
 	Leave string       // シーン終了時のイベント
+	Sort int           // 並び順
 }
 
 // シーンオブジェクトを新しく作成する。

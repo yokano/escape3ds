@@ -4,8 +4,8 @@
 var SceneList = Backbone.Collection.extend({
 	model: Scene,
 	selected: null,
-	select: function(cid) {
-		this.selected = cid;
+	comparator: function(scene) {
+		return scene.get('sort');
 	},
 	removed: function(scene) {
 		this.selected = null;
@@ -16,6 +16,9 @@ var SceneList = Backbone.Collection.extend({
 				console.log('error');
 			}
 		})
+	},
+	select: function(cid) {
+		this.selected = cid;
 	},
 	added: function(scene) {
 		// シーンが追加されたらデータベースへ追加する
