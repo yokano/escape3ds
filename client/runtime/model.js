@@ -1,3 +1,6 @@
+/**
+ * ゲーム
+ */
 var Game = Backbone.Model.extend({
 	parse: function(data, options) {
 		this.set('name', data.name);
@@ -7,6 +10,9 @@ var Game = Backbone.Model.extend({
 	}
 });
 
+/**
+ * アイテムリスト
+ */
 var ItemList = Backbone.Collection.extend({
 	model: Item,
 	parse: function(data, options) {
@@ -21,9 +27,16 @@ var ItemList = Backbone.Collection.extend({
 	}
 });
 
+/**
+ * アイテム
+ */
 var Item = Backbone.Model.extend({
 });
 
+
+/**
+ * シーンリスト
+ */
 var SceneList = Backbone.Collection.extend({
 	model: Scene,
 	parse: function(data, options) {
@@ -40,9 +53,15 @@ var SceneList = Backbone.Collection.extend({
 	}
 });
 
+/**
+ * シーン
+ */
 var Scene = Backbone.Model.extend({
 });
 
+/**
+ * イベントリスト
+ */
 var EventList = Backbone.Collection.extend({
 	model: Event,
 	parse: function(data, options) {
@@ -58,6 +77,19 @@ var EventList = Backbone.Collection.extend({
 	}
 });
 
+/**
+ * イベント
+ */
 var Event = Backbone.Model.extend({
+});
+
+/**
+ * ゲームの状態管理
+ */
+var State = Backbone.Model.extend({
+	initialize: function() {
+		this.set('currentScene', 'bedroom1');
+		this.set('itemList', new ItemList());
+	}
 });
 
