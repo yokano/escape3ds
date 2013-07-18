@@ -22,16 +22,21 @@ var ItemEditorView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		'click #add_item': 'addItem'
+		'click #add_item': 'addItemButtonHasClicked'
 	},
-	addItem: function() {
+	
+	/**
+	 * アイテムを追加ボタンが押された
+	 */
+	addItemButtonHasClicked: function() {
 		var name = window.prompt('新しいアイテムの名前を入力してください');
 		if(name == '') {
 			return;
 		}
 		
 		game.get('itemList').add({
-			name: name
+			name: name,
+			sort: game.get('itemList').models.length
 		});
 	}
 })

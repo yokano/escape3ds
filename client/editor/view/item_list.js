@@ -10,7 +10,13 @@ var ItemListView = Backbone.View.extend({
 	initialize: function() {
 		this.model = game.get('itemList');
 		this.listenTo(this.model, 'add remove', this.render);
-		this.$el.sortable();
+		
+		var self = this;
+		this.$el.sortable({
+			stop: function() {
+				self.sortHasStopped();
+			}
+		});
 	},
 	render: function() {
 		this.$el.html(this.template());
@@ -22,5 +28,16 @@ var ItemListView = Backbone.View.extend({
 		});
 		
 		return this;
+	},
+	
+	/**
+	 * アイテムリストがドラッグで並び替えられた
+	 */
+	sortHasStopped: function() {
+		var self = this;
+		this.$el.children().each(function(index) {
+			var cid = $(this).attr('id');
+			self.model.get(cid).set('sort', index);
+		});
 	}
 });

@@ -7,6 +7,7 @@ var ItemListItem = Backbone.View.extend({
 	className: 'item_list_item',
 	template: _.template($('#item_list_item_template').html()),
 	initialize: function() {
+		this.$el.attr('id', this.model.cid);
 		this.listenTo(this.model, 'change', this.render);
 	},
 	render: function() {

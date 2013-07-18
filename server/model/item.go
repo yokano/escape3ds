@@ -14,6 +14,7 @@ type Item struct {
 	Name string
 	Img string
 	HasFirst bool
+	Sort int
 }
 
 // アイテムの作成
@@ -22,6 +23,7 @@ func NewItem(name string, img string, hasFirst bool) *Item {
 	item.Name = name
 	item.Img = img
 	item.HasFirst = hasFirst
+	item.Sort = 0
 	return item
 }
 
