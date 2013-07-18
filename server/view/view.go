@@ -90,3 +90,12 @@ func (this *View) Gamelist(userKey string) {
 	t.Execute(this.w, gameList)
 }
 
+// テストプレイ画面の表示
+func (this *View) Runtime(gameKey string) {
+	model := NewModel(this.c)
+	game := model.GetGame(gameKey)
+	
+	t, err := template.ParseFiles("server/view/html/runtime.html")
+	Check(this.c, err)
+	t.Execute(this.w, game)
+}

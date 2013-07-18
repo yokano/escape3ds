@@ -21,21 +21,14 @@ func (this *Controller) Top(w http.ResponseWriter, r *http.Request) {
 
 // エディタの表示
 func (this *Controller) Editor(w http.ResponseWriter, r *http.Request) {
-//	userKey := this.Session(w, r)
+	this.Session(w, r)
 	c := appengine.NewContext(r)
-//	model := NewModel(c)
 
 	gameKey := r.FormValue("game_key")
 	if gameKey == "" {
 		c.Warningf("ゲームキー無しでゲームを編集しようとしました")
 		http.Redirect(w, r, "/", 302)
 	}
-	
-//	game := model.GetGame(gameKey)
-//	if game.UserKey != userKey {
-//		c.Warningf("ユーザキー: %s が他人のゲーム: %s を編集しようとしました", userKey, gameKey)
-//		http.Redirect(w, r, "/gamelist", 302)
-//	}
 	
 	view := NewView(c, w)
 	view.Editor(gameKey)
@@ -47,4 +40,13 @@ func (this *Controller) Gamelist(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	view := NewView(c, w)
 	view.Gamelist(userKey)
+}
+
+// テストプレイ
+func (this *Controller) Runtime(w http.ResponseWriter, r *http.Request) {
+//	this.Session(w, r)
+	gameKey := r.FormValue("game_key")
+	c := appengine.NewContext(r)
+	view := NewView(c, w)
+	view.Runtime(gameKey)
 }
