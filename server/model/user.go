@@ -247,3 +247,28 @@ func (this *Model) GetAllUser() map[string]*User {
 	}
 	return result
 }
+
+// ユーザが所有しているゲーム一覧を返す。
+// 戻り値は、エンコード済みのゲームキーとゲームの対応表
+func (this *Model) GetGameList(encodedUserKey string) map[string]*Game {
+	userKey, err := datastore.DecodeKey(encodedUserKey)
+	Check(this.c, err)
+	
+	query := datastore.NewQuery("Game").Ancestor(userKey)
+	iterator := query.Run(this.c)
+	
+	count, err := query.Count(this.c)
+	Check(this.c, err)
+	
+	result := make(map[string]*Game, count)
+	for ;; {
+		game := new(Game)
+		gameKey, err := iterator.Next(game)
+		if err != nil {
+			break
+		}
+		result[gameKey.Encode()] = game
+	}
+	
+	return result
+}

@@ -24,7 +24,7 @@ var SceneList = Backbone.Collection.extend({
 		// シーンが追加されたらデータベースへ追加する
 		Backbone.sync('create', scene, {
 			success: function(data) {
-				scene.set('id', data.sceneKey);
+				scene.id = data.sceneKey;
 			},
 			error: function() {
 				console.log('error');

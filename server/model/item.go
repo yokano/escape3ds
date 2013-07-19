@@ -91,8 +91,6 @@ func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []strin
 		item := new(Item)
 		json.Unmarshal(body, item)
 		
-		this.c.Debugf("ITEM: %#v", item)
-		
 		itemKey, err := datastore.DecodeKey(path[4])
 		Check(this.c, err)
 

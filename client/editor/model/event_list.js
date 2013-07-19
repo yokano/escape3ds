@@ -7,8 +7,11 @@
 var EventList = Backbone.Collection.extend({
 	model: Event,
 	initialize: function() {
+		this.urlRoot = '/sync/event/' + this.get('sceneId');
 		this.on('eventAreaHasSelected', this.eventAreaHasSelected);
 		this.on('removeButtonHasClicked', this.removeButtonHasClicked);
+		this.on('add', this.eventHasAdded);
+		this.on('remove', this.eventHasRemoved);
 	},
 	
 	/**
@@ -34,10 +37,32 @@ var EventList = Backbone.Collection.extend({
 	},
 	
 	/**
-	 * イベントの削除ボタンが押された
-	 * @param event 削除するイベント
+	 * イベントが追加された
+	 * @param {Event} event 追加されたイベント
 	 */
-	removeButtonHasClicked: function(event) {
-		this.remove(event);
+	eventHasAdded: function(event) {
+		Backbone.sync('create', event, {
+			success: function(data) {
+				event.set('id', data.id);
+			},
+			error: function() {
+				console.log('error');
+			}
+		});
+	},
+	
+	/**
+	 * イベントが削除された
+	 * @param {Event} event 削除されたイベント
+	 */
+	eventHasRemoved: function(event) {
+		Backbone.sync('delete', event, {
+			success: function() {
+				console.log('deleting event has successed');
+			},
+			error: function() {
+				console.log('error');
+			}
+		});
 	}
 });

@@ -194,10 +194,10 @@ var SceneView = Backbone.View.extend({
 			code: '',
 			position: [event.x, event.y],
 			size: [event.w, event.h],
-			sceneKey: ''
+			sceneId: self.model.id
 		});
+		self.model.get('eventList').urlRoot = self.model.id;
 		self.model.get('eventList').add(e);
-		e.trigger('eventAreaHasSelected', e);
 	},
 	
 	/**

@@ -13,7 +13,9 @@ var EventEditorView = Backbone.View.extend({
 		'click #remove_event': 'removeButtonHasClicked',
 		'change #color': 'colorHasChanged',
 		'change #change_event_img': 'eventImageFileHasChanged',
-		'click #remove_img': 'removeImageButtonHasClicked'
+		'click #remove_img': 'removeImageButtonHasClicked',
+		'change #event_code': 'eventCodeHasChanged',
+		'change .event_name': 'eventNameHasChanged'
 	},
 	initialize: function() {
 		this.listenTo(game.get('sceneList'), 'select', this.sceneHasSelected);
@@ -45,7 +47,8 @@ var EventEditorView = Backbone.View.extend({
 		if(!window.confirm('イベントを削除しますか？')) {
 			return;
 		}
-		this.model.trigger('removeButtonHasClicked', this.model);
+		
+		game.get('sceneList').getSelected().get('eventList').remove(this.model);
 	},
 	eventHasRemoved: function() {
 		this.model = null;
@@ -64,5 +67,13 @@ var EventEditorView = Backbone.View.extend({
 	removeImageButtonHasClicked: function() {
 		this.$el.find('#change_event_img').val('');
 		this.model.set('image', '');
+	},
+	eventCodeHasChanged: function(event) {
+		var code = $(event.target).val();
+		this.model.set('code', code);
+	},
+	eventNameHasChanged: function(event) {
+		var name = $(event.target).val();
+		this.model.set('name', name);
 	}
 });

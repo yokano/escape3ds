@@ -16,6 +16,7 @@ type Scene struct {
 	Enter string       // シーン開始時のイベント
 	Leave string       // シーン終了時のイベント
 	Sort int           // 並び順
+	EventList map[string]*Event `datastore:"-"` // シーン内のイベントリスト
 }
 
 // シーンオブジェクトを新しく作成する。
@@ -40,40 +41,56 @@ func (this *Model) AddScene(scene *Scene, id string, encodedGameKey string) stri
 	return encodedSceneKey
 }
 
-// 引数として指定された id のシーンをデータストアから削除する。
-func (this *Model) DeleteScene(id string) {
+// シーンをデータストアから取得する
+func (this *Model) GetScene(encodedSceneKey string) *Scene {
+	sceneKey := DecodeKey(this.c, encodedSceneKey)
 	
+	scene := new(Scene)
+	err := datastore.Get(this.c, sceneKey, scene)
+	Check(this.c, err)
+	
+	scene.EventList = this.GetEventList(encodedSceneKey)
+	
+	return scene
+}
+
+// 引数として指定された id のシーンをデータストアから削除する。
+func (this *Model) DeleteScene(encodedSceneKey string) {
+	sceneKey := DecodeKey(this.c, encodedSceneKey)
+	err := datastore.Delete(this.c, sceneKey)
+	Check(this.c, err)
 }
 
 // id で指定されたシーンを新しいシーン scene で更新する。
-func (this *Model) UpdateScene(id string, scene *Scene) {
-	
+func (this *Model) UpdateScene(encodedSceneKey string, scene *Scene) {
+	sceneKey := DecodeKey(this.c, encodedSceneKey)
+	sceneKey, err := datastore.Put(this.c, sceneKey, scene)
+	Check(this.c, err)
 }
 
-// ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
-// 戻り値としてシーンID(エンコード済みキー)を key、シーンオブジェクトを value とした map を返す。
-func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
-	gameKey, err := datastore.DecodeKey(encodedGameKey)
+// シーン内のイベントリストを取得する
+func (this *Model) GetEvents(encodedSceneKey string) map[string]*Event {
+	sceneKey, err := datastore.DecodeKey(encodedSceneKey)
 	Check(this.c, err)
 	
-	query := datastore.NewQuery("Scene").Ancestor(gameKey)
+	query := datastore.NewQuery("Event").Ancestor(sceneKey)
 	count, err := query.Count(this.c)
 	Check(this.c, err)
 	
-	iterator := query.Run(this.c)
-	scenes := make(map[string]*Scene, count)
+	events := make([]*Event, count)
+	eventKeys, err := query.GetAll(this.c, events)
+	Check(this.c, err)
 	
-	for ;; {
-		scene := new(Scene)
-		sceneKey, err := iterator.Next(scene)
-		if err != nil {
-			break
-		}
-		encodedSceneKey := sceneKey.Encode()
-		scenes[encodedSceneKey] = scene
+	encodedEventKeys := make([]string, count)
+	for i := 0; i < count; i++ {
+		encodedEventKeys[i] = eventKeys[i].Encode()
 	}
 	
-	return scenes
+	result := make(map[string]*Event, count)
+	for i := 0; i < count; i++ {
+		result[encodedEventKeys[i]] = events[i]
+	}
+	return result
 }
 
 // シーンデータの同期処理を行う。
@@ -105,37 +122,27 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 		json.Unmarshal(body, newScene)
 		
 		encodedSceneKey := path[4]
-		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
-		Check(this.c, err)
-		
-		oldScene := new(Scene)
-		err = datastore.Get(this.c, sceneKey, oldScene)
-		Check(this.c, err)
+		oldScene := this.GetScene(encodedSceneKey)
 		
 		if oldScene.Background != "" && oldScene.Background != newScene.Background && !this.CheckDuplicateBackground(oldScene.Background) {
 			this.DeleteBlob(oldScene.Background)
 		}
 		
-		sceneKey, err = datastore.Put(this.c, sceneKey, newScene)
-		Check(this.c, err)
+		this.UpdateScene(encodedSceneKey, newScene)
 		
 		fmt.Fprintf(w, `{}`)
 
 	case "DELETE":
 		encodedSceneKey := path[4]
-		sceneKey, err := datastore.DecodeKey(encodedSceneKey)
-		Check(this.c, err)
-		
-		scene := new(Scene)
-		err = datastore.Get(this.c, sceneKey, scene)
-		Check(this.c, err)
+		sceneKey := DecodeKey(this.c, encodedSceneKey)
+		scene := this.GetScene(encodedSceneKey)
 		
 		// 他のシーンから画像が参照されていなければ画像を削除する
 		if scene.Background != "" && !this.CheckDuplicateBackground(scene.Background) {
 			this.DeleteBlob(scene.Background)
 		}
 		
-		err = datastore.Delete(this.c, sceneKey)
+		err := datastore.Delete(this.c, sceneKey)
 		Check(this.c, err)
 
 		fmt.Fprintf(w, `{}`)

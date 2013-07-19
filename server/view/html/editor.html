@@ -84,8 +84,8 @@
 					</div>
 				<div><button id="remove_event">イベントを削除</button></div>
 				<div id="event_editor">
-					<div>内容</div>
-					<textarea rows="25" cols="35"></textarea>
+					<div>JavaScriptコード</div>
+					<textarea id="event_code" rows="25" cols="35"></textarea>
 				</div>
 			</div>
 		</script>
@@ -183,12 +183,48 @@
 			
 			// シーンリスト初期化
 			game.get('sceneList').add([
-				{{range $key, $val := .Scenes}}
-					{id: {{$key}}, name: {{$val.Name}}, background: {{$val.Background}}, sort: {{$val.Sort}}},
+				{{range $sceneKey, $sceneVal := .Scenes}}
+					{
+						id: {{$sceneKey}},
+						name: {{$sceneVal.Name}},
+						background: {{$sceneVal.Background}},
+						sort: {{$sceneVal.Sort}},
+						eventList: new EventList([
+							{{range $eventKey, $eventVal := $sceneVal.EventList}}
+								{
+									id: {{$eventKey}},
+									sceneId: {{$sceneKey}},
+									name: {{$eventVal.Name}},
+									image: {{$eventVal.Image}},
+									code: {{$eventVal.Code}},
+									position: {{$eventVal.Position}},
+									size: {{$eventVal.Size}},
+									color: {{$eventVal.Color}}
+								},
+							{{end}}
+						])
+					},
 				{{end}}
 			], {
 				silent: true
 			});
+
+			// debug
+//			{{range $key, $val := .Scenes}}
+//				{{range $eventKey, $eventVal := $val.EventList}}
+//					console.log({
+//						id: {{$eventKey}},
+//						name: {{$eventVal.Name}},
+//						image: {{$eventVal.Image}},
+//						code: {{$eventVal.Code}},
+//						position: {{$eventVal.Position}},
+//						size: {{$eventVal.Size}},
+//						color: {{$eventVal.Color}}
+//					});
+//				{{end}}
+//			{{end}}
+
+
 			
 			// アイテムリスト初期化
 			game.get('itemList').add([

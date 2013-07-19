@@ -47,8 +47,9 @@ func (this *View) Editor(encodedGameKey string) {
 	contents.Game = game
 	contents.GameKey = encodedGameKey
 	contents.Scenes = model.GetScenes(encodedGameKey)
+	this.c.Debugf("EventList: %#v", contents.Scenes["ag5kZXZ-ZXNjYXBlLTNkc3IfCxIEVXNlchgBDAsSBEdhbWUYAgwLEgVTY2VuZRgKDA"])
 	contents.Items = model.GetItems(encodedGameKey)
-		
+	
 	t, err := template.ParseFiles("server/view/html/editor.html")
 	Check(this.c, err)
 	

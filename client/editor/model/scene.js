@@ -7,7 +7,7 @@ var Scene = Backbone.Model.extend({
 		background: '',  // blobkey又は画像のURL
 		enter: null,
 		leave: null,
-		eventList: null,
+		eventList: null
 	},
 	sceneHasChanged: function() {
 		Backbone.sync('update', this, {
@@ -22,7 +22,9 @@ var Scene = Backbone.Model.extend({
 	},
 	initialize: function() {
 		this.urlRoot = '/sync/scene/' + GAME_ID;
-		this.set('eventList', new EventList());
+		this.set('eventList', new EventList({
+			sceneId: this.id
+		}));
 		this.on('change', this.sceneHasChanged);
 		this.on('change:background', this.backgroundHasChanged);
 	}

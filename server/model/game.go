@@ -74,29 +74,29 @@ func (this *Model) DeleteGame(encodedGameKey string) {
 	Check(this.c, err)
 }
 
-// ユーザが所有しているゲーム一覧を返す。
-// 戻り値は、エンコード済みのゲームキーとゲームの対応表
-func (this *Model) GetGameList(encodedUserKey string) map[string]*Game {
-	userKey, err := datastore.DecodeKey(encodedUserKey)
-	Check(this.c, err)
+// ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
+// 戻り値としてシーンID(エンコード済みキー)を key、シーンオブジェクトを value とした map を返す。
+func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
+	gameKey := DecodeKey(this.c, encodedGameKey)
 	
-	query := datastore.NewQuery("Game").Ancestor(userKey)
-	iterator := query.Run(this.c)
-	
+	query := datastore.NewQuery("Scene").Ancestor(gameKey)
 	count, err := query.Count(this.c)
 	Check(this.c, err)
 	
-	result := make(map[string]*Game, count)
+	iterator := query.Run(this.c)
+	scenes := make(map[string]*Scene, count)
+	
 	for ;; {
-		game := new(Game)
-		gameKey, err := iterator.Next(game)
+		sceneKey, err := iterator.Next(nil)
 		if err != nil {
 			break
 		}
-		result[gameKey.Encode()] = game
+		encodedSceneKey := sceneKey.Encode()
+		scene := this.GetScene(encodedSceneKey)
+		scenes[encodedSceneKey] = scene
 	}
 	
-	return result
+	return scenes
 }
 
 // ゲームデータの同期。

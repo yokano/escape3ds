@@ -173,5 +173,7 @@ func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request) {
 		model.SyncScene(w, r, path)
 	case "item":
 		model.SyncItem(w, r, path)
+	case "event":
+		model.SyncEvent(w, r, path)
 	}
 }

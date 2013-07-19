@@ -9,6 +9,7 @@ import (
 	"appengine"
 	"appengine/urlfetch"
 	"appengine/mail"
+	"appengine/datastore"
 	"net/http"
 	"strings"
 	"log"
@@ -342,4 +343,11 @@ func GetRequestBodyJSON(r *http.Request) []byte {
 	body := make([]byte, r.ContentLength)
 	r.Body.Read(body)
 	return body
+}
+
+// データストアのエンコー済みキーをデコードする
+func DecodeKey(c appengine.Context, encodedKey string) *datastore.Key {
+	key, err := datastore.DecodeKey(encodedKey)
+	Check(c, err)
+	return key
 }
