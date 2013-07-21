@@ -140,6 +140,7 @@ func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []strin
 //		}
 		
 		model.UpdateGame(gameKey, game)
+		this.c.Debugf("game: %#v", game)
 		fmt.Fprintf(w, `{}`)
 	case "DELETE":
 	}

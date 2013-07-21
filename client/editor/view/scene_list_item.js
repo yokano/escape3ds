@@ -12,6 +12,7 @@ var SceneListItemView = Backbone.View.extend({
 		this.parent = config.parent;
 		this.listenTo(this.model, 'change', this.sceneHasChanged);
 		this.listenTo(this.model, 'remove', this.sceneHasRemoved);
+		this.listenTo(game, 'change:firstScene', this.firstSceneHasChanged);
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
@@ -40,5 +41,13 @@ var SceneListItemView = Backbone.View.extend({
 	},
 	sceneHasRemoved: function() {
 		this.remove();
+	},
+	firstSceneHasChanged: function() {
+		var icon = this.$el.find('.is_first_scene');
+		if(game.get('firstScene') == this.model.id) {
+			icon.show();
+		} else {
+			icon.hide();
+		}
 	}
 });

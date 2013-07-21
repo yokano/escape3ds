@@ -1,4 +1,14 @@
 /**
+ * ゲームの状態管理
+ */
+var State = Backbone.Model.extend({
+	initialize: function() {
+		this.set('currentScene', game.sceneList[game.firstScene]);
+		this.set('itemList', new ItemList());
+	}
+});
+
+/**
  * ゲーム
  */
 var Game = Backbone.Model.extend({
@@ -32,7 +42,6 @@ var ItemList = Backbone.Collection.extend({
  */
 var Item = Backbone.Model.extend({
 });
-
 
 /**
  * シーンリスト
@@ -81,15 +90,5 @@ var EventList = Backbone.Collection.extend({
  * イベント
  */
 var Event = Backbone.Model.extend({
-});
-
-/**
- * ゲームの状態管理
- */
-var State = Backbone.Model.extend({
-	initialize: function() {
-		this.set('currentScene', 'bedroom1');
-		this.set('itemList', new ItemList());
-	}
 });
 

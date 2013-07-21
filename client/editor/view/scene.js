@@ -23,7 +23,7 @@ var SceneView = Backbone.View.extend({
 		}
 		this.$el.show();
 		this.$el.html(this.template(this.model.toJSON()));
-		if(game.get('firstScene') == this.model) {
+		if(game.get('firstScene') == this.model.id) {
 			this.$el.find('#scene_info .is_first_scene').attr('checked', true);
 		}
 
@@ -153,7 +153,7 @@ var SceneView = Backbone.View.extend({
 	firstSceneCheckboxHasClicked: function() {
 		var checked = this.$el.find('#scene_info .is_first_scene:checked').length;
 		if(checked == 1) {
-			game.set('firstScene', this.model);
+			game.set('firstScene', this.model.id);
 		} else {
 			game.set('firstScene', null);
 		}

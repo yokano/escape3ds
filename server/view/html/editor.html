@@ -24,7 +24,7 @@
 		<script type="text/template" id="scene_li_view_template">
 			<img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>">
 			<div class="scene_name"><%= name %></div>
-			<div class="is_first_scene"></div>
+			<div class="is_first_scene" <% if(game.get('firstScene') == this.model.id) { %> style="display:block;" <% } %>></div>
 		</script>
 		
 		<!-- シーン設定 -->
@@ -176,9 +176,10 @@
 		<script>
 			var GAME_ID = {{.GameKey}};
 			var game = new Game({
-				id: 'GAME_ID',
+				id: GAME_ID,
 				name: '{{.Game.Name}}',
-				description: '{{.Game.Description}}'
+				description: '{{.Game.Description}}',
+				firstScene: '{{.Game.FirstScene}}'
 			});
 			
 			// シーンリスト初期化
