@@ -95,9 +95,8 @@ var SceneView = Backbone.View.extend({
 	id: 'scene',
 	tagName: 'div',
 	render: function() {
-		console.log(game.sceneList, this.model.toJSON())
 		var scene = game.sceneList[this.model.get('currentScene')];
-//		this.$el.css('background-image', 'url("' + scene.background + '")');
+		this.$el.css('background-image', 'url("/download?blobkey=' + scene.background + '")');
 		return this;
 	}
 });

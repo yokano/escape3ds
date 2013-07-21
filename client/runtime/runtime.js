@@ -1,7 +1,8 @@
 var g = new Game(game, {parse: true});
 
-var state = new State();
-state.currentScene = game.sceneList[state.firstScene]
+var state = new State({
+	currentScene: game.firstScene
+});
 
 //state.get('itemList').add([
 //	new Item(game.item_list.hammer, {parse: true}),
@@ -9,6 +10,6 @@ state.currentScene = game.sceneList[state.firstScene]
 //]);
 
 var rootView = new RootView({
-	model: g
+	model: state
 });
 $('body').append(rootView.render().el);

@@ -3,7 +3,7 @@
  */
 var State = Backbone.Model.extend({
 	initialize: function() {
-		this.set('currentScene', game.sceneList[game.firstScene]);
+		this.set('currentScene', game.firstScene);
 		this.set('itemList', new ItemList());
 	}
 });
@@ -13,6 +13,9 @@ var State = Backbone.Model.extend({
  */
 var Game = Backbone.Model.extend({
 	parse: function(data, options) {
+		if(data.firstScene == '') {
+			alert('最初のシーンが設定されていません');
+		}
 		this.set('name', data.name);
 		this.set('description', data.description);
 		this.set('itemList', new ItemList(data.item_list, {parse: true}));
