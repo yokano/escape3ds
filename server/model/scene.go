@@ -11,12 +11,12 @@ import (
 // シーンオブジェクト。ゲームを構成する場面を表す。
 // 背景画像、開始時のイベント、終了時のイベントを持つ。
 type Scene struct {
-	Name string        // シーン名
-	Background string  // 背景画像のBlobkey、設定していなければ空文字
-	Enter string       // シーン開始時のイベント
-	Leave string       // シーン終了時のイベント
-	Sort int           // 並び順
-	EventList map[string]*Event `datastore:"-"` // シーン内のイベントリスト
+	Name string `json:"name"`        // シーン名
+	Background string `json:"background"`  // 背景画像のBlobkey、設定していなければ空文字
+	Enter string `json:"enter"`       // シーン開始時のイベント
+	Leave string `json:"leave"`       // シーン終了時のイベント
+	Sort int `json:"sort"`           // 並び順
+	EventList map[string]*Event `json:"eventList" datastore:"-"` // シーン内のイベントリスト
 }
 
 // シーンオブジェクトを新しく作成する。

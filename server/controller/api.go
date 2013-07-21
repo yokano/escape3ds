@@ -177,3 +177,14 @@ func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request) {
 		model.SyncEvent(w, r, path)
 	}
 }
+
+// ゲームを JSON 形式に変換する
+func (this *Controller) EncodeGame(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	encodedGameKey := r.FormValue("game_key")
+	
+	model := NewModel(c)
+	encodedGame := model.GetGameJSON(encodedGameKey)
+	
+	fmt.Fprintf(w, `{"game":%s}`, encodedGame)
+}

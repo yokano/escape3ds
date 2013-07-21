@@ -27,7 +27,7 @@ func (this *Controller) GetHandler(callback func(this *Controller, w http.Respon
 
 // リクエスト URL に合わせて処理を振り分ける
 func (this *Controller) Handle() {
-	table := make(map[string]func(this *Controller, w http.ResponseWriter, r *http.Request), 23)
+	table := make(map[string]func(this *Controller, w http.ResponseWriter, r *http.Request), 24)
 
 	// page
 	table["/"]         = (*Controller).Top
@@ -47,6 +47,7 @@ func (this *Controller) Handle() {
 	table["/login"]       = (*Controller).Login
 	table["/add_game"]    = (*Controller).AddGame
 	table["/delete_game"] = (*Controller).DeleteGame
+	table["/encode_game"] = (*Controller).EncodeGame
 	table["/sync/"]       = (*Controller).SyncHandler
 	table["/interim_registration"] = (*Controller).InterimRegistration
 	table["/registration"]         = (*Controller).Registration

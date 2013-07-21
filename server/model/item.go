@@ -11,10 +11,10 @@ import (
 
 // アイテム型
 type Item struct {
-	Name string
-	Img string
-	HasFirst bool
-	Sort int
+	Name string `json:"name"`
+	Img string `json:"img"`
+	HasFirst bool `json:"hasFirst"`
+	Sort int `json:"sort"`
 }
 
 // アイテムの作成

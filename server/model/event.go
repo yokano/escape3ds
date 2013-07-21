@@ -10,12 +10,12 @@ import(
 
 // シーンに含まれるイベントオブジェクト
 type Event struct {
-	Name string     // イベント名
-	Image string    // 画像
-	Code string     // クリックされた時のコード
-	Position []int  // 位置
-	Size []int      // 大きさ
-	Color string    // エディタ上で領域に表示される色
+	Name string `json:"name"`     // イベント名
+	Image string `json:"image"`    // 画像
+	Code string `json:"code"`     // クリックされた時のコード
+	Position []int `json:"position"`  // 位置
+	Size []int `json:"size"`      // 大きさ
+	Color string `json:"color"`    // エディタ上で領域に表示される色
 }
 
 // イベントオブジェクトの作成

@@ -17,6 +17,8 @@ type Game struct {
 	Description string `json:"description"`  // ゲームの説明
 	Thumbnail string `json:"thumbnail"`  // サムネイルの画像パス
 	FirstScene string `json:"firstScene"`  // 最初のシーンのエンコード済みキー
+	SceneList map[string]*Scene `json:"sceneList" datastore:"-"`  // シーン一覧
+	ItemList map[string]*Item `json:"itemList" datastore:"-"`  // アイテム一覧
 }
 
 // 新しいゲームオブジェクトを作成して返す。新しく作られるゲームのパラメータを格納した map 引数として渡す。
@@ -52,6 +54,22 @@ func (this *Model) GetGame(encodedGameKey string) *Game {
 	Check(this.c, err)
 	
 	return game
+}
+
+// JSON 形式でゲームを取得する
+func (this *Model) GetGameJSON(encodedGameKey string) string {
+	game := this.GetGame(encodedGameKey)
+	game.ItemList = this.GetItems(encodedGameKey)
+	game.SceneList = this.GetScenes(encodedGameKey)
+
+	for key, val := range game.SceneList {
+		val.EventList = this.GetEventList(key)
+	}
+	
+	bytes, err := json.Marshal(game)
+	Check(this.c, err)
+	
+	return string(bytes)
 }
 
 // ゲームを更新する。引数として渡されたキー encodedGameKey のゲームを、ゲームオブジェクト game で上書きする。
