@@ -20,12 +20,13 @@ var Scene = Backbone.Model.extend({
 	},
 	backgroundHasChanged: function() {
 	},
-	initialize: function() {
+	initialize: function(attr) {
 		this.urlRoot = '/sync/scene/' + GAME_ID;
-		this.set('eventList', new EventList({
-			sceneId: this.id
-		}));
-		this.on('change', this.sceneHasChanged);
+		this.on('change:name', this.sceneHasChanged);
 		this.on('change:background', this.backgroundHasChanged);
+
+		if(attr.eventList == undefined) {
+			this.set('eventList', new EventList());
+		}
 	}
 });

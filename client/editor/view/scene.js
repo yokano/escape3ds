@@ -27,6 +27,7 @@ var SceneView = Backbone.View.extend({
 			this.$el.find('#scene_info .is_first_scene').attr('checked', true);
 		}
 
+		// イベントの表示
 		var that = this;
 		this.model.get('eventList').each(function(event) {
 			var eventAreaView = new EventAreaView({model: event});
@@ -91,7 +92,7 @@ var SceneView = Backbone.View.extend({
 			this.stopListening(this.model);
 		}
 		this.model = game.get('sceneList').get(cid);
-		this.listenTo(this.model, 'change', this.sceneHasChanged);				
+		this.listenTo(this.model, 'change', this.sceneHasChanged);
 		this.listenTo(this.model.get('eventList'), 'add', this.eventHasAdded);
 		this.render();
 	},

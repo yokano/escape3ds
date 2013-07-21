@@ -24,10 +24,11 @@ var SceneList = Backbone.Collection.extend({
 		// シーンが追加されたらデータベースへ追加する
 		Backbone.sync('create', scene, {
 			success: function(data) {
-				scene.id = data.sceneKey;
+				scene.id = data.sceneId;
+				scene.get('eventList').urlRoot = '/sync/event/' + data.sceneId;
 			},
 			error: function() {
-				console.log('error');
+				console.log('scene add error');
 			}
 		});
 	},

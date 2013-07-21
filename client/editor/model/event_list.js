@@ -7,7 +7,6 @@
 var EventList = Backbone.Collection.extend({
 	model: Event,
 	initialize: function() {
-		this.urlRoot = '/sync/event/' + this.get('sceneId');
 		this.on('eventAreaHasSelected', this.eventAreaHasSelected);
 		this.on('removeButtonHasClicked', this.removeButtonHasClicked);
 		this.on('add', this.eventHasAdded);

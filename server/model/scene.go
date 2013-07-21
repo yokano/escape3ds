@@ -114,7 +114,7 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 		
 		encodedSceneKey := sceneKey.Encode()
 		
-		fmt.Fprintf(w, `{"sceneKey":"%s"}`, encodedSceneKey)
+		fmt.Fprintf(w, `{"sceneId":"%s"}`, encodedSceneKey)
 
 	case "PUT":
 		body := GetRequestBodyJSON(r)
