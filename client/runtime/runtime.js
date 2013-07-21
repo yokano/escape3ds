@@ -1,7 +1,8 @@
-var g = new Game(game, {parse: true});
+var game = new Game(data, {parse: true});
 
 var state = new State({
-	currentScene: game.firstScene
+	currentScene: game.firstScene,
+	debug: true
 });
 
 //state.get('itemList').add([

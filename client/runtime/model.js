@@ -18,9 +18,15 @@ var Game = Backbone.Model.extend({
 		}
 		this.set('name', data.name);
 		this.set('description', data.description);
-		this.set('itemList', new ItemList(data.item_list, {parse: true}));
-		this.set('sceneList', new SceneList(data.scene_list, {parse: true}));
+		this.set('itemList', new ItemList(data.itemList, {parse: true}));
+		this.set('sceneList', new SceneList(data.sceneList, {parse: true}));
 	}
+});
+
+/**
+ * アイテム
+ */
+var Item = Backbone.Model.extend({
 });
 
 /**
@@ -41,9 +47,9 @@ var ItemList = Backbone.Collection.extend({
 });
 
 /**
- * アイテム
+ * シーン
  */
-var Item = Backbone.Model.extend({
+var Scene = Backbone.Model.extend({
 });
 
 /**
@@ -59,16 +65,16 @@ var SceneList = Backbone.Collection.extend({
 				background: val.background,
 				enter: val.enter,
 				leave: val.leave,
-				eventList: new EventList(val.event_list, {parse: true})
+				eventList: new EventList(val.eventList, {parse: true})
 			}));
 		}, this);
 	}
 });
 
 /**
- * シーン
+ * イベント
  */
-var Scene = Backbone.Model.extend({
+var Event = Backbone.Model.extend({
 });
 
 /**
@@ -76,8 +82,8 @@ var Scene = Backbone.Model.extend({
  */
 var EventList = Backbone.Collection.extend({
 	model: Event,
-	parse: function(data, options) {
-		_.each(data, function(val, key) {
+	parse: function(attr, options) {
+		_.each(attr, function(val, key) {
 			this.add(new Event({
 				id: key,
 				img: val.img,
@@ -89,9 +95,5 @@ var EventList = Backbone.Collection.extend({
 	}
 });
 
-/**
- * イベント
- */
-var Event = Backbone.Model.extend({
-});
+
 

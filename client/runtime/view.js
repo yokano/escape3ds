@@ -11,7 +11,7 @@ var RootView = Backbone.View.extend({
 		this.$el.append(upperView.render().el);
 		
 		var sceneView = new SceneView({
-			model: this.model
+			model: game.get('sceneList').get(data.firstScene)
 		});
 		this.$el.append(sceneView.render().el);
 		
@@ -95,8 +95,38 @@ var SceneView = Backbone.View.extend({
 	id: 'scene',
 	tagName: 'div',
 	render: function() {
-		var scene = game.sceneList[this.model.get('currentScene')];
-		this.$el.css('background-image', 'url("/download?blobkey=' + scene.background + '")');
+		this.$el.css('background-image', 'url("/download?blobkey=' + this.model.get('background') + '")');
+		
+		this.model.get('eventList').each(function(event) {
+			var eventView = new EventView({
+				model: event
+			});
+			this.$el.append(eventView.render().el);
+		}, this);
+		
 		return this;
+	}
+});
+
+/**
+ * シーン内のイベント
+ */
+var EventView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'event',
+	render: function() {
+		var position = this.model.get('position');
+		this.$el.css('left', position[0]).css('top', position[1]);
+
+		var size = this.model.get('size');
+		this.$el.css('width', size[0]).css('height', size[1]);
+		
+		return this;
+	},
+	events: {
+		'click': 'eventHasClicked'
+	},
+	eventHasClicked: function() {
+		eval(this.model.get('code'));
 	}
 });

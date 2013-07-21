@@ -45,4 +45,13 @@ body {
 	width: 320px;
 	height: 212px;
 	background-color: black;
+	position: relative;
+	left: 0px;
+	top: 0px;
+}
+
+.event {
+	position: absolute;
+	background-color: blue;
+	opacity: 0.5;
 }
