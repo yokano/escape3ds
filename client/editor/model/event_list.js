@@ -57,7 +57,6 @@ var EventList = Backbone.Collection.extend({
 	eventHasRemoved: function(event) {
 		Backbone.sync('delete', event, {
 			success: function() {
-				console.log('deleting event has successed');
 			},
 			error: function() {
 				console.log('error');

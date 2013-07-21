@@ -85,7 +85,7 @@
 				<div><button id="remove_event">イベントを削除</button></div>
 				<div id="event_editor">
 					<div>JavaScriptコード</div>
-					<textarea id="event_code" rows="25" cols="35"></textarea>
+					<textarea id="event_code" rows="25" cols="35"><%= code %></textarea>
 				</div>
 			</div>
 		</script>
@@ -208,21 +208,6 @@
 			], {
 				silent: true
 			});
-
-			// debug
-//			{{range $key, $val := .Scenes}}
-//				{{range $eventKey, $eventVal := $val.EventList}}
-//					console.log({
-//						id: {{$eventKey}},
-//						name: {{$eventVal.Name}},
-//						image: {{$eventVal.Image}},
-//						code: {{$eventVal.Code}},
-//						position: {{$eventVal.Position}},
-//						size: {{$eventVal.Size}},
-//						color: {{$eventVal.Color}}
-//					});
-//				{{end}}
-//			{{end}}
 			
 			// アイテムリスト初期化
 			game.get('itemList').add([
