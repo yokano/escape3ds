@@ -18,12 +18,9 @@ var Scene = Backbone.Model.extend({
 			}
 		});
 	},
-	backgroundHasChanged: function() {
-	},
 	initialize: function(attr) {
 		this.urlRoot = '/sync/scene/' + GAME_ID;
-		this.on('change:name', this.sceneHasChanged);
-		this.on('change:background', this.backgroundHasChanged);
+		this.on('change:name change:background', this.sceneHasChanged);
 
 		if(attr.eventList == undefined) {
 			this.set('eventList', new EventList());
