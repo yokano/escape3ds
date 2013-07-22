@@ -179,8 +179,9 @@ var SceneView = Backbone.View.extend({
 	 * @method
 	 * @param {Object} event jcropで範囲選択された時の座標を含むオブジェクト
 	 * @param {Object} jcropAPI jcropの操作を行うためのオブジェクト
+	 * @param {string} image 画像のURL。ドラッグアンドドロップで画像を追加した場合にセット。
 	 */
-	eventAreaHasSelected: function(event, jcropAPI, self) {
+	eventAreaHasSelected: function(event, jcropAPI, self, url) {
 		// this は JcropObject を指す
 		var name = window.prompt('イベント名を入力してください');
 		jcropAPI.release();
@@ -191,14 +192,15 @@ var SceneView = Backbone.View.extend({
 		
 		var e = new Event({
 			name: name,
-			image: '',
+			image: (url == undefined) ? '' : url,
 			code: '',
 			position: [event.x, event.y],
 			size: [event.w, event.h],
 			sceneId: self.model.id
 		});
-		self.model.get('eventList').urlRoot = self.model.id;
+		self.model.get('eventList').urlRoot = '/sync/event/' + self.model.id;
 		self.model.get('eventList').add(e);
+		self.model.get('eventList').trigger('eventAreaHasSelected', e);
 	},
 	
 	/**
@@ -221,6 +223,28 @@ var SceneView = Backbone.View.extend({
 		
 		// 画像を取得
 		var file = event.dataTransfer.files[0];
+		
+		// フォームを作成
+		var input = $('<input type="file" name="file" enctype="mutipart/form-data"></input>').val(file);
+		var form = $('<form></form>').append(input);
+		var formData = new FormData(form.get(0))
+		var url = geturl();
+		
+		$.ajax(url, {
+			method: 'POST',
+			contentType: false,
+			processData: false,
+			data: formData,
+			dataType: 'json',
+			error: function() {
+				console.log('error');
+			},
+			success: function(data) {
+				console.log('blobkey', data.blobkey);
+			}
+		});
+		
+		/*
 		getFileURL(file, this, function(url) {
 		
 			// 画像サイズを取得
@@ -237,12 +261,10 @@ var SceneView = Backbone.View.extend({
 				e.h = this.height;
 				e.x = event.offsetX - e.w / 2;
 				e.y = event.offsetY - e.h / 2;
-				self.eventAreaHasSelected(e, jcropAPIDummy, self);
-				
-				// イベントの画像を設定
-				self.model.get('eventList').getSelected().set('image', url);
+				self.eventAreaHasSelected(e, jcropAPIDummy, self, url);
 			};
 		});
+		*/
 		
 		return false;
 	},

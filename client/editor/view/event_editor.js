@@ -59,9 +59,23 @@ var EventEditorView = Backbone.View.extend({
 		this.model.set('color', color);
 	},
 	eventImageFileHasChanged: function() {
-		var file = $('#change_event_img').get(0).files[0];
-		getFileURL(file, this, function(url) {
-			this.model.set('image', url);
+		var form = this.$el.find('#change_event_img_form').get(0);
+		var formData = new FormData(form);
+		var url = geturl();
+		
+		var self = this;
+		$.ajax(url, {
+			method: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			error: function() {
+				console.log('error');
+			},
+			success: function(data) {
+				self.model.set('image', data.blobkey);
+			}
 		});
 	},
 	removeImageButtonHasClicked: function() {

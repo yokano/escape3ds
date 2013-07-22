@@ -36,7 +36,7 @@
 			
 			<div id="scene_info">
 				<div>
-						シーン名: <input class="scene_name" type="text" value="<%= name %>">
+					シーン名: <input class="scene_name" type="text" value="<%= name %>">
 				</div>
 				<div><label>ゲーム開始時のシーンにする <input class="is_first_scene" type="checkbox"></input></label></div>
 				<div>背景画像:
@@ -77,7 +77,9 @@
 					<div>
 						画像
 					</div>
-						<input id="change_event_img" type="file"></input>
+						<form id="change_event_img_form">
+							<input id="change_event_img" type="file" name="file"></input>
+						</form>
 						<div>
 							<button id="remove_img">画像を削除</button>
 						</div>

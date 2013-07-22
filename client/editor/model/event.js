@@ -14,9 +14,11 @@ var Event = Backbone.Model.extend({
 	},
 	initialize: function() {
 		this.urlRoot = '/sync/event/' + this.get('sceneId');
-		this.on('change', this.eventHasChanged);
+		this.on('change:name change:image change:position change:size change:color', this.eventHasChanged);
 	},
 	eventHasChanged: function() {
+		console.log('update');
+		console.log(this.changedAttributes());
 		Backbone.sync('update', this, {
 			success: function() {
 			},

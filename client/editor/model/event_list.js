@@ -40,6 +40,7 @@ var EventList = Backbone.Collection.extend({
 	 * @param {Event} event 追加されたイベント
 	 */
 	eventHasAdded: function(event) {
+		console.log('added');
 		Backbone.sync('create', event, {
 			success: function(data) {
 				event.set('id', data.id);

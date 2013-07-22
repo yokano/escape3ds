@@ -1,8 +1,5 @@
-/**
- * OAuth 2.0 による通信
- * authorization code 方式のみ
- * @file
- */
+// OAuth 2.0 による通信。
+// authorization code 方式のみ。
 package lib
 
 import (
@@ -12,27 +9,15 @@ import (
 	"fmt"
 )
 
-/**
- * OAuth 2.0
- * @class
- * @property {appengine.Context} context コンテキスト
- * @property {string} clientId クライアントID
- * @property {string} clientSecret クライアントパスワード
- */
+// OAuth 2.0
 type OAuth2 struct {
 	context appengine.Context
 	clientId string
 	clientSecret string
 }
 
-/**
- * OAuth2.0 インスタンスを返す
- * @function
- * @param {appengine.Context} c コンテキスト
- * @param {string} clientId OAuthクライアントID
- * @param {string} clientSecret OAuthクライアントパスワード
- * @returns {*OAuth2} インスタンス
- */
+
+// OAuth2.0 インスタンスを返す
 func NewOAuth2(c appengine.Context, clientId string, clientSecret string) *OAuth2 {
 	oauth := new(OAuth2)
 	oauth.context = c
@@ -42,35 +27,16 @@ func NewOAuth2(c appengine.Context, clientId string, clientSecret string) *OAuth
 	return oauth
 }
 
-/**
- * 認証コードをリクエストする
- * 認証ページヘのリダイレクトを行いユーザに認証してもらう
- * 認証が完了したらリダイレクトURIへ認証コードが返ってくる
- * @method
- * @memberof OAuth2
- * @param {http.ResponseWriter} w 応答先
- * @param {*http.Request} r リクエスト
- * @param {string} targetUri リクエスト先URI
- * @param {string} redirectUri リダイレクトURI
- */
+// 認証コードをリクエストする
+// 認証ページヘのリダイレクトを行いユーザに認証してもらう
+// 認証が完了したらリダイレクトURIへ認証コードが返ってくる
 func (this *OAuth2) RequestAuthorizationCode(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string) {
 	targetUri = fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&response_type=code", targetUri, this.clientId, redirectUri)
 	http.Redirect(w, r, targetUri, 302)
 }
 
-/**
- * アクセストークンをリクエストする
- * 引き換えとして認証コードを渡すこと
- * @method
- * @memberof OAuth2
- * @param {http.ResponseWriter} w 応答先
- * @param {*http.Request} r リクエスト
- * @param {string} targetUri
- * @param {string} redirectUri
- * @param {string} clientSecret
- * @param {string} code
- * @returns {string} アクセストークン
- */
+// アクセストークンをリクエストする
+// 引き換えとして認証コードを渡すこと
 func (this *OAuth2) RequestAccessToken(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string, code string) string {
 	targetUri = fmt.Sprintf("%s?client_id=%s&redirect_uri=%s&client_secret=%s&code=%s", targetUri, this.clientId, redirectUri, this.clientSecret, code)
 	
@@ -91,10 +57,7 @@ func (this *OAuth2) RequestAccessToken(w http.ResponseWriter, r *http.Request, t
 	return tokenParam[1]
 }
 
-/**
- * アクセストークンを使ってAPIを呼び出す
- * @method
- */
+// アクセストークンを使ってAPIを呼び出す
 func (this *OAuth2) RequestAPI(w http.ResponseWriter, targetUri string, accessToken string) []byte {
 	params := make(map[string]string, 1)
 	params["access_token"] = accessToken
