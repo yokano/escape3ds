@@ -36,8 +36,19 @@ var SceneList = Backbone.Collection.extend({
 		this.on('select', this.select);
 		this.on('remove', this.removed);
 		this.on('add', this.added);
+		this.on('change:sort', this.sceneListHasSorted);
 	},
 	getSelected: function() {
 		return this.get(this.selected);
+	},
+	sceneListHasSorted: function(scene) {
+		Backbone.sync('update', scene, {
+			success: function() {
+				console.log('success');
+			},
+			error: function() {
+				console.log('error');
+			}
+		});
 	}
 });

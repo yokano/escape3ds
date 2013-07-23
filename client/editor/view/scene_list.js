@@ -40,5 +40,6 @@ var SceneListView = Backbone.View.extend({
 			var cid = $(this).attr('id');
 			self.collection.get(cid).set('sort', index);
 		});
+		this.collection.sort();
 	}
 });
