@@ -1,5 +1,6 @@
 /**
  * ルートビュー
+ * model: State
  */
 var RootView = Backbone.View.extend({
 	id: 'root',
@@ -11,7 +12,7 @@ var RootView = Backbone.View.extend({
 		this.$el.append(upperView.render().el);
 		
 		var sceneView = new SceneView({
-			model: game.get('sceneList').get(data.firstScene)
+			model: this.model
 		});
 		this.$el.append(sceneView.render().el);
 		
@@ -21,6 +22,7 @@ var RootView = Backbone.View.extend({
 
 /**
  * 上画面
+ * model: State
  */
 var UpperView = Backbone.View.extend({
 	id: 'upper',
@@ -90,14 +92,16 @@ var MessageView = Backbone.View.extend({
 
 /**
  * 下画面（シーン）
+ * model: State
  */
 var SceneView = Backbone.View.extend({
 	id: 'scene',
 	tagName: 'div',
 	render: function() {
-		this.$el.css('background-image', 'url("/download?blobkey=' + this.model.get('background') + '")');
+		var scene = this.model.get('currentScene');
+		this.$el.css('background-image', 'url("/download?blobkey=' + scene.get('background') + '")');
 		
-		this.model.get('eventList').each(function(event) {
+		scene.get('eventList').each(function(event) {
 			var eventView = new EventView({
 				model: event
 			});
@@ -105,11 +109,15 @@ var SceneView = Backbone.View.extend({
 		}, this);
 		
 		return this;
+	},
+	initialize: function() {
+		this.listenTo(this.model, 'change:currentScene', this.render);
 	}
 });
 
 /**
  * シーン内のイベント
+ * model: Event
  */
 var EventView = Backbone.View.extend({
 	tagName: 'div',

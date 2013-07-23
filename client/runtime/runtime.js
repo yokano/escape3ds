@@ -1,4 +1,4 @@
-var game = new Game(data, {parse: true});
+var game = new Game({}, data);
 
 var state = new State({
 	currentScene: game.firstScene,
