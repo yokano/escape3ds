@@ -43,8 +43,10 @@
 					<form id="change_scene_img_form">
 						<label>
 							<input id="change_scene_img" name="file" type="file"></input>
-							<div><img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>"></div>
 						</label>
+						<div>
+							<img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>">
+						</div>
 					</form>
 				</div>
 				<div><button id="edit_enter_event">シーン開始時のイベント</button></div>

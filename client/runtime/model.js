@@ -75,6 +75,15 @@ var SceneList = Backbone.Collection.extend({
  * イベント
  */
 var Event = Backbone.Model.extend({
+	defaults: {
+		visible: true  // 画面上に表示するかどうか
+	},
+	hide: function() {
+		this.set('visible', false);
+	},
+	show: function() {
+		this.set('visible', true);
+	}
 });
 
 /**
@@ -86,7 +95,7 @@ var EventList = Backbone.Collection.extend({
 		_.each(attr, function(val, key) {
 			this.add(new Event({
 				id: key,
-				img: val.img,
+				image: val.image,
 				position: val.position,
 				size: val.size,
 				code: val.code

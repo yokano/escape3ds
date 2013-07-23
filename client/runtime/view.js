@@ -115,18 +115,33 @@ var EventView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'event',
 	render: function() {
+		if(this.model.get('visible')) {
+			this.$el.show();
+		} else {
+			this.$el.hide();
+		}
+		
 		var position = this.model.get('position');
 		this.$el.css('left', position[0]).css('top', position[1]);
 
 		var size = this.model.get('size');
 		this.$el.css('width', size[0]).css('height', size[1]);
 		
+		var blobkey = this.model.get('image');
+		if(blobkey != '') {
+			this.$el.css('background-image', 'url("/download?blobkey=' + blobkey + '")');
+		}
+		
 		return this;
+	},
+	initialize: function() {
+		this.listenTo(this.model, 'change:visible', this.render);
 	},
 	events: {
 		'click': 'eventHasClicked'
 	},
 	eventHasClicked: function() {
-		eval(this.model.get('code'));
+		var callback = new Function(this.model.get('code'));
+		callback.call(this.model);
 	}
 });
