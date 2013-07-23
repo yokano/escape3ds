@@ -98,6 +98,8 @@ var SceneView = Backbone.View.extend({
 	id: 'scene',
 	tagName: 'div',
 	render: function() {
+		this.$el.empty();
+		
 		var scene = this.model.get('currentScene');
 		this.$el.css('background-image', 'url("/download?blobkey=' + scene.get('background') + '")');
 		

@@ -16,7 +16,7 @@ var State = Backbone.Model.extend({
 	 * @param {String} id 移動先シーンのid
 	 */
 	changeScene: function(id) {
-		this.set('currentScene', game.get('firstScene'));
+		this.set('currentScene', game.get('sceneList').get(id));
 	}
 });
 
