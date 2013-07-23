@@ -29,8 +29,11 @@ var EventAreaView = Backbone.View.extend({
 				.css('width', model.size[0])
 				.css('height', model.size[1])
 				.css('background-color', model.color)
-				.css('border-color', this.borderColor[model.color])
-				.css('background-image', 'url("/download?blobkey=' + this.model.get('image') + '")');
+				.css('border-color', this.borderColor[model.color]);
+		
+		if(this.model.get('image') != '') {
+			this.$el.css('background-image', 'url("/download?blobkey=' + this.model.get('image') + '")');
+		}
 		return this;
 	},
 	events: {
