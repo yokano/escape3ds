@@ -16,6 +16,9 @@ var State = Backbone.Model.extend({
 	addItem: function(id) {
 		var item = game.get('itemList').get(id)
 		this.get('itemList').add(item);
+	},
+	removeItem: function(id) {
+		this.get('itemList').remove(id);
 	}
 });
 
