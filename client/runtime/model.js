@@ -108,13 +108,17 @@ var SceneList = Backbone.Collection.extend({
  */
 var Event = Backbone.Model.extend({
 	defaults: {
-		visible: true  // 画面上に表示するかどうか
+		visible: true,  // 画面上に表示するかどうか
+		removed: false,
 	},
 	hide: function() {
 		this.set('visible', false);
 	},
 	show: function() {
 		this.set('visible', true);
+	},
+	remove: function() {
+		this.set('removed', true);
 	}
 });
 
@@ -133,6 +137,11 @@ var EventList = Backbone.Collection.extend({
 				code: val.code
 			});
 		}, this);
+		
+		this.on('change:removed', this.removeEvent);
+	},
+	removeEvent: function(event) {
+		// イベントが削除された時の処理
 	}
 });
 

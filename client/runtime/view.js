@@ -125,10 +125,11 @@ var EventView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'event',
 	render: function() {
-		if(this.model.get('visible')) {
+		if(this.model.get('visible') && this.model.get('removed') == false) {
 			this.$el.show();
 		} else {
 			this.$el.hide();
+			return this;
 		}
 		
 		var position = this.model.get('position');
@@ -145,7 +146,7 @@ var EventView = Backbone.View.extend({
 		return this;
 	},
 	initialize: function() {
-		this.listenTo(this.model, 'change:visible', this.render);
+		this.listenTo(this.model, 'change', this.render);
 	},
 	events: {
 		'click': 'eventHasClicked'
