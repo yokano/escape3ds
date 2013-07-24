@@ -10,13 +10,12 @@ var State = Backbone.Model.extend({
 		this.set('currentScene', game.get('firstScene'));
 		this.set('itemList', new ItemList());
 	},
-	
-	/**
-	 * 別のシーンへ移動する
-	 * @param {String} id 移動先シーンのid
-	 */
 	changeScene: function(id) {
 		this.set('currentScene', game.get('sceneList').get(id));
+	},
+	addItem: function(id) {
+		var item = game.get('itemList').get(id)
+		this.get('itemList').add(item);
 	}
 });
 

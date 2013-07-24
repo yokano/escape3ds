@@ -44,12 +44,14 @@ var UpperView = Backbone.View.extend({
 
 /**
  * アイテムリスト
+ * collection: ItemList
  */
 var ItemListView = Backbone.View.extend({
 	id: 'item_list',
 	tagName: 'ul',
 	render: function() {
-
+		this.$el.empty();
+		
 		// 手持ちのアイテムを表示
 		state.get('itemList').each(function(item) {
 			var itemView = new ItemView({
@@ -64,6 +66,9 @@ var ItemListView = Backbone.View.extend({
 		}
 		
 		return this;
+	},
+	initialize: function() {
+		this.listenTo(this.collection, 'add remove', this.render);
 	}
 });
 
@@ -74,7 +79,7 @@ var ItemView = Backbone.View.extend({
 	className: 'item',
 	tagName: 'li',
 	render: function() {
-		this.$el.append('<img src="' + this.model.get('img') + '">');
+		this.$el.append('<img src="/download?blobkey=' + this.model.get('img') + '">');
 		return this;
 	}
 });
