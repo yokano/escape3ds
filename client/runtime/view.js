@@ -68,7 +68,22 @@ var ItemListView = Backbone.View.extend({
 		return this;
 	},
 	initialize: function() {
+		var view = this;
+		$(document).on('keydown', function(event) {
+			view.keyHasDown.call(view, event);
+		});
+		
 		this.listenTo(this.collection, 'add remove', this.render);
+	},
+	keyHasDown: function(event) {
+		var LEFT = 37;
+		var RIGHT = 39;
+		var keyCode = event.originalEvent.keyCode;
+		if(keyCode == LEFT) {
+			this.collection.prev();
+		} else if(keyCode == RIGHT) {
+			this.collection.next();
+		}
 	}
 });
 
@@ -81,6 +96,16 @@ var ItemView = Backbone.View.extend({
 	render: function() {
 		this.$el.append('<img src="/download?blobkey=' + this.model.get('img') + '">');
 		return this;
+	},
+	initialize: function() {
+		this.listenTo(this.model, 'change:selected', this.itemHasSelected);
+	},
+	itemHasSelected: function() {
+		if(this.model.get('selected')) {
+			this.$el.addClass('selected');
+		} else {
+			this.$el.removeClass('selected');
+		}
 	}
 });
 

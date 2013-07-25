@@ -4,11 +4,18 @@
 var State = Backbone.Model.extend({
 	defaults: {
 		currentScene: null,  // 最初に表示するシーンオブジェクト
-		itemList: null,  // 所持しているアイテムリスト
+		itemList: null  // 所持しているアイテムリスト
 	},
 	initialize: function() {
 		this.set('currentScene', game.get('firstScene'));
-		this.set('itemList', new ItemList());
+
+		var firstItems = {};
+		_.each(data.itemList, function(val, key) {
+			if(val.hasFirst) {
+				firstItems[key] = val;
+			}
+		});
+		this.set('itemList', new ItemList(null, firstItems));
 	},
 	changeScene: function(id) {
 		this.set('currentScene', game.get('sceneList').get(id));
@@ -52,7 +59,8 @@ var Item = Backbone.Model.extend({
 	defaults: {
 		name: '',
 		hasFirst: '',
-		img: ''
+		img: '',
+		selected: false
 	}
 });
 
@@ -61,6 +69,7 @@ var Item = Backbone.Model.extend({
  */
 var ItemList = Backbone.Collection.extend({
 	model: Item,
+	cursor: -1,  // 現在選択中のアイテムのindex, -1 は未選択状態
 	initialize: function(attr, options) {
 		_.each(options, function(val, key) {
 			this.add(new Item({
@@ -70,6 +79,40 @@ var ItemList = Backbone.Collection.extend({
 				img: val.img
 			}));
 		}, this);
+	},
+	next: function() {
+		if(this.length == 0) {
+			return;
+		}
+		
+		if(this.cursor == -1) {
+			this.cursor = 0;
+		} else if(this.cursor >= this.length - 1) {
+			this.at(this.cursor).set('selected', false);
+			this.cursor = 0;
+		} else {
+			this.at(this.cursor).set('selected', false);
+			this.cursor++;
+		}
+		
+		this.at(this.cursor).set('selected', true);
+	},
+	prev: function() {
+		if(this.length == 0) {
+			return;
+		}
+		
+		if(this.cursor == -1) {
+			this.cursor = this.length - 1;
+		} else if(this.cursor <= 0) {
+			this.at(this.cursor).set('selected', false);
+			this.cursor = this.length - 1;
+		} else {
+			this.at(this.cursor).set('selected', false);
+			this.cursor--;
+		}
+		
+		this.at(this.cursor).set('selected', true);
 	}
 });
 
@@ -146,6 +189,3 @@ var EventList = Backbone.Collection.extend({
 		// イベントが削除された時の処理
 	}
 });
-
-
-

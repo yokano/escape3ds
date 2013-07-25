@@ -31,6 +31,9 @@ body {
 	background-size: 50px 50px;
 	background-image: url('/client/runtime/item_background.png');
 }
+.item.selected {
+	background-image: url('/client/runtime/item_background_selected.png');
+}
 
 #message {
 	width: 290px;
