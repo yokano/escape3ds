@@ -29,13 +29,8 @@ var ItemEditorView = Backbone.View.extend({
 	 * アイテムを追加ボタンが押された
 	 */
 	addItemButtonHasClicked: function() {
-		var name = window.prompt('新しいアイテムの名前を入力してください');
-		if(name == '') {
-			return;
-		}
-		
 		game.get('itemList').add({
-			name: name,
+			name: '新しいアイテム',
 			sort: game.get('itemList').models.length
 		});
 	}
