@@ -26,6 +26,14 @@ var State = Backbone.Model.extend({
 	},
 	removeItem: function(id) {
 		this.get('itemList').remove(id);
+	},
+	getCurrentItem: function() {
+		var itemList = this.get('itemList');
+		var currentItem = itemList.at(itemList.cursor);
+		if(currentItem == undefined) {
+			currentItem = null;
+		}
+		return currentItem;
 	}
 });
 

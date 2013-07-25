@@ -5,11 +5,6 @@ var state = new State({
 	debug: true
 });
 
-//state.get('itemList').add([
-//	new Item(game.item_list.hammer, {parse: true}),
-//	new Item(game.item_list.dish, {parse: true}),
-//]);
-
 var rootView = new RootView({
 	model: state
 });
