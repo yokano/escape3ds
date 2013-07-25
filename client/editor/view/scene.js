@@ -128,7 +128,7 @@ var SceneView = Backbone.View.extend({
 		if(!window.confirm(scene.get('name') + 'を削除しますか？')) {
 			return;
 		}
-		game.get('sceneList').remove(scene);
+		game.get('sceneList').remove([scene]);
 	},
 	
 	/**

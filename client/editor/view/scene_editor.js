@@ -27,7 +27,8 @@ var SceneEditorView = Backbone.View.extend({
 	},
 	addScene: function() {
 		game.get('sceneList').add({
-			name: '新しいシーン'
+			name: '新しいシーン',
+			sort: game.get('sceneList').length
 		});
 	}
 });
