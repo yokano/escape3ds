@@ -9,6 +9,9 @@ import (
 // ログインページの表示。セッションが既に開始されている場合はゲームリストを表示する。
 func (this *Controller) Top(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+	
+	c.Debugf(appengine.DefaultVersionHostname(c))
+	
 	view := NewView(c, w)
 	sessionId := this.GetSession(c, r)
 	

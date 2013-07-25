@@ -58,6 +58,7 @@ button {
 	font-size: small;
 	margin-bottom: 3px;
 	cursor: pointer;
+	overflow: hidden;
 }
 #scene_list li:hover {
 	background-color: lightyellow;
@@ -156,6 +157,7 @@ button {
 	height: 50px;
 	margin-bottom: 3px;
 	cursor: pointer;
+	overflow: hidden;
 }
 #item_list li:hover {
 	background-color: lightyellow;
