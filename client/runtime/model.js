@@ -4,7 +4,8 @@
 var State = Backbone.Model.extend({
 	defaults: {
 		currentScene: null,  // 最初に表示するシーンオブジェクト
-		itemList: null  // 所持しているアイテムリスト
+		itemList: null,  // 所持しているアイテムリスト
+		busy: false  // メッセージのページ送り待ちなら true
 	},
 	initialize: function() {
 		this.set('currentScene', game.get('firstScene'));
@@ -46,7 +47,8 @@ var Game = Backbone.Model.extend({
 		description: '',  // ゲームの説明
 		itemList: null,  // ゲームに存在するすべてのアイテム
 		sceneList: null,  // ゲームに存在するすべてのシーン
-		firstScene: null  // 最初のシーン
+		firstScene: null,  // 最初のシーン
+		message: null  // メッセージ
 	},
 	initialize: function(attr, options) {
 		if(options.firstScene == '') {
@@ -57,6 +59,30 @@ var Game = Backbone.Model.extend({
 		this.set('itemList', new ItemList(null, options.itemList));
 		this.set('sceneList', new SceneList(null, options.sceneList));
 		this.set('firstScene', this.get('sceneList').get(options.firstScene));
+		this.set('message', new Message());
+	}
+});
+
+/**
+ * メッセージ
+ */
+var Message = Backbone.Model.extend({
+	defaults: {
+		current: 0,  // 現在表示中のページ番号
+		queue: []  // メッセージキュー
+	},
+	show: function(messageQueue) {
+		this.set('current', 0);
+		this.set('queue', messageQueue);
+		if(this.get('queue').length > 1) {
+			state.set('busy', true);
+		}
+	},
+	next: function() {
+		this.set('current', this.get('current') + 1);
+		if(this.get('current') >= this.get('queue').length - 1) {
+			state.set('busy', false);
+		}
 	}
 });
 

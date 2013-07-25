@@ -34,7 +34,7 @@ var UpperView = Backbone.View.extend({
 		this.$el.append(itemListView.render().el);
 		
 		var messageView = new MessageView({
-			
+			model: game.get('message')
 		});
 		this.$el.append(messageView.render().el);
 		
@@ -116,7 +116,16 @@ var MessageView = Backbone.View.extend({
 	id: 'message',
 	tagName: 'div',
 	render: function() {
+		this.$el.html(this.model.get('queue')[this.model.get('current')]);
+		
+		if(this.model.get('current') < this.model.get('queue').length - 1) {
+			this.$el.append($('<div class="next"></div>'));
+		}
+		
 		return this;
+	},
+	initialize: function() {
+		this.listenTo(this.model, 'change', this.render);
 	}
 });
 
@@ -144,6 +153,14 @@ var SceneView = Backbone.View.extend({
 	},
 	initialize: function() {
 		this.listenTo(this.model, 'change:currentScene', this.render);
+	},
+	events: {
+		'click': 'sceneHasClicked'
+	},
+	sceneHasClicked: function() {
+		if(state.get('busy')) {
+			game.get('message').next();
+		}
 	}
 });
 
@@ -182,7 +199,13 @@ var EventView = Backbone.View.extend({
 		'click': 'eventHasClicked'
 	},
 	eventHasClicked: function() {
+		if(state.get('busy')) {
+			return;
+		}
+		
 		var callback = new Function(this.model.get('code'));
 		callback.call(this.model);
+		
+		return false;
 	}
 });

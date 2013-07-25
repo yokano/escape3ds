@@ -36,12 +36,32 @@ body {
 }
 
 #message {
-	width: 290px;
-	height: 80px;
+	width: 280px;
+	height: 70px;
 	margin-left: auto;
 	margin-right: auto;
 	background-color: white;
 	border-radius: 10px;
+	font-family: sans-serif;
+	padding: 5px;
+}
+#message .next {
+	width: 20px;
+	height: 17px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url('/client/runtime/next.png');
+	position: absolute;
+	left: 280px;
+	top: 185px;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-name: next;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+@-webkit-keyframes next {
+	0% { top: 185px; }
+	100% { top: 180px; }
 }
 
 #scene {
