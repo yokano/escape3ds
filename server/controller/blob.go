@@ -16,7 +16,6 @@ func (this *Controller) Uploaded(w http.ResponseWriter, r *http.Request) {
 	blobs, _, err := blobstore.ParseUpload(r)
 	Check(c, err)
 	
-	c.Debugf("BLOBS: %#V", blobs)
 	fmt.Fprintf(w, `{"blobkey":"%s"}`, blobs["file"][0].BlobKey)
 }
 

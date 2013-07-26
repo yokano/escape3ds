@@ -12,7 +12,3 @@ $('body').append(rootView.render().el);
 
 // スクロールを促す
 game.get('message').show(['十字キーの↓を押して画面を合わせてください']);
-
-window.onscroll = function() {
-	alert('scroll');
-};

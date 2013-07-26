@@ -15,7 +15,7 @@ var RootView = Backbone.View.extend({
 			model: this.model
 		});
 		this.$el.append(sceneView.render().el);
-		
+				
 		return this;
 	}
 });
@@ -118,9 +118,18 @@ var MessageView = Backbone.View.extend({
 	render: function() {
 		this.$el.html(this.model.get('queue')[this.model.get('current')]);
 		
+		var busy = $('#busy');
 		if(this.model.get('current') < this.model.get('queue').length - 1) {
 			this.$el.append($('<div class="next"></div>'));
+			busy.css('visibility', 'visible');
+		} else {
+			busy.css('visibility', 'hidden');
 		}
+		busy.off('click').on('click', function() {
+			if(state.get('busy')) {
+				game.get('message').next();
+			}
+		});
 		
 		return this;
 	},
@@ -141,7 +150,7 @@ var SceneView = Backbone.View.extend({
 		
 		var scene = this.model.get('currentScene');
 		this.$el.css('background-image', 'url("/download?blobkey=' + scene.get('background') + '")');
-		
+
 		scene.get('eventList').each(function(event) {
 			var eventView = new EventView({
 				model: event
@@ -153,14 +162,6 @@ var SceneView = Backbone.View.extend({
 	},
 	initialize: function() {
 		this.listenTo(this.model, 'change:currentScene', this.render);
-	},
-	events: {
-		'click': 'sceneHasClicked'
-	},
-	sceneHasClicked: function() {
-		if(state.get('busy')) {
-			game.get('message').next();
-		}
 	}
 });
 
