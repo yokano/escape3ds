@@ -27,7 +27,7 @@ func (this *Controller) GetHandler(callback func(this *Controller, w http.Respon
 
 // リクエスト URL に合わせて処理を振り分ける
 func (this *Controller) Handle() {
-	table := make(map[string]func(this *Controller, w http.ResponseWriter, r *http.Request), 24)
+	table := make(map[string]func(this *Controller, w http.ResponseWriter, r *http.Request), 25)
 
 	// page
 	table["/"]         = (*Controller).Top
@@ -35,6 +35,7 @@ func (this *Controller) Handle() {
 	table["/gamelist"] = (*Controller).Gamelist
 	table["/logout"]   = (*Controller).Logout
 	table["/runtime"]  = (*Controller).Runtime
+	table["/event_editor"] = (*Controller).EventEditor
 
 	// oauth
 	table["/login_twitter"]     = (*Controller).LoginTwitter

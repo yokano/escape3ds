@@ -53,3 +53,11 @@ func (this *Controller) Runtime(w http.ResponseWriter, r *http.Request) {
 	view := NewView(c, w)
 	view.Runtime(gameKey)
 }
+
+// イベントエディタ
+func (this *Controller) EventEditor(w http.ResponseWriter, r *http.Request) {
+	eventKey := r.FormValue("event_key")
+	c := appengine.NewContext(r)
+	view := NewView(c, w)
+	view.EventEditor(eventKey)
+}
