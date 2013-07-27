@@ -1,0 +1,72 @@
+* {
+	margin: 0px;
+}
+
+html, body, #root {
+	height: 100%;
+}
+
+#event_view {
+	float: left;
+	width: 70%;
+	height: 100%;
+}
+#event_view #start {
+	margin-top: 15px;
+}
+#event_view .stack {
+	width: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+#event_view .circle {
+	background-color: white;
+	border-style: solid;
+	width: 50px;
+	height: 50px;
+	border-radius: 25px;
+	text-align: center;
+	font-size: 45px;
+}
+#event_view .line {
+	width: 0px;
+	height: 25px;
+	border-style: solid;
+}
+#event_view .connector {
+	width: 150px;
+	height: 50px;
+	padding: 5px;
+	border-style: solid;
+	border-color: gray;
+	border-radius: 5px;
+	background-color: lightgray;
+	font-family: sans-serif;
+	text-align: center;
+	line-height: 50px;
+	opacity: 0.5;
+}
+
+#block_list_view {
+	float: right;
+	width: 30%;
+	background-color: gray;
+	height: 100%;
+}
+#block_list_view .label{
+	font-size: large;
+	color: white;
+}
+#block_list_view .block {
+	padding: 5px;
+	margin: 5px;
+	background-color: white;
+	border-style: solid;
+	border-radius: 5px;
+	width: 150px;
+	height: 50px;
+	cursor: move;
+}
+#block_list_view .block:hover {
+	background-color: yellow;
+}

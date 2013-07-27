@@ -3,8 +3,18 @@
 	<head>
 		<meta charset="utf-8">
 		<title>EventEditor</title>
+		<base href="/client/event_editor/">
+		<link rel="stylesheet" href="event_editor.css"></link>
+		<link rel="stylesheet" href="../lib/jqueryui/css/jquery-ui.min.css"></link>
 	</head>
 	<body>
-		<div>イベント「{{.Name}}」を編集</div>
+		<script src="../lib/jquery/jquery-2.0.3.min.js"></script>
+		<script src="../lib/jqueryui/js/jquery-ui.min.js"></script>
+		<script src="../lib/underscorejs/underscore-min.js"></script>
+		<script src="../lib/backbonejs/backbone.js"></script>
+		
+		<script src="model.js"></script>
+		<script src="view.js"></script>
+		<script src="event_editor.js"></script>
 	</body>
 </html>
