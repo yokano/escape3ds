@@ -1,4 +1,4 @@
-$(function() {
-	var rootView = new RootView();
-	$('body').html(rootView.render().el);
-});
+var blockList = new BlockList();
+
+var rootView = new RootView();
+$('body').html(rootView.render().el);
