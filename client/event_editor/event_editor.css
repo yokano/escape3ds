@@ -30,12 +30,12 @@ html, body, #root {
 }
 #event_view .line {
 	width: 0px;
-	height: 25px;
+	height: 5px;
 	border-style: solid;
 }
 #event_view .connector {
 	width: 75px;
-	height: 25px;
+	height: 15px;
 	padding: 5px;
 	border-style: dashed;
 	border-color: gray;
@@ -44,7 +44,7 @@ html, body, #root {
 	font-family: sans-serif;
 	font-size: x-small;
 	text-align: center;
-	line-height: 25px;
+	line-height: 15px;
 	opacity: 0.5;
 }
 #event_view .connector-hover {
@@ -60,6 +60,7 @@ html, body, #root {
 	background-color: white;
 	border-style: solid;
 	border-radius: 5px;
+	overflow: scroll;
 }
 
 #block_list_view {

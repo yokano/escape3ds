@@ -188,3 +188,14 @@ func (this *Controller) EncodeGame(w http.ResponseWriter, r *http.Request) {
 	
 	fmt.Fprintf(w, `{"game":%s}`, encodedGame)
 }
+
+// イベントコードのアップデート
+func (this *Controller) UpdateEventCode(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	code := r.FormValue("code")
+	id := r.FormValue("id")
+	
+	model := NewModel(c)
+	model.UpdateEventCode(id, code)
+	fmt.Fprintf(w, `{}`)
+}

@@ -52,7 +52,8 @@ func (this *Controller) Handle() {
 	table["/sync/"]       = (*Controller).SyncHandler
 	table["/interim_registration"] = (*Controller).InterimRegistration
 	table["/registration"]         = (*Controller).Registration
-	
+	table["/update_code"] = (*Controller).UpdateEventCode
+
 	// blob
 	table["/uploaded"] = (*Controller).Uploaded
 	table["/download"] = (*Controller).Download

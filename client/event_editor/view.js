@@ -30,6 +30,7 @@ var ConnectorView = Backbone.View.extend({
 		this.$el.droppable({
 			drop: function(event, ui) {
 				view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
+				console.log(blockList.toJSON());
 			},
 			hoverClass: 'connector-hover'
 		});
@@ -84,6 +85,7 @@ var BlockListView = Backbone.View.extend({
 	render: function() {
 		var view = this;
 		this.$el.append('<span class="label">ブロックリスト</span>');
+		this.$el.append('<div class="block" type="message">メッセージ表示</div>');
 		this.$el.append('<div class="block" type="changeScene">シーン移動</div>');
 		this.$el.append('<div class="block" type="addItem">アイテム追加</div>');
 		this.$el.append('<div class="block" type="removeItem">アイテム削除</div>');
@@ -95,7 +97,6 @@ var BlockListView = Backbone.View.extend({
 		
 		this.$el.find('.block').draggable({
 			helper: 'clone',
-			snap: '.connector',
 			snapMode: 'inner'
 		});
 		
@@ -114,7 +115,7 @@ var ChangeSceneBlockView = Backbone.View.extend({
 			index: blockList.indexOf(this.model) + 1
 		});
 		
-		this.$el.append('<div class="stack block">シーン移動</div>');
+		this.$el.append('<div class="stack block">シーン<input class="scene_name" type="select" size="5">へ移動</div>');
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');
@@ -134,7 +135,7 @@ var AddItemBlockView = Backbone.View.extend({
 			index: blockList.indexOf(this.model) + 1
 		});
 	
-		this.$el.append('<div class="stack block">アイテムを追加</div>');
+		this.$el.append('<div class="stack block">アイテム<input class="item_name" type="select" size="5">を追加</div>');
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');
@@ -154,7 +155,7 @@ var RemoveItemBlockView = Backbone.View.extend({
 			index: blockList.indexOf(this.model) + 1
 		});
 	
-		this.$el.append('<div class="stack block">アイテムを削除</div>');
+		this.$el.append('<div class="stack block">アイテム<input class="item_name" type="select" size="5">を削除</div>');
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');
@@ -174,7 +175,7 @@ var MessageBlockView = Backbone.View.extend({
 			index: blockList.indexOf(this.model) + 1
 		});
 	
-		this.$el.append('<div class="stack block">メッセージを表示</div>');
+		this.$el.append('<div class="stack block">メッセージを表示<textarea class="message"></textarea></div>');
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');
@@ -254,7 +255,7 @@ var ChangeImageBlockView = Backbone.View.extend({
 			index: blockList.indexOf(this.model) + 1
 		});
 	
-		this.$el.append('<div class="stack block">イベント画像を変更</div>');
+		this.$el.append('<div class="stack block">イベント画像を変更<input class="img" type="file"></div>');
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');
@@ -274,7 +275,7 @@ var VariableBlockView = Backbone.View.extend({
 			index: blockList.indexOf(this.model) + 1
 		});
 		
-		this.$el.append('<div class="stack block">変数を操作</div>');
+		this.$el.append('<div class="stack block">変数<input type="text" size="3">を<input type="text" size="3">にする</div>');
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');

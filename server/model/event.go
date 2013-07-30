@@ -91,6 +91,16 @@ func (this *Model) GetEventList(encodedSceneKey string) map[string]*Event {
 	return eventList
 }
 
+// イベントコードの更新
+func (this *Model) UpdateEventCode(id string, code string) {
+	event := this.GetEvent(id)
+	event.Code = code
+	this.UpdateEvent(event, id)
+	this.c.Debugf("UPDATE CODE")
+	this.c.Debugf("ID: %s", id)
+	this.c.Debugf("CODE: %s", code)
+}
+
 // イベントの同期
 func (this *Model) SyncEvent(w http.ResponseWriter, r *http.Request, path []string) {
 	switch r.Method {
