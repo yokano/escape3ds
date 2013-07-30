@@ -103,7 +103,14 @@ func (this *View) Runtime(gameKey string) {
 
 // イベントエディタの表示
 func (this *View) EventEditor(eventKey string) {
+	model := NewModel(this.c)
+	event := model.GetEvent(eventKey)
+	
+	contents := make(map[string]string, 2)
+	contents["id"] = eventKey
+	contents["code"] = event.Code
+	
 	t, err := template.ParseFiles("server/view/html/event_editor.html")
 	Check(this.c, err)
-	t.Execute(this.w, eventKey)
+	t.Execute(this.w, contents)
 }

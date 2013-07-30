@@ -9,9 +9,10 @@
 	</head>
 	<body>
 		<script>
-			var eventId = {{.}};
+			var eventId = {{.id}};
+			var code = JSON.parse({{.code}});
 		</script>
-		
+
 		<script src="../lib/jquery/jquery-2.0.3.min.js"></script>
 		<script src="../lib/jqueryui/js/jquery-ui.min.js"></script>
 		<script src="../lib/underscorejs/underscore-min.js"></script>

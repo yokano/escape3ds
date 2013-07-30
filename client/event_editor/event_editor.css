@@ -8,7 +8,7 @@ html, body, #root {
 
 #event_view {
 	float: left;
-	width: 70%;
+	width: 80%;
 	height: 100%;
 }
 #event_view #start {
@@ -46,6 +46,7 @@ html, body, #root {
 	text-align: center;
 	line-height: 15px;
 	opacity: 0.5;
+	-webkit-transition-duration: 0.3s;
 }
 #event_view .connector-hover {
 	width: 150px;
@@ -65,7 +66,7 @@ html, body, #root {
 
 #block_list_view {
 	float: right;
-	width: 30%;
+	width: 180px;
 	background-color: gray;
 	height: 100%;
 	position: fixed;
@@ -88,4 +89,8 @@ html, body, #root {
 }
 #block_list_view .block:hover {
 	background-color: yellow;
+}
+
+.ui-draggable-dragging {
+	opacity: 0.8;
 }
