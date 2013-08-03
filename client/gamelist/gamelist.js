@@ -25,6 +25,7 @@ $(function() {
 			},
 			dataType: 'json',
 			success: function(data) {
+				location.reload();
 			},
 			error: function(xhr, err) {
 				console.log(err);

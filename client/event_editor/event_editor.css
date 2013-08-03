@@ -4,10 +4,10 @@
 
 html, body, #root {
 	height: 100%;
+	width: 100%;
 }
 
 #event_view {
-	float: left;
 	width: 80%;
 	height: 100%;
 }
@@ -16,6 +16,7 @@ html, body, #root {
 }
 #event_view .stack {
 	width: 50px;
+	position: relative;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -47,12 +48,14 @@ html, body, #root {
 	line-height: 15px;
 	opacity: 0.5;
 	-webkit-transition-duration: 0.3s;
+	-khtml-user-drag: element;
 }
 #event_view .connector-hover {
 	width: 150px;
 	height: 50px;
 	background-color: yellow;
 	border-color: red;
+	-khtml-user-drag: element;
 }
 #event_view .block {
 	width: 150px;

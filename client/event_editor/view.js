@@ -1,3 +1,6 @@
+/**
+ * アプリケーションのトップに表示されるビュー
+ */
 var RootView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'root',
@@ -14,8 +17,11 @@ var RootView = Backbone.View.extend({
 	}
 });
 
-// model: blockView のいずれか
-// ブロックをドラッグされたらイベントリストに追加する
+/**
+ * ブロッグをドラッグする先の四角形
+ * model: blockView のいずれか
+ * ブロックをドラッグされたらイベントリストに追加する
+ */
 var ConnectorView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'stack connector',
@@ -29,8 +35,8 @@ var ConnectorView = Backbone.View.extend({
 		// ドロップされた
 		this.$el.droppable({
 			drop: function(event, ui) {
+				blockList.remove(ui.draggable.attr('cid'), {'silent': true});
 				view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
-				console.log(blockList.toJSON());
 			},
 			hoverClass: 'connector-hover'
 		});
@@ -40,7 +46,10 @@ var ConnectorView = Backbone.View.extend({
 	}
 });
 
-// collection: blockList
+/**
+ * 画面左側の流れ図
+ * collection: blockList
+ */
 var EventView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'event_view',
@@ -74,11 +83,14 @@ var EventView = Backbone.View.extend({
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(blocks);
 		this.$el.append('<div class="stack circle" id="end">E</div>');
-				
+		
 		return this;
 	}
 });
 
+/**
+ * 画面右側のブロックを置いておくビュー
+ */
 var BlockListView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'block_list_view',
@@ -96,26 +108,42 @@ var BlockListView = Backbone.View.extend({
 		this.$el.append('<div class="block" type="variable">変数操作</div>');
 		
 		this.$el.find('.block').draggable({
-			helper: 'clone',
-			snapMode: 'inner'
+			helper: 'clone'
 		});
 		
 		return this;
 	}
 });
 
-var ChangeSceneBlockView = Backbone.View.extend({
+/**
+ * 流れ図を構成するブロックのベースになるクラス
+ * イベントの種類に合わせてそれぞれ継承先で template を準備すること
+ */
+var BlockView = Backbone.View.extend({
 	tagName: 'div',
-	attributes: {
-		type: 'changeScene'
-	},
 	render: function() {
+		var view = this;
 		var connectorView = new ConnectorView({
 			eventList: blockList,
 			index: blockList.indexOf(this.model) + 1
 		});
 		
-		this.$el.append('<div class="stack block">シーン<input class="scene_name" type="select" size="5">へ移動</div>');
+		var block = $(this.template());
+		block.attr('cid', view.model.cid);
+		block.draggable({
+			start: function(event, ui) {
+				view.$el.find('.line').remove();
+				connectorView.remove();
+			},
+			stop: function() {
+				// 何もない場所にドラッグされた
+				view.remove();
+				blockList.remove(view.model);
+			},
+			refreshPositions: true
+		});
+		
+		this.$el.append(block);
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');
@@ -124,166 +152,72 @@ var ChangeSceneBlockView = Backbone.View.extend({
 	}
 });
 
-var AddItemBlockView = Backbone.View.extend({
-	tagName: 'div',
-	attributes: {
-		type: 'addItem'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-	
-		this.$el.append('<div class="stack block">アイテム<input class="item_name" type="select" size="5">を追加</div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	},
+/**
+ * シーンの変更ブロック
+ */
+var ChangeSceneBlockView = BlockView.extend({
+	template: _.template($('#change_scene_template').html())
 });
 
-var RemoveItemBlockView = Backbone.View.extend({
-	tagName: 'div',
-	attributes: {
-		type: 'removeItem'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-	
-		this.$el.append('<div class="stack block">アイテム<input class="item_name" type="select" size="5">を削除</div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	}
+/**
+ * アイテム追加ブロック
+ */
+var AddItemBlockView = BlockView.extend({
+	template: _.template($('#add_item_template').html())
 });
 
-var MessageBlockView = Backbone.View.extend({
-	tagName: 'div',
-	attributes: {
-		type: 'message'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-	
-		this.$el.append('<div class="stack block">メッセージを表示<textarea class="message"></textarea></div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	}
+/**
+ * アイテム削除ブロック
+ */
+var RemoveItemBlockView = BlockView.extend({
+	template: _.template($('#remove_item_template').html())
 });
 
-var HideBlockView = Backbone.View.extend({
-	tagName: 'div',
-	attributes: {
-		type: 'hide'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-		
-		this.$el.append('<div class="stack block">イベントを隠す</div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	}
+/**
+ * メッセージ表示ブロック
+ */
+var MessageBlockView = BlockView.extend({
+	template: _.template($('#message_template').html())
 });
 
-var ShowBlockView = Backbone.View.extend({
-	tagName: 'div',
-	attributes: {
-		type: 'show'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-		
-		this.$el.append('<div class="stack block">イベントを表示</div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	}
+/**
+ * イベント非表示ブロック
+ */
+var HideBlockView = BlockView.extend({
+	template: _.template($('#hide_template').html())
 });
 
-var RemoveBlockView = Backbone.View.extend({
-	tagName: 'div',
-	attributes: {
-		type: 'remove'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-	
-		this.$el.append('<div class="stack block">イベントを削除</div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	}
+/**
+ * イベント表示ブロック
+ */
+var ShowBlockView = BlockView.extend({
+	template: _.template($('#show_template').html())
 });
 
-var ChangeImageBlockView = Backbone.View.extend({
-	tagName: 'div',
-	attributes: {
-		type: 'changeImage'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-	
-		this.$el.append('<div class="stack block">イベント画像を変更<input class="img" type="file"></div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	}
+/**
+ * イベント削除ブロック
+ */
+var RemoveBlockView = BlockView.extend({
+	template: _.template($('#remove_template').html())
 });
 
-var VariableBlockView = Backbone.View.extend({
-	tagname: 'div',
-	attributes: {
-		type: 'variable'
-	},
-	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-		
-		this.$el.append('<div class="stack block">変数<input type="text" size="3">を<input type="text" size="3">にする</div>');
-		this.$el.append('<div class="stack line"></div>');
-		this.$el.append(connectorView.render().el);
-		this.$el.append('<div class="stack line"></div>');
-		
-		return this;
-	}
+/**
+ * 画像変更ブロック
+ */
+var ChangeImageBlockView = BlockView.extend({
+	template: _.template($('#change_image_template').html())
 });
 
+/**
+ * 変数操作ブロック
+ */
+var VariableBlockView = BlockView.extend({
+	template: _.template($('#variable_template').html())
+});
+
+/**
+ * ブロックの種類リスト
+ */
 var BlockViewClasses = {
 	'changeScene': ChangeSceneBlockView,
 	'addItem': AddItemBlockView,

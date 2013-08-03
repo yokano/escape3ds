@@ -10,14 +10,50 @@
 	<body>
 		<script>
 			var eventId = {{.id}};
-			var code = JSON.parse({{.code}});
+			var code;
+			if({{.code}} == '') {
+				code = '';
+			} else {
+				code = JSON.parse({{.code}});
+			}
 		</script>
 
+		<!-- lib -->
 		<script src="../lib/jquery/jquery-2.0.3.min.js"></script>
 		<script src="../lib/jqueryui/js/jquery-ui.min.js"></script>
 		<script src="../lib/underscorejs/underscore-min.js"></script>
 		<script src="../lib/backbonejs/backbone.js"></script>
 		
+		<!-- templates -->
+		<script id="change_scene_template" type="text/template">
+			<div type="changeScene" class="stack block">シーン<input class="scene_name" type="select" size="5">へ移動</div>
+		</script>
+		<script id="add_item_template" type="text/template">
+			<div type="addItem" class="stack block">アイテム<input class="item_name" type="select" size="5">を追加</div>
+		</script>
+		<script id="remove_item_template" type="text/template">
+			<div type="removeItem" class="stack block">アイテム<input class="item_name" type="select" size="5">を削除</div>
+		</script>
+		<script id="message_template" type="text/template">
+			<div type="message" class="stack block">メッセージを表示<textarea class="message"></textarea></div>
+		</script>
+		<script id="hide_template" type="text/template">
+			<div type="hide" class="stack block">イベントを隠す</div>
+		</script>
+		<script id="show_template" type="text/template">
+			<div type="show" class="stack block">イベントを表示</div>
+		</script>
+		<script id="remove_template" type="text/template">
+			<div type="remove" class="stack block">イベントを削除</div>
+		</script>
+		<script id="change_image_template" type="text/template">
+			<div type="changeImage" class="stack block">イベント画像を変更<input class="img" type="file"></div>
+		</script>
+		<script id="variable_template" type="text/template">
+			<div type="variable" class="stack block">変数<input type="text" size="3">を<input type="text" size="3">にする</div>
+		</script>
+		
+		<!-- main -->
 		<script src="model.js"></script>
 		<script src="view.js"></script>
 		<script src="event_editor.js"></script>

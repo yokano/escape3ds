@@ -21,6 +21,7 @@ $(function() {
 			},
 			success: function() {
 				console.log('success');
+				location.reload();
 			}
 		});
 	});

@@ -92,7 +92,7 @@ var EventEditorView = Backbone.View.extend({
 		this.model.set('name', name);
 	},
 	editButtonHasClicked: function() {
-		var eventEditorWindow = window.open('/event_editor?event_key=' + this.model.get('id'), 'イベントエディタ', 'width=640, height=480px, menubar=no, location=no, status=no');
+		var eventEditorWindow = window.open('/event_editor?event_key=' + this.model.get('id'), 'イベントエディタ', 'width=640, height=700px, menubar=no, location=no, status=no');
 		if(eventEditorWindow == null) {
 			alert('イベントエディタの起動に失敗しました。ポップアップのブロックを解除してください。');
 		} else {
