@@ -33,20 +33,20 @@ var ConnectorView = Backbone.View.extend({
 		var view = this;
 		
 		// ドロップされた
-//		this.$el.droppable({
-//			accept: '.block',
-//			drop: function(event, ui) {
-//				blockList.remove(ui.draggable.attr('cid'), {'silent': true});
-//				view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
-//			},
-//			hoverClass: 'connector-hover',
-//			over: function() {
-//				$('body').css('cursor', 'auto');
-//			},
-//			out: function() {
-//				$('body').css('cursor', 'url("/client/event_editor/trashbox.png"), auto');
-//			}
-//		});
+		this.$el.droppable({
+			accept: '.block',
+			drop: function(event, ui) {
+				blockList.remove(ui.draggable.attr('cid'), {'silent': true});
+				view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
+			},
+			hoverClass: 'connector-hover',
+			over: function() {
+				$('body').css('cursor', 'auto');
+			},
+			out: function() {
+				$('body').css('cursor', 'url("/client/event_editor/trashbox.png"), auto');
+			}
+		});
 		this.$el.html('ここへドラッグ');
 		
 		return this;
@@ -143,39 +143,27 @@ var BlockView = Backbone.View.extend({
 		
 		var block = $(this.template());
 		block.attr('cid', view.model.cid);
-//		block.draggable({
-//			start: function(event, ui) {
-//				view.$el.find('.line').remove();
-//				connectorView.remove();
-//				console.log($('.connector').position());
-//			},
-//			stop: function() {
-//				// 何もない場所にドラッグされた
-//				view.$el.fadeOut(function() {
-//					view.remove();
-//					blockList.remove(view.model);
-//					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
-//				});
-//			},
-//			cursor: 'url("/client/event_editor/trashbox.png"), auto'
-//		});
+		block.draggable({
+			start: function(event, ui) {
+				view.$el.find('.line').remove();
+				connectorView.remove();
+			},
+			stop: function() {
+				// 何もない場所にドラッグされた
+				view.$el.fadeOut(function() {
+					view.remove();
+					blockList.remove(view.model);
+					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
+				});
+			},
+			refreshPositions: true,
+			cursor: 'url("/client/event_editor/trashbox.png"), auto'
+		});
 		
 		this.$el.append(block);
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
 		this.$el.append('<div class="stack line"></div>');
-
-		connectorView.$el.attr('dropzone', '').on('drop', function() {
-			console.log('drop');
-		}).on('dragover', function() {
-			console.log('dragover');
-		}).on('dragenter', function() {
-			console.log('enter');
-		});
-		
-		block.attr('draggable', true).on('drop', function() {
-			console.log('drop');
-		});
 		
 		return this;
 	}

@@ -15,6 +15,8 @@ html, body, #root {
 	margin-top: 15px;
 }
 #event_view .stack {
+	width: 50px;
+	position: relative;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -46,11 +48,7 @@ html, body, #root {
 	line-height: 15px;
 	opacity: 0.5;
 	-webkit-transition-duration: 0.3s;
-	margin-left: auto;
-	margin-right: auto;
-	position: relative;
-	left: 0px;
-	right: 0px;
+	-khtml-user-drag: element;
 }
 #event_view .connector-hover {
 	width: 150px;
