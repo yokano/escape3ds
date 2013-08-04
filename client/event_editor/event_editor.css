@@ -100,6 +100,10 @@ html, body, #root {
 	margin-top: 20px;
 	margin-right: 15px;
 }
+#block_list_view .close:hover {
+	background-color: gray;
+	color: white;
+}
 
 .ui-draggable-dragging {
 	opacity: 0.8;

@@ -34,11 +34,18 @@ var ConnectorView = Backbone.View.extend({
 		
 		// ドロップされた
 		this.$el.droppable({
+			accept: '.block',
 			drop: function(event, ui) {
 				blockList.remove(ui.draggable.attr('cid'), {'silent': true});
 				view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
 			},
-			hoverClass: 'connector-hover'
+			hoverClass: 'connector-hover',
+			over: function() {
+				$('body').css('cursor', 'auto');
+			},
+			out: function() {
+				$('body').css('cursor', 'url("/client/event_editor/trashbox.png"), auto');
+			}
 		});
 		this.$el.html('ここへドラッグ');
 		
@@ -143,10 +150,14 @@ var BlockView = Backbone.View.extend({
 			},
 			stop: function() {
 				// 何もない場所にドラッグされた
-				view.remove();
-				blockList.remove(view.model);
+				view.$el.fadeOut(function() {
+					view.remove();
+					blockList.remove(view.model);
+					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
+				});
 			},
-			refreshPositions: true
+			refreshPositions: true,
+			cursor: 'url("/client/event_editor/trashbox.png"), auto'
 		});
 		
 		this.$el.append(block);
