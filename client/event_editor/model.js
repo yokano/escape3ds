@@ -1,3 +1,7 @@
+/**
+ * ブロックの配列
+ * MethodBlock と IfBlock を内包する
+ */
 var BlockList = Backbone.Collection.extend({
 	url: '/sync/event/' + eventId,
 	initialize: function() {
@@ -14,6 +18,9 @@ var BlockList = Backbone.Collection.extend({
 	}
 });
 
+/**
+ * 逐次命令ブロック
+ */
 var MethodBlock = Backbone.Model.extend({
 	defaults: {
 		type: '',

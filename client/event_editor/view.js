@@ -111,6 +111,12 @@ var BlockListView = Backbone.View.extend({
 			helper: 'clone'
 		});
 		
+		var closeButton = $('<button class="close">閉じる</button>');
+		closeButton.on('click', function() {
+			window.close();
+		});
+		this.$el.append(closeButton);
+		
 		return this;
 	}
 });

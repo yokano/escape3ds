@@ -93,6 +93,13 @@ html, body, #root {
 #block_list_view .block:hover {
 	background-color: yellow;
 }
+#block_list_view .close {
+	width: 75px;
+	height: 30px;
+	float: right;
+	margin-top: 20px;
+	margin-right: 15px;
+}
 
 .ui-draggable-dragging {
 	opacity: 0.8;
