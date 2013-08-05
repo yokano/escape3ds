@@ -37,7 +37,12 @@ var ConnectorView = Backbone.View.extend({
 			accept: '.block',
 			drop: function(event, ui) {
 				blockList.remove(ui.draggable.attr('cid'), {'silent': true});
-				view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
+				var type = ui.draggable.attr('type');
+				if(type == 'if') {
+					view.eventList.add(new IfBlock({type: 'if'}, {at: view.index}));
+				} else {
+					view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
+				}
 			},
 			hoverClass: 'connector-hover',
 			over: function() {
@@ -104,15 +109,16 @@ var BlockListView = Backbone.View.extend({
 	render: function() {
 		var view = this;
 		this.$el.append('<span class="label">ブロックリスト</span>');
-		this.$el.append('<div class="block" type="message">メッセージ表示</div>');
-		this.$el.append('<div class="block" type="changeScene">シーン移動</div>');
-		this.$el.append('<div class="block" type="addItem">アイテム追加</div>');
-		this.$el.append('<div class="block" type="removeItem">アイテム削除</div>');
-		this.$el.append('<div class="block" type="hide">非表示</div>');
-		this.$el.append('<div class="block" type="show">表示</div>');
-		this.$el.append('<div class="block" type="remove">消滅</div>');
-		this.$el.append('<div class="block" type="changeImage">画像変更</div>');
-		this.$el.append('<div class="block" type="variable">変数操作</div>');
+		this.$el.append('<div class="block method" type="message">メッセージ表示</div>');
+		this.$el.append('<div class="block method" type="changeScene">シーン移動</div>');
+		this.$el.append('<div class="block method" type="addItem">アイテム追加</div>');
+		this.$el.append('<div class="block method" type="removeItem">アイテム削除</div>');
+		this.$el.append('<div class="block method" type="hide">非表示</div>');
+		this.$el.append('<div class="block method" type="show">表示</div>');
+		this.$el.append('<div class="block method" type="remove">消滅</div>');
+		this.$el.append('<div class="block method" type="changeImage">画像変更</div>');
+		this.$el.append('<div class="block method" type="variable">変数操作</div>');
+		this.$el.append('<div class="block if" type="if">条件分岐</div>');
 		
 		this.$el.find('.block').draggable({
 			helper: 'clone'
@@ -239,6 +245,67 @@ var VariableBlockView = BlockView.extend({
 });
 
 /**
+ * 条件分岐ブロック
+ */
+var IfBlockView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'stack if_container',
+	render: function() {
+		var connectorView = new ConnectorView({
+			eventList: blockList,
+			index: blockList.indexOf(this.model) + 1
+		});
+
+		// 分岐開始
+		var header = $('<div class="stack if_header"></div>');
+		header.append('<div class="stack block if"></div>');
+		header.append('<div class="stack start_if_line"></div>');
+		this.$el.append(header);
+		
+		// 処理内容
+		var body = $('<div class="stack if_body"></div>');
+		
+		// 左側の処理
+		var left = $('<div class="stack if_container_left"></div>');
+		left.append('<div class="stack line long"></div>');
+		var connectorView = new ConnectorView({
+			eventList: blockList,
+			index: 0
+		});
+		left.append(connectorView.render().el);
+		left.append('<div class="stack line long"></div>');
+		body.append(left);
+		
+		// 右側の処理
+		var right = $('<div class="stack if_container_right"></div>');
+		right.append('<div class="stack line long"></div>');
+		var connectorView = new ConnectorView({
+			eventList: blockList,
+			index: 0
+		});
+		right.append(connectorView.render().el);
+		right.append('<div class="stack line long"></div>');
+		body.append(right);
+		
+		this.$el.append(body);
+		
+		// 分岐終了
+		var footer = $('<div class="stack if_footer"></div>');
+		footer.append('<div class="stack end_if_line"></div>');
+		footer.append('<div class="stack line"></div>');
+		var connectorView = new ConnectorView({
+			eventList: blockList,
+			index: blockList.indexOf(this.model)
+		});
+		footer.append(connectorView.render().el);
+		footer.append('<div class="stack line"></div>');
+		this.$el.append(footer);
+		
+		return this;
+	}
+});
+
+/**
  * ブロックの種類リスト
  */
 var BlockViewClasses = {
@@ -250,5 +317,6 @@ var BlockViewClasses = {
 	'show': ShowBlockView,
 	'remove': RemoveBlockView,
 	'changeImage': ChangeImageBlockView,
-	'variable': VariableBlockView
+	'variable': VariableBlockView,
+	'if': IfBlockView
 };
