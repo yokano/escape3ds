@@ -147,6 +147,7 @@ var BlockView = Backbone.View.extend({
 			start: function(event, ui) {
 				view.$el.find('.line').remove();
 				connectorView.remove();
+				block.removeClass('stack');
 			},
 			stop: function() {
 				// 何もない場所にドラッグされた
@@ -156,8 +157,13 @@ var BlockView = Backbone.View.extend({
 					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
 				});
 			},
-			refreshPositions: true,
 			cursor: 'url("/client/event_editor/trashbox.png"), auto'
+		});
+		
+		// ドラッグ開始直前にjQueryUIの座標のずれを修正する
+		block.on('mousedown', function() {
+			var difference = $(this).offset().left + $(this).width() / 2;
+			$(this).draggable('option', 'cursorAt', {right: difference});
 		});
 		
 		this.$el.append(block);
