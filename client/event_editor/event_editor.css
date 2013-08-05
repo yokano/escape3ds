@@ -34,9 +34,6 @@ html, body, #root {
 	height: 5px;
 	background-color: black;
 }
-#event_view .line.long {
-	height: 25px;
-}
 #event_view .connector {
 	width: 75px;
 	height: 15px;
@@ -104,34 +101,56 @@ html, body, #root {
 #event_view .start_if_line {
 	width: 100%;
 	height: 50px;
-	border-top-style: solid;
-	border-left-style: solid;
-	border-right-style: solid;
+	border-bottom-style: solid;
 	border-width: 5px;
 	position: absolute;
-	top: 47.5px;
-	left: -5px;
+	top: 0px;
+}
+#event_view .if_line_container {
+	height: 50px;
+	width: 100%;
+	position: absolute;
+	top: 50px;
+}
+#event_view .if_header .if_line_container {
+	height: 50px;
+	width: 100%;
+	position: absolute;
+	top: 50px;
+}
+#event_view .if_footer .if_line_container {
+	height: 50px;
+	width: 100%;
+	position: absolute;
+	top: 0px;
+}
+#event_view .if_line_container.left {
+	left: -50%;
+}
+#event_view .if_line_container.right {
+	right: -50%;
+}
+#event_view .if_line_container .line {
+	height: 50px;
 }
 #event_view .stack.if_container_left {
 	width: 100%;
 	position: relative;
-	left: -50.8%;
+	left: -50%;
 }
 #event_view .stack.if_container_right {
 	width: 100%;
 	position: absolute;
 	top: 0px;
-	right: -50.8%;
+	right: -50%;
 }
 #event_view .end_if_line {
-	height: 50px;
+	height: 45px;
 	width: 100%;
 	border-width: 5px;
-	border-left-style: solid;
-	border-right-style: solid;
-	border-bottom-style: solid;
+	border-top-style: solid;
 	position: relative;
-	right: 5px;
+	top: 45px;
 }
 
 #block_list_view {

@@ -260,6 +260,8 @@ var IfBlockView = Backbone.View.extend({
 		var header = $('<div class="stack if_header"></div>');
 		header.append('<div class="stack block if"></div>');
 		header.append('<div class="stack start_if_line"></div>');
+		header.append('<div class="if_line_container left"><div class="stack line"></div></div>');
+		header.append('<div class="if_line_container right"><div class="stack line"></div></div>');
 		this.$el.append(header);
 		
 		// 処理内容
@@ -267,24 +269,24 @@ var IfBlockView = Backbone.View.extend({
 		
 		// 左側の処理
 		var left = $('<div class="stack if_container_left"></div>');
-		left.append('<div class="stack line long"></div>');
+		left.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
 			eventList: blockList,
 			index: 0
 		});
 		left.append(connectorView.render().el);
-		left.append('<div class="stack line long"></div>');
+		left.append('<div class="stack line"></div>');
 		body.append(left);
 		
 		// 右側の処理
 		var right = $('<div class="stack if_container_right"></div>');
-		right.append('<div class="stack line long"></div>');
+		right.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
 			eventList: blockList,
 			index: 0
 		});
 		right.append(connectorView.render().el);
-		right.append('<div class="stack line long"></div>');
+		right.append('<div class="stack line"></div>');
 		body.append(right);
 		
 		this.$el.append(body);
@@ -292,6 +294,8 @@ var IfBlockView = Backbone.View.extend({
 		// 分岐終了
 		var footer = $('<div class="stack if_footer"></div>');
 		footer.append('<div class="stack end_if_line"></div>');
+		footer.append('<div class="if_line_container left"><div class="stack line"></div></div>');
+		footer.append('<div class="if_line_container right"><div class="stack line"></div></div>');
 		footer.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
 			eventList: blockList,
