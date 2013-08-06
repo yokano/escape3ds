@@ -39,7 +39,11 @@ var ConnectorView = Backbone.View.extend({
 				blockList.remove(ui.draggable.attr('cid'), {'silent': true});
 				var type = ui.draggable.attr('type');
 				if(type == 'if') {
-					view.eventList.add(new IfBlock({type: 'if'}, {at: view.index}));
+					view.eventList.add(new IfBlock({
+						type: 'if',
+						conditionType: '',
+						target: ''
+					}, {at: view.index}));
 				} else {
 					view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
 				}
@@ -250,15 +254,24 @@ var VariableBlockView = BlockView.extend({
 var IfBlockView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'stack if_container',
+	template: _.template($('#if_template').html()),
 	render: function() {
 		var connectorView = new ConnectorView({
 			eventList: blockList,
 			index: blockList.indexOf(this.model) + 1
 		});
-
+		
+		var ifBlock = $('<div class="stack block if"></div>');
+		ifBlock.html(this.template(this.model.toJSON()));
+		
+		// アイテムリストを選択肢に追加
+		_.each(itemList, function(item, key) {
+			ifBlock.find('.target').append('<option val="' + key + '">' + item + '</option>');
+		}, this);
+		
 		// 分岐開始
 		var header = $('<div class="stack if_header"></div>');
-		header.append('<div class="stack block if"></div>');
+		header.append(ifBlock);
 		header.append('<div class="stack start_if_line"></div>');
 		header.append('<div class="if_line_container left"><div class="stack line"></div></div>');
 		header.append('<div class="if_line_container right"><div class="stack line"></div></div>');
@@ -269,6 +282,7 @@ var IfBlockView = Backbone.View.extend({
 		
 		// 左側の処理
 		var left = $('<div class="stack if_container_left"></div>');
+		
 		left.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
 			eventList: blockList,

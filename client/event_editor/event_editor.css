@@ -88,15 +88,15 @@ html, body, #root {
 	position: relative;
 }
 #event_view .block.if {
-	height: 100px;
+	height: 80px;
 	width: 150px;
 	background-image: url("/client/event_editor/if.png");
 	background-position: center;
 	background-repeat: no-repeat;
-	line-height: 100px;
 	text-align: center;
 	position: relative;
 	z-index: 1;
+	padding-top: 20px;
 }
 #event_view .start_if_line {
 	width: 100%;
@@ -161,7 +161,6 @@ html, body, #root {
 	position: fixed;
 	right: 0px;
 	top: 0px;
-	overflow: scroll;
 }
 #block_list_view .label{
 	font-size: large;
@@ -208,4 +207,8 @@ html, body, #root {
 
 .ui-draggable-dragging {
 	opacity: 0.8;
+}
+
+select {
+	width: 100px;
 }
