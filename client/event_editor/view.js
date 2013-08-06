@@ -42,7 +42,9 @@ var ConnectorView = Backbone.View.extend({
 					view.eventList.add(new IfBlock({
 						type: 'if',
 						conditionType: '',
-						target: ''
+						target: '',
+						true: new BlockList(),
+						false: new BlockList()
 					}, {at: view.index}));
 				} else {
 					view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
@@ -273,8 +275,14 @@ var IfBlockView = Backbone.View.extend({
 		var header = $('<div class="stack if_header"></div>');
 		header.append(ifBlock);
 		header.append('<div class="stack start_if_line"></div>');
-		header.append('<div class="if_line_container left"><div class="stack line"></div></div>');
-		header.append('<div class="if_line_container right"><div class="stack line"></div></div>');
+		var left = $('<div class="if_line_container left"></div>');
+		left.append('<div class="stack line"></div>');
+		left.append('<div class="yes">YES</div>');
+		header.append(left);
+		var right = $('<div class="if_line_container right"></div>');
+		right.append('<div class="stack line"></div>');
+		right.append('<div class="no">NO</div>');
+		header.append(right);
 		this.$el.append(header);
 		
 		// 処理内容
