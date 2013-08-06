@@ -65,6 +65,9 @@ HTML ファイルを出力するときは html ディレクトリからテンプ
 					<dd>&nbsp; &nbsp; <a href="#View.Editor">func (this *View) Editor(encodedGameKey string)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#View.EventEditor">func (this *View) EventEditor(gameKey string, eventKey string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#View.Gamelist">func (this *View) Gamelist(userKey string)</a></dd>
 				
 					
@@ -75,6 +78,9 @@ HTML ファイルを出力するときは html ディレクトリからテンプ
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#View.Registration">func (this *View) Registration()</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#View.Runtime">func (this *View) Runtime(gameKey string)</a></dd>
 				
 			
 			
@@ -127,7 +133,7 @@ View オブジェクトを作成する。
 
 			
 				
-				<h3 id="View.Debug">func (*View) <a href="/target/view.go?s=1551:1576#L47">Debug</a></h3>
+				<h3 id="View.Debug">func (*View) <a href="/target/view.go?s=1625:1650#L49">Debug</a></h3>
 				<pre>func (this *View) Debug()</pre>
 				<p>
 デバッグ画面の表示。デバッグ画面ではユーザの登録をメールを介さずに行ったりするための画面。
@@ -147,7 +153,17 @@ View オブジェクトを作成する。
 				
 			
 				
-				<h3 id="View.Gamelist">func (*View) <a href="/target/view.go?s=2668:2710#L72">Gamelist</a></h3>
+				<h3 id="View.EventEditor">func (*View) <a href="/target/view.go?s=3268:3330#L94">EventEditor</a></h3>
+				<pre>func (this *View) EventEditor(gameKey string, eventKey string)</pre>
+				<p>
+イベントエディタの表示
+</p>
+
+				
+				
+			
+				
+				<h3 id="View.Gamelist">func (*View) <a href="/target/view.go?s=2742:2784#L74">Gamelist</a></h3>
 				<pre>func (this *View) Gamelist(userKey string)</pre>
 				<p>
 ゲーム一覧の表示。ログイン後に表示される最初のページ。
@@ -159,7 +175,7 @@ View オブジェクトを作成する。
 				
 			
 				
-				<h3 id="View.InterimRegistration">func (*View) <a href="/target/view.go?s=1900:1939#L55">InterimRegistration</a></h3>
+				<h3 id="View.InterimRegistration">func (*View) <a href="/target/view.go?s=1974:2013#L57">InterimRegistration</a></h3>
 				<pre>func (this *View) InterimRegistration()</pre>
 				<p>
 仮登録ページの表示。ユーザがトップページでメールアドレスとパスワードを入力した後に表示される。
@@ -180,11 +196,21 @@ View オブジェクトを作成する。
 				
 			
 				
-				<h3 id="View.Registration">func (*View) <a href="/target/view.go?s=2254:2286#L63">Registration</a></h3>
+				<h3 id="View.Registration">func (*View) <a href="/target/view.go?s=2328:2360#L65">Registration</a></h3>
 				<pre>func (this *View) Registration()</pre>
 				<p>
 本登録完了ページの表示。仮登録状態のユーザの元へ送られたメールからジャンプしてくる。
 このページが表示されたら登録が完了。
+</p>
+
+				
+				
+			
+				
+				<h3 id="View.Runtime">func (*View) <a href="/target/view.go?s=3010:3051#L84">Runtime</a></h3>
+				<pre>func (this *View) Runtime(gameKey string)</pre>
+				<p>
+テストプレイ画面の表示
 </p>
 
 				

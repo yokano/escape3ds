@@ -117,6 +117,17 @@ func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene {
 	return scenes
 }
 
+// 指定されたシーンが含まれているゲームを取得する
+func (this *Model) GetGameFromScene(encodedSceneKey string) (string, *Game) {
+	sceneKey, err := datastore.DecodeKey(encodedSceneKey)
+	Check(this.c, err)
+	
+	gameKey := sceneKey.Parent()
+	encodedGameKey := gameKey.Encode()
+	
+	return encodedGameKey, this.GetGame(encodedGameKey)
+}
+
 // ゲームデータの同期。
 // リクエストのメソッドが CRUD に対応している。
 // POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
@@ -140,7 +151,6 @@ func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []strin
 //		}
 		
 		model.UpdateGame(gameKey, game)
-		this.c.Debugf("game: %#v", game)
 		fmt.Fprintf(w, `{}`)
 	case "DELETE":
 	}

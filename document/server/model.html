@@ -51,12 +51,25 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 			
 			
 				
+				<dd><a href="#Event">type Event</a></dd>
+				
+				
+			
+				
 				<dd><a href="#Game">type Game</a></dd>
 				
 				
 			
 				
 				<dd><a href="#InterimUser">type InterimUser</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Item">type Item</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewItem">func NewItem(name string, img string, hasFirst bool) *Item</a></dd>
 				
 				
 			
@@ -71,7 +84,13 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.AddBlob">func (this *Model) AddBlob(file multipart.File, fileHeader *multipart.FileHeader) string</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.AddEvent">func (this *Model) AddEvent(event *Event, encodedSceneKey string) string</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.AddGame">func (this *Model) AddGame(game *Game, encodedUserKey string) string</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.AddItem">func (this *Model) AddItem(item *Item, encodedGameKey string) string</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.AddScene">func (this *Model) AddScene(scene *Scene, id string, encodedGameKey string) string</a></dd>
@@ -89,10 +108,13 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.DeleteBlob">func (this *Model) DeleteBlob(key string)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.DeleteEvent">func (this *Model) DeleteEvent(encodedEventKey string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.DeleteGame">func (this *Model) DeleteGame(encodedGameKey string)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Model.DeleteScene">func (this *Model) DeleteScene(id string)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Model.DeleteScene">func (this *Model) DeleteScene(encodedSceneKey string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.ExistOAuthUser">func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</a></dd>
@@ -104,13 +126,37 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.GetBlob">func (this *Model) GetBlob(key string) (string, []byte)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetEvent">func (this *Model) GetEvent(encodedEventKey string) *Event</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetEventList">func (this *Model) GetEventList(encodedSceneKey string) map[string]*Event</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetEvents">func (this *Model) GetEvents(encodedSceneKey string) map[string]*Event</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetGame">func (this *Model) GetGame(encodedGameKey string) *Game</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetGameFromScene">func (this *Model) GetGameFromScene(encodedSceneKey string) (string, *Game)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetGameJSON">func (this *Model) GetGameJSON(encodedGameKey string) string</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetGameList">func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetInterimUsers">func (this *Model) GetInterimUsers() map[string]*InterimUser</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetItems">func (this *Model) GetItems(encodedGameKey string) map[string]*Item</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetScene">func (this *Model) GetScene(encodedSceneKey string) *Scene</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.GetSceneFromEvent">func (this *Model) GetSceneFromEvent(encodedEventKey string) (string, *Scene)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetScenes">func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene</a></dd>
@@ -129,6 +175,9 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.LoginCheck">func (this *Model) LoginCheck(mail string, pass string) (string, string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.NewEvent">func (this *Model) NewEvent(name string, image string, code string, position []int, size []int, color string) *Event</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.NewGame">func (this *Model) NewGame(params map[string]string) *Game</a></dd>
@@ -152,16 +201,28 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.StartSession">func (this *Model) StartSession(userKey string) string</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.SyncEvent">func (this *Model) SyncEvent(w http.ResponseWriter, r *http.Request, path []string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.SyncGame">func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.SyncItem">func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []string)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.SyncScene">func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.UpdateEvent">func (this *Model) UpdateEvent(event *Event, encodedEventKey string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.UpdateEventCode">func (this *Model) UpdateEventCode(id string, code string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.UpdateGame">func (this *Model) UpdateGame(encodedGameKey string, game *Game)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Model.UpdateScene">func (this *Model) UpdateScene(id string, scene *Scene)</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Model.UpdateScene">func (this *Model) UpdateScene(encodedSceneKey string, scene *Scene)</a></dd>
 				
 			
 				
@@ -189,7 +250,11 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 			
 				<a href="/target/blob.go">blob.go</a>
 			
+				<a href="/target/event.go">event.go</a>
+			
 				<a href="/target/game.go">game.go</a>
+			
+				<a href="/target/item.go">item.go</a>
 			
 				<a href="/target/model.go">model.go</a>
 			
@@ -209,12 +274,40 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 		
 			
 			
-			<h2 id="Game">type <a href="/target/game.go?s=452:744#L5">Game</a></h2>
+			<h2 id="Event">type <a href="/target/event.go?s=160:514#L2">Event</a></h2>
+			<pre>type Event struct {
+    Name     string `json:&#34;name&#34;`     <span class="comment">// イベント名</span>
+    Image    string `json:&#34;image&#34;`    <span class="comment">// 画像</span>
+    Code     string `json:&#34;code&#34;`     <span class="comment">// クリックされた時のコード</span>
+    Position []int  `json:&#34;position&#34;` <span class="comment">// 位置</span>
+    Size     []int  `json:&#34;size&#34;`     <span class="comment">// 大きさ</span>
+    Color    string `json:&#34;color&#34;`    <span class="comment">// エディタ上で領域に表示される色</span>
+}</pre>
+			<p>
+シーンに含まれるイベントオブジェクト
+</p>
+
+
+			
+
+			
+
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Game">type <a href="/target/game.go?s=452:908#L5">Game</a></h2>
 			<pre>type Game struct {
-    Name        string `json:&#34;name&#34;`        <span class="comment">// ゲーム名</span>
-    Description string `json:&#34;description&#34;` <span class="comment">// ゲームの説明</span>
-    Thumbnail   string `json:&#34;thumbnail&#34;`   <span class="comment">// サムネイルの画像パス</span>
-    FirstScene  string `json:&#34;firstScene&#34;`  <span class="comment">// 最初のシーンのエンコード済みキー</span>
+    Name        string            `json:&#34;name&#34;`                    <span class="comment">// ゲーム名</span>
+    Description string            `json:&#34;description&#34;`             <span class="comment">// ゲームの説明</span>
+    Thumbnail   string            `json:&#34;thumbnail&#34;`               <span class="comment">// サムネイルの画像パス</span>
+    FirstScene  string            `json:&#34;firstScene&#34;`              <span class="comment">// 最初のシーンのエンコード済みキー</span>
+    SceneList   map[string]*Scene `json:&#34;sceneList&#34; datastore:&#34;-&#34;` <span class="comment">// シーン一覧</span>
+    ItemList    map[string]*Item  `json:&#34;itemList&#34; datastore:&#34;-&#34;`  <span class="comment">// アイテム一覧</span>
 }</pre>
 			<p>
 ゲームオブジェクト。ゲームはそれを所有するユーザにぶら下がる形で定義される。
@@ -263,6 +356,39 @@ datastore の ancestor path を参照。
 		
 			
 			
+			<h2 id="Item">type <a href="/target/item.go?s=122:251#L3">Item</a></h2>
+			<pre>type Item struct {
+    Name     string `json:&#34;name&#34;`
+    Img      string `json:&#34;img&#34;`
+    HasFirst bool   `json:&#34;hasFirst&#34;`
+    Sort     int    `json:&#34;sort&#34;`
+}</pre>
+			<p>
+アイテム型
+</p>
+
+
+			
+
+			
+
+			
+
+			
+				
+				<h3 id="NewItem">func <a href="/target/item.go?s=278:336#L11">NewItem</a></h3>
+				<pre>func NewItem(name string, img string, hasFirst bool) *Item</pre>
+				<p>
+アイテムの作成
+</p>
+
+				
+			
+
+			
+		
+			
+			
 			<h2 id="Model">type <a href="/target/model.go?s=410:452#L1">Model</a></h2>
 			<pre>type Model struct {
     <span class="comment">// contains filtered or unexported fields</span>
@@ -304,7 +430,18 @@ datastore の ancestor path を参照。
 				
 			
 				
-				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1428:1496#L25">AddGame</a></h3>
+				<h3 id="Model.AddEvent">func (*Model) <a href="/target/event.go?s=982:1054#L25">AddEvent</a></h3>
+				<pre>func (this *Model) AddEvent(event *Event, encodedSceneKey string) string</pre>
+				<p>
+イベントの追加。エンコード済みのキーを返す。
+引数としてイベントが蔵するシーンキーを渡す。
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.AddGame">func (*Model) <a href="/target/game.go?s=1592:1660#L27">AddGame</a></h3>
 				<pre>func (this *Model) AddGame(game *Game, encodedUserKey string) string</pre>
 				<p>
 データストアにゲームを追加してエンコード済みのキーを返す。
@@ -316,7 +453,19 @@ datastore の ancestor path を参照。
 				
 			
 				
-				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=1164:1246#L23">AddScene</a></h3>
+				<h3 id="Model.AddItem">func (*Model) <a href="/target/item.go?s=623:691#L23">AddItem</a></h3>
+				<pre>func (this *Model) AddItem(item *Item, encodedGameKey string) string</pre>
+				<p>
+アイテムの追加。
+追加したいアイテムと、追加するゲームキーを渡す。
+追加したアイテムのエンコード済みキーを返す。
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=1377:1459#L25">AddScene</a></h3>
 				<pre>func (this *Model) AddScene(scene *Scene, id string, encodedGameKey string) string</pre>
 				<p>
 シーンをデータストアへ追加する。
@@ -341,7 +490,7 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
-				<h3 id="Model.CheckDuplicateBackground">func (*Model) <a href="/target/scene.go?s=4744:4811#L137">CheckDuplicateBackground</a></h3>
+				<h3 id="Model.CheckDuplicateBackground">func (*Model) <a href="/target/scene.go?s=5570:5637#L154">CheckDuplicateBackground</a></h3>
 				<pre>func (this *Model) CheckDuplicateBackground(background string) bool</pre>
 				<p>
 指定された背景画像が２つ以上のシーンから参照されているかどうかを調べる。
@@ -374,7 +523,17 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=2708:2760#L59">DeleteGame</a></h3>
+				<h3 id="Model.DeleteEvent">func (*Model) <a href="/target/event.go?s=1859:1913#L56">DeleteEvent</a></h3>
+				<pre>func (this *Model) DeleteEvent(encodedEventKey string)</pre>
+				<p>
+イベントの削除
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=3279:3331#L77">DeleteGame</a></h3>
 				<pre>func (this *Model) DeleteGame(encodedGameKey string)</pre>
 				<p>
 データストアから指定したキーのゲームを削除する。
@@ -386,8 +545,8 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=1591:1632#L33">DeleteScene</a></h3>
-				<pre>func (this *Model) DeleteScene(id string)</pre>
+				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=2486:2540#L57">DeleteScene</a></h3>
+				<pre>func (this *Model) DeleteScene(encodedSceneKey string)</pre>
 				<p>
 引数として指定された id のシーンをデータストアから削除する。
 </p>
@@ -431,7 +590,37 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=1860:1915#L36">GetGame</a></h3>
+				<h3 id="Model.GetEvent">func (*Model) <a href="/target/event.go?s=1369:1427#L38">GetEvent</a></h3>
+				<pre>func (this *Model) GetEvent(encodedEventKey string) *Event</pre>
+				<p>
+イベントを取得
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetEventList">func (*Model) <a href="/target/event.go?s=2125:2198#L65">GetEventList</a></h3>
+				<pre>func (this *Model) GetEventList(encodedSceneKey string) map[string]*Event</pre>
+				<p>
+指定されたシーンに属するイベント一覧を返す
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetEvents">func (*Model) <a href="/target/scene.go?s=2991:3061#L71">GetEvents</a></h3>
+				<pre>func (this *Model) GetEvents(encodedSceneKey string) map[string]*Event</pre>
+				<p>
+シーン内のイベントリストを取得する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetGame">func (*Model) <a href="/target/game.go?s=2024:2079#L38">GetGame</a></h3>
 				<pre>func (this *Model) GetGame(encodedGameKey string) *Game</pre>
 				<p>
 エンコード済みのキーを指定してデータストアからゲームを取得する。
@@ -441,7 +630,27 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetGameList">func (*Model) <a href="/target/game.go?s=3045:3115#L69">GetGameList</a></h3>
+				<h3 id="Model.GetGameFromScene">func (*Model) <a href="/target/game.go?s=4300:4375#L111">GetGameFromScene</a></h3>
+				<pre>func (this *Model) GetGameFromScene(encodedSceneKey string) (string, *Game)</pre>
+				<p>
+指定されたシーンが含まれているゲームを取得する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetGameJSON">func (*Model) <a href="/target/game.go?s=2300:2360#L50">GetGameJSON</a></h3>
+				<pre>func (this *Model) GetGameJSON(encodedGameKey string) string</pre>
+				<p>
+JSON 形式でゲームを取得する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/user.go?s=8687:8757#L243">GetGameList</a></h3>
 				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
 				<p>
 ユーザが所有しているゲーム一覧を返す。
@@ -462,7 +671,37 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetScenes">func (*Model) <a href="/target/scene.go?s=2012:2081#L44">GetScenes</a></h3>
+				<h3 id="Model.GetItems">func (*Model) <a href="/target/item.go?s=1004:1071#L36">GetItems</a></h3>
+				<pre>func (this *Model) GetItems(encodedGameKey string) map[string]*Item</pre>
+				<p>
+アイテム一覧の取得。
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetScene">func (*Model) <a href="/target/scene.go?s=1764:1822#L35">GetScene</a></h3>
+				<pre>func (this *Model) GetScene(encodedSceneKey string) *Scene</pre>
+				<p>
+シーンをデータストアから取得する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetSceneFromEvent">func (*Model) <a href="/target/scene.go?s=2111:2188#L48">GetSceneFromEvent</a></h3>
+				<pre>func (this *Model) GetSceneFromEvent(encodedEventKey string) (string, *Scene)</pre>
+				<p>
+指定されたイベントが属しているシーンを取得する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetScenes">func (*Model) <a href="/target/game.go?s=3702:3771#L87">GetScenes</a></h3>
 				<pre>func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene</pre>
 				<p>
 ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
@@ -532,7 +771,17 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=902:960#L13">NewGame</a></h3>
+				<h3 id="Model.NewEvent">func (*Model) <a href="/target/event.go?s=559:675#L12">NewEvent</a></h3>
+				<pre>func (this *Model) NewEvent(name string, image string, code string, position []int, size []int, color string) *Event</pre>
+				<p>
+イベントオブジェクトの作成
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.NewGame">func (*Model) <a href="/target/game.go?s=1066:1124#L15">NewGame</a></h3>
 				<pre>func (this *Model) NewGame(params map[string]string) *Game</pre>
 				<p>
 新しいゲームオブジェクトを作成して返す。新しく作られるゲームのパラメータを格納した map 引数として渡す。
@@ -553,7 +802,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=576:642#L11">NewScene</a></h3>
+				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=789:855#L13">NewScene</a></h3>
 				<pre>func (this *Model) NewScene(name string, background string) *Scene</pre>
 				<p>
 シーンオブジェクトを新しく作成する。
@@ -606,7 +855,17 @@ memcache から指定されたセッションIDのセッション情報を削除
 				
 			
 				
-				<h3 id="Model.SyncGame">func (*Model) <a href="/target/game.go?s=3688:3770#L95">SyncGame</a></h3>
+				<h3 id="Model.SyncEvent">func (*Model) <a href="/target/event.go?s=2949:3032#L95">SyncEvent</a></h3>
+				<pre>func (this *Model) SyncEvent(w http.ResponseWriter, r *http.Request, path []string)</pre>
+				<p>
+イベントの同期
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.SyncGame">func (*Model) <a href="/target/game.go?s=4732:4814#L124">SyncGame</a></h3>
 				<pre>func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
 ゲームデータの同期。
@@ -618,7 +877,17 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
 				
 			
 				
-				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=2871:2954#L73">SyncScene</a></h3>
+				<h3 id="Model.SyncItem">func (*Model) <a href="/target/item.go?s=1547:1629#L61">SyncItem</a></h3>
+				<pre>func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []string)</pre>
+				<p>
+アイテムの同期
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=3942:4025#L100">SyncScene</a></h3>
 				<pre>func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
 シーンデータの同期処理を行う。
@@ -632,7 +901,27 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				
 			
 				
-				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2246:2310#L48">UpdateGame</a></h3>
+				<h3 id="Model.UpdateEvent">func (*Model) <a href="/target/event.go?s=1614:1682#L47">UpdateEvent</a></h3>
+				<pre>func (this *Model) UpdateEvent(event *Event, encodedEventKey string)</pre>
+				<p>
+イベントを更新する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.UpdateEventCode">func (*Model) <a href="/target/event.go?s=2692:2750#L85">UpdateEventCode</a></h3>
+				<pre>func (this *Model) UpdateEventCode(id string, code string)</pre>
+				<p>
+イベントコードの更新
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2817:2881#L66">UpdateGame</a></h3>
 				<pre>func (this *Model) UpdateGame(encodedGameKey string, game *Game)</pre>
 				<p>
 ゲームを更新する。引数として渡されたキー encodedGameKey のゲームを、ゲームオブジェクト game で上書きする。
@@ -642,8 +931,8 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				
 			
 				
-				<h3 id="Model.UpdateScene">func (*Model) <a href="/target/scene.go?s=1720:1775#L38">UpdateScene</a></h3>
-				<pre>func (this *Model) UpdateScene(id string, scene *Scene)</pre>
+				<h3 id="Model.UpdateScene">func (*Model) <a href="/target/scene.go?s=2737:2805#L64">UpdateScene</a></h3>
+				<pre>func (this *Model) UpdateScene(encodedSceneKey string, scene *Scene)</pre>
 				<p>
 id で指定されたシーンを新しいシーン scene で更新する。
 </p>
@@ -654,12 +943,14 @@ id で指定されたシーンを新しいシーン scene で更新する。
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.go?s=260:516#L3">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.go?s=260:729#L3">Scene</a></h2>
 			<pre>type Scene struct {
-    Name       string <span class="comment">// シーン名</span>
-    Background string <span class="comment">// 背景画像のBlobkey、設定していなければ空文字</span>
-    Enter      string <span class="comment">// シーン開始時のイベント</span>
-    Leave      string <span class="comment">// シーン終了時のイベント</span>
+    Name       string            `json:&#34;name&#34;`                    <span class="comment">// シーン名</span>
+    Background string            `json:&#34;background&#34;`              <span class="comment">// 背景画像のBlobkey、設定していなければ空文字</span>
+    Enter      string            `json:&#34;enter&#34;`                   <span class="comment">// シーン開始時のイベント</span>
+    Leave      string            `json:&#34;leave&#34;`                   <span class="comment">// シーン終了時のイベント</span>
+    Sort       int               `json:&#34;sort&#34;`                    <span class="comment">// 並び順</span>
+    EventList  map[string]*Event `json:&#34;eventList&#34; datastore:&#34;-&#34;` <span class="comment">// シーン内のイベントリスト</span>
 }</pre>
 			<p>
 シーンオブジェクト。ゲームを構成する場面を表す。

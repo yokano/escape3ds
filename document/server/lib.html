@@ -40,12 +40,9 @@
 * @file
 </pre>
 <p>
-*
+OAuth 2.0 による通信。
+authorization code 方式のみ。
 </p>
-<pre>* OAuth 2.0 による通信
-* authorization code 方式のみ
-* @file
-</pre>
 <p>
 *
 </p>
@@ -68,6 +65,9 @@
 			
 				
 				<dd><a href="#Check">func Check(c appengine.Context, err error)</a></dd>
+			
+				
+				<dd><a href="#DecodeKey">func DecodeKey(c appengine.Context, encodedKey string) *datastore.Key</a></dd>
 			
 				
 				<dd><a href="#Exist">func Exist(arr []string, target string) bool</a></dd>
@@ -185,7 +185,7 @@
 		
 			
 			
-			<h2 id="Check">func <a href="/target/okalib.go?s=599:641#L21">Check</a></h2>
+			<h2 id="Check">func <a href="/target/okalib.go?s=622:664#L22">Check</a></h2>
 			<pre>func Check(c appengine.Context, err error)</pre>
 			<p>
 *
@@ -201,7 +201,17 @@
 		
 			
 			
-			<h2 id="Exist">func <a href="/target/okalib.go?s=1543:1587#L60">Exist</a></h2>
+			<h2 id="DecodeKey">func <a href="/target/okalib.go?s=8618:8687#L339">DecodeKey</a></h2>
+			<pre>func DecodeKey(c appengine.Context, encodedKey string) *datastore.Key</pre>
+			<p>
+データストアのエンコー済みキーをデコードする
+</p>
+
+			
+		
+			
+			
+			<h2 id="Exist">func <a href="/target/okalib.go?s=1566:1610#L61">Exist</a></h2>
 			<pre>func Exist(arr []string, target string) bool</pre>
 			<p>
 *
@@ -217,7 +227,7 @@
 		
 			
 			
-			<h2 id="GetRandomizedString">func <a href="/target/okalib.go?s=6293:6326#L256">GetRandomizedString</a></h2>
+			<h2 id="GetRandomizedString">func <a href="/target/okalib.go?s=6316:6349#L257">GetRandomizedString</a></h2>
 			<pre>func GetRandomizedString() string</pre>
 			<p>
 *
@@ -232,7 +242,7 @@
 		
 			
 			
-			<h2 id="GetRequestBodyJSON">func <a href="/target/okalib.go?s=8401:8448#L331">GetRequestBodyJSON</a></h2>
+			<h2 id="GetRequestBodyJSON">func <a href="/target/okalib.go?s=8424:8471#L332">GetRequestBodyJSON</a></h2>
 			<pre>func GetRequestBodyJSON(r *http.Request) []byte</pre>
 			<p>
 リクエストボディ(JSON形式)を読み込んでバイナリを返す。
@@ -243,7 +253,7 @@
 		
 			
 			
-			<h2 id="GetXML">func <a href="/target/okalib.go?s=1999:2050#L82">GetXML</a></h2>
+			<h2 id="GetXML">func <a href="/target/okalib.go?s=2022:2073#L83">GetXML</a></h2>
 			<pre>func GetXML(c appengine.Context, url string) []byte</pre>
 			<p>
 *
@@ -259,7 +269,7 @@
 		
 			
 			
-			<h2 id="Join">func <a href="/target/okalib.go?s=2966:2997#L125">Join</a></h2>
+			<h2 id="Join">func <a href="/target/okalib.go?s=2989:3020#L126">Join</a></h2>
 			<pre>func Join(str ...string) string</pre>
 			<p>
 *
@@ -274,7 +284,7 @@
 		
 			
 			
-			<h2 id="NewCookie">func <a href="/target/okalib.go?s=7675:7767#L308">NewCookie</a></h2>
+			<h2 id="NewCookie">func <a href="/target/okalib.go?s=7698:7790#L309">NewCookie</a></h2>
 			<pre>func NewCookie(name string, value string, domain string, path string, hour int) *http.Cookie</pre>
 			<p>
 *
@@ -292,7 +302,7 @@
 		
 			
 			
-			<h2 id="Prepend">func <a href="/target/okalib.go?s=2631:2680#L109">Prepend</a></h2>
+			<h2 id="Prepend">func <a href="/target/okalib.go?s=2654:2703#L110">Prepend</a></h2>
 			<pre>func Prepend(dst []string, src []string) []string</pre>
 			<p>
 *
@@ -307,7 +317,7 @@
 		
 			
 			
-			<h2 id="RemoveItem">func <a href="/target/okalib.go?s=1015:1066#L36">RemoveItem</a></h2>
+			<h2 id="RemoveItem">func <a href="/target/okalib.go?s=1038:1089#L37">RemoveItem</a></h2>
 			<pre>func RemoveItem(s []string, target string) []string</pre>
 			<p>
 *
@@ -325,7 +335,7 @@
 		
 			
 			
-			<h2 id="Request">func <a href="/target/okalib.go?s=4768:4888#L201">Request</a></h2>
+			<h2 id="Request">func <a href="/target/okalib.go?s=4791:4911#L202">Request</a></h2>
 			<pre>func Request(c appengine.Context, method string, targetUrl string, params map[string]string, body string) *http.Response</pre>
 			<p>
 *
@@ -344,7 +354,7 @@
 		
 			
 			
-			<h2 id="SHA1">func <a href="/target/okalib.go?s=6750:6780#L273">SHA1</a></h2>
+			<h2 id="SHA1">func <a href="/target/okalib.go?s=6773:6803#L274">SHA1</a></h2>
 			<pre>func SHA1(input string) []byte</pre>
 			<p>
 *
@@ -359,7 +369,7 @@
 		
 			
 			
-			<h2 id="SendMail">func <a href="/target/okalib.go?s=7121:7210#L288">SendMail</a></h2>
+			<h2 id="SendMail">func <a href="/target/okalib.go?s=7144:7233#L289">SendMail</a></h2>
 			<pre>func SendMail(c appengine.Context, sender string, to string, subject string, body string)</pre>
 			<p>
 *
@@ -535,19 +545,13 @@
 		
 			
 			
-			<h2 id="OAuth2">type <a href="/target/oauth2.go?s=361:448#L12">OAuth2</a></h2>
+			<h2 id="OAuth2">type <a href="/target/oauth2.go?s=151:238#L3">OAuth2</a></h2>
 			<pre>type OAuth2 struct {
     <span class="comment">// contains filtered or unexported fields</span>
 }</pre>
 			<p>
-*
+OAuth 2.0
 </p>
-<pre>* OAuth 2.0
-* @class
-* @property {appengine.Context} context コンテキスト
-* @property {string} clientId クライアントID
-* @property {string} clientSecret クライアントパスワード
-</pre>
 
 
 			
@@ -558,74 +562,45 @@
 
 			
 				
-				<h3 id="NewOAuth2">func <a href="/target/oauth2.go?s=728:809#L26">NewOAuth2</a></h3>
+				<h3 id="NewOAuth2">func <a href="/target/oauth2.go?s=281:362#L11">NewOAuth2</a></h3>
 				<pre>func NewOAuth2(c appengine.Context, clientId string, clientSecret string) *OAuth2</pre>
 				<p>
-*
+OAuth2.0 インスタンスを返す
 </p>
-<pre>* OAuth2.0 インスタンスを返す
-* @function
-* @param {appengine.Context} c コンテキスト
-* @param {string} clientId OAuthクライアントID
-* @param {string} clientSecret OAuthクライアントパスワード
-* @returns {*OAuth2} インスタンス
-</pre>
 
 				
 			
 
 			
 				
-				<h3 id="OAuth2.RequestAPI">func (*OAuth2) <a href="/target/oauth2.go?s=2942:3040#L88">RequestAPI</a></h3>
+				<h3 id="OAuth2.RequestAPI">func (*OAuth2) <a href="/target/oauth2.go?s=1956:2054#L51">RequestAPI</a></h3>
 				<pre>func (this *OAuth2) RequestAPI(w http.ResponseWriter, targetUri string, accessToken string) []byte</pre>
 				<p>
-*
+アクセストークンを使ってAPIを呼び出す
 </p>
-<pre>* アクセストークンを使ってAPIを呼び出す
-* @method
-</pre>
 
 				
 				
 			
 				
-				<h3 id="OAuth2.RequestAccessToken">func (*OAuth2) <a href="/target/oauth2.go?s=2057:2193#L64">RequestAccessToken</a></h3>
+				<h3 id="OAuth2.RequestAccessToken">func (*OAuth2) <a href="/target/oauth2.go?s=1090:1226#L30">RequestAccessToken</a></h3>
 				<pre>func (this *OAuth2) RequestAccessToken(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string, code string) string</pre>
 				<p>
-*
+アクセストークンをリクエストする
+引き換えとして認証コードを渡すこと
 </p>
-<pre>* アクセストークンをリクエストする
-* 引き換えとして認証コードを渡すこと
-* @method
-* @memberof OAuth2
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-* @param {string} targetUri
-* @param {string} redirectUri
-* @param {string} clientSecret
-* @param {string} code
-* @returns {string} アクセストークン
-</pre>
 
 				
 				
 			
 				
-				<h3 id="OAuth2.RequestAuthorizationCode">func (*OAuth2) <a href="/target/oauth2.go?s=1378:1500#L46">RequestAuthorizationCode</a></h3>
+				<h3 id="OAuth2.RequestAuthorizationCode">func (*OAuth2) <a href="/target/oauth2.go?s=700:822#L23">RequestAuthorizationCode</a></h3>
 				<pre>func (this *OAuth2) RequestAuthorizationCode(w http.ResponseWriter, r *http.Request, targetUri string, redirectUri string)</pre>
 				<p>
-*
+認証コードをリクエストする
+認証ページヘのリダイレクトを行いユーザに認証してもらう
+認証が完了したらリダイレクトURIへ認証コードが返ってくる
 </p>
-<pre>* 認証コードをリクエストする
-* 認証ページヘのリダイレクトを行いユーザに認証してもらう
-* 認証が完了したらリダイレクトURIへ認証コードが返ってくる
-* @method
-* @memberof OAuth2
-* @param {http.ResponseWriter} w 応答先
-* @param {*http.Request} r リクエスト
-* @param {string} targetUri リクエスト先URI
-* @param {string} redirectUri リダイレクトURI
-</pre>
 
 				
 				
@@ -633,7 +608,7 @@
 		
 			
 			
-			<h2 id="Reader">type <a href="/target/okalib.go?s=3388:3447#L143">Reader</a></h2>
+			<h2 id="Reader">type <a href="/target/okalib.go?s=3411:3470#L144">Reader</a></h2>
 			<pre>type Reader struct {
     io.Reader
     <span class="comment">// contains filtered or unexported fields</span>
@@ -657,7 +632,7 @@
 
 			
 				
-				<h3 id="NewReader">func <a href="/target/okalib.go?s=3588:3623#L154">NewReader</a></h3>
+				<h3 id="NewReader">func <a href="/target/okalib.go?s=3611:3646#L155">NewReader</a></h3>
 				<pre>func NewReader(body string) *Reader</pre>
 				<p>
 *
@@ -672,7 +647,7 @@
 
 			
 				
-				<h3 id="Reader.Read">func (*Reader) <a href="/target/okalib.go?s=3973:4020#L171">Read</a></h3>
+				<h3 id="Reader.Read">func (*Reader) <a href="/target/okalib.go?s=3996:4043#L172">Read</a></h3>
 				<pre>func (this *Reader) Read(p []byte) (int, error)</pre>
 				<p>
 *

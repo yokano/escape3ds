@@ -16,8 +16,18 @@
 			} else {
 				code = JSON.parse({{.code}});
 			}
+			
+			var itemList = {};
+			{{range $key, $val := .itemList}}
+				itemList["{{$key}}"] = "{{$val.Name}}";
+			{{end}}
+			
+			var sceneList = {};
+			{{range $key, $val := .sceneList}}
+				sceneList["{{$key}}"] = "{{$val.Name}}";
+			{{end}}
 		</script>
-
+		
 		<!-- lib -->
 		<script src="../lib/jquery/jquery-2.0.3.min.js"></script>
 		<script src="../lib/jqueryui/js/jquery-ui.min.js"></script>

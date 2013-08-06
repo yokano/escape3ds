@@ -105,7 +105,6 @@ func (this *Model) UpdateEventCode(id string, code string) {
 func (this *Model) SyncEvent(w http.ResponseWriter, r *http.Request, path []string) {
 	switch r.Method {
 	case "POST":
-		this.c.Debugf("CREATE EVENT")
 		body := GetRequestBodyJSON(r)
 		event := new(Event)
 		json.Unmarshal(body, event)
@@ -122,7 +121,6 @@ func (this *Model) SyncEvent(w http.ResponseWriter, r *http.Request, path []stri
 		fmt.Fprintf(w, `{"id":"%s"}`, encodedEventKey)
 		
 	case "PUT":
-		this.c.Debugf("UPDATE EVENT")
 		body := GetRequestBodyJSON(r)
 		event := new(Event)
 		json.Unmarshal(body, event)

@@ -47,7 +47,6 @@ func (this *View) Editor(encodedGameKey string) {
 	contents.Game = game
 	contents.GameKey = encodedGameKey
 	contents.Scenes = model.GetScenes(encodedGameKey)
-	this.c.Debugf("EventList: %#v", contents.Scenes["ag5kZXZ-ZXNjYXBlLTNkc3IfCxIEVXNlchgBDAsSBEdhbWUYAgwLEgVTY2VuZRgKDA"])
 	contents.Items = model.GetItems(encodedGameKey)
 	
 	t, err := template.ParseFiles("server/view/html/editor.html")
@@ -102,13 +101,17 @@ func (this *View) Runtime(gameKey string) {
 }
 
 // イベントエディタの表示
-func (this *View) EventEditor(eventKey string) {
+func (this *View) EventEditor(gameKey string, eventKey string) {
 	model := NewModel(this.c)
 	event := model.GetEvent(eventKey)
+	itemList := model.GetItems(gameKey)
+	sceneList := model.GetScenes(gameKey)
 	
-	contents := make(map[string]string, 2)
+	contents := make(map[string]interface{}, 4)
 	contents["id"] = eventKey
 	contents["code"] = event.Code
+	contents["itemList"] = itemList
+	contents["sceneList"] = sceneList
 	
 	t, err := template.ParseFiles("server/view/html/event_editor.html")
 	Check(this.c, err)

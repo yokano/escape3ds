@@ -54,6 +54,15 @@ func (this *Model) GetScene(encodedSceneKey string) *Scene {
 	return scene
 }
 
+// 指定されたイベントが属しているシーンを取得する
+func (this *Model) GetSceneFromEvent(encodedEventKey string) (string, *Scene) {
+	eventKey, err := datastore.DecodeKey(encodedEventKey)
+	Check(this.c, err)
+	sceneKey := eventKey.Parent()
+	encodedSceneKey := sceneKey.Encode()
+	return encodedSceneKey, this.GetScene(encodedSceneKey)
+}
+
 // 引数として指定された id のシーンをデータストアから削除する。
 func (this *Model) DeleteScene(encodedSceneKey string) {
 	sceneKey := DecodeKey(this.c, encodedSceneKey)

@@ -10,8 +10,6 @@ import (
 func (this *Controller) Top(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
-	c.Debugf(appengine.DefaultVersionHostname(c))
-	
 	view := NewView(c, w)
 	sessionId := this.GetSession(c, r)
 	
@@ -57,7 +55,8 @@ func (this *Controller) Runtime(w http.ResponseWriter, r *http.Request) {
 // イベントエディタ
 func (this *Controller) EventEditor(w http.ResponseWriter, r *http.Request) {
 	eventKey := r.FormValue("event_key")
+	gameKey := r.FormValue("game_key")
 	c := appengine.NewContext(r)
 	view := NewView(c, w)
-	view.EventEditor(eventKey)
+	view.EventEditor(gameKey, eventKey)
 }

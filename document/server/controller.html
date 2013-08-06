@@ -93,6 +93,12 @@
 					<dd>&nbsp; &nbsp; <a href="#Controller.Editor">func (this *Controller) Editor(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Controller.EncodeGame">func (this *Controller) EncodeGame(w http.ResponseWriter, r *http.Request)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.EventEditor">func (this *Controller) EventEditor(w http.ResponseWriter, r *http.Request)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Controller.Gamelist">func (this *Controller) Gamelist(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
@@ -135,6 +141,9 @@
 					<dd>&nbsp; &nbsp; <a href="#Controller.RequestFacebookToken">func (this *Controller) RequestFacebookToken(w http.ResponseWriter, r *http.Request) map[string]string</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Controller.Runtime">func (this *Controller) Runtime(w http.ResponseWriter, r *http.Request)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Controller.Session">func (this *Controller) Session(w http.ResponseWriter, r *http.Request) string</a></dd>
 				
 					
@@ -145,6 +154,9 @@
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.Top">func (this *Controller) Top(w http.ResponseWriter, r *http.Request)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Controller.UpdateEventCode">func (this *Controller) UpdateEventCode(w http.ResponseWriter, r *http.Request)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Controller.Uploaded">func (this *Controller) Uploaded(w http.ResponseWriter, r *http.Request)</a></dd>
@@ -281,7 +293,7 @@ blobsotre のクリア。管理者専用。
 				
 			
 				
-				<h3 id="Controller.Delete">func (*Controller) <a href="/target/blob.go?s=1042:1112#L26">Delete</a></h3>
+				<h3 id="Controller.Delete">func (*Controller) <a href="/target/blob.go?s=1107:1177#L28">Delete</a></h3>
 				<pre>func (this *Controller) Delete(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 blobstore から指定された blobkey の Blob を削除する。
@@ -313,7 +325,7 @@ blobstore から指定された blobkey の Blob を削除する。
 				
 			
 				
-				<h3 id="Controller.Download">func (*Controller) <a href="/target/blob.go?s=568:640#L12">Download</a></h3>
+				<h3 id="Controller.Download">func (*Controller) <a href="/target/blob.go?s=633:705#L14">Download</a></h3>
 				<pre>func (this *Controller) Download(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 blobstore から blogkey に関連付いたファイルをクライアントへ渡す。
@@ -324,7 +336,7 @@ Ajax で使う。method は GET。
 				
 			
 				
-				<h3 id="Controller.Editor">func (*Controller) <a href="/target/page.go?s=480:550#L13">Editor</a></h3>
+				<h3 id="Controller.Editor">func (*Controller) <a href="/target/page.go?s=482:552#L14">Editor</a></h3>
 				<pre>func (this *Controller) Editor(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 エディタの表示
@@ -334,7 +346,27 @@ Ajax で使う。method は GET。
 				
 			
 				
-				<h3 id="Controller.Gamelist">func (*Controller) <a href="/target/page.go?s=1208:1280#L35">Gamelist</a></h3>
+				<h3 id="Controller.EncodeGame">func (*Controller) <a href="/target/api.go?s=5685:5759#L172">EncodeGame</a></h3>
+				<pre>func (this *Controller) EncodeGame(w http.ResponseWriter, r *http.Request)</pre>
+				<p>
+ゲームを JSON 形式に変換する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.EventEditor">func (*Controller) <a href="/target/page.go?s=1389:1464#L46">EventEditor</a></h3>
+				<pre>func (this *Controller) EventEditor(w http.ResponseWriter, r *http.Request)</pre>
+				<p>
+イベントエディタ
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.Gamelist">func (*Controller) <a href="/target/page.go?s=942:1014#L29">Gamelist</a></h3>
 				<pre>func (this *Controller) Gamelist(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 ゲーム一覧の表示。ログインした状態でトップページを表示するとここへ飛ぶ。
@@ -377,7 +409,7 @@ http.HandleFunc() は引数として func(http.ResponseWriter, *http.Request) �
 				
 			
 				
-				<h3 id="Controller.GetURL">func (*Controller) <a href="/target/blob.go?s=1334:1404#L35">GetURL</a></h3>
+				<h3 id="Controller.GetURL">func (*Controller) <a href="/target/blob.go?s=1399:1469#L37">GetURL</a></h3>
 				<pre>func (this *Controller) GetURL(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
 blobstore にファイルをアップロードするためのURLを返す。
@@ -483,6 +515,16 @@ Facebook へアクセストークンを要求する。
 				
 			
 				
+				<h3 id="Controller.Runtime">func (*Controller) <a href="/target/page.go?s=1150:1221#L37">Runtime</a></h3>
+				<pre>func (this *Controller) Runtime(w http.ResponseWriter, r *http.Request)</pre>
+				<p>
+テストプレイ
+</p>
+
+				
+				
+			
+				
 				<h3 id="Controller.Session">func (*Controller) <a href="/target/session.go?s=2064:2142#L48">Session</a></h3>
 				<pre>func (this *Controller) Session(w http.ResponseWriter, r *http.Request) string</pre>
 				<p>
@@ -531,10 +573,21 @@ URL を解析して更に細かいハンドラへ処理を割り振る。
 				
 			
 				
-				<h3 id="Controller.Uploaded">func (*Controller) <a href="/target/blob.go?s=210:282#L3">Uploaded</a></h3>
+				<h3 id="Controller.UpdateEventCode">func (*Controller) <a href="/target/api.go?s=6004:6083#L183">UpdateEventCode</a></h3>
+				<pre>func (this *Controller) UpdateEventCode(w http.ResponseWriter, r *http.Request)</pre>
+				<p>
+イベントコードのアップデート
+</p>
+
+				
+				
+			
+				
+				<h3 id="Controller.Uploaded">func (*Controller) <a href="/target/blob.go?s=273:345#L4">Uploaded</a></h3>
 				<pre>func (this *Controller) Uploaded(w http.ResponseWriter, r *http.Request)</pre>
 				<p>
-クライアントからファイルがアップロードされたらblobkeyを返す
+クライアントからファイルがアップロードされたらblobkeyを返す。
+ファイルの&lt;input&gt;のnameは&#34;file&#34;にすること。
 </p>
 
 				
