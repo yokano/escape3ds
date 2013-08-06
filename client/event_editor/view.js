@@ -87,7 +87,8 @@ var EventView = Backbone.View.extend({
 		var blocks = $('<div></div>');
 		this.collection.each(function(block) {
 			var blockView = new BlockViewClasses[block.get('type')]({
-				model: block
+				model: block,
+				blockList: blockList
 			});
 			blocks.append(blockView.render().el);
 		});
@@ -143,9 +144,14 @@ var BlockListView = Backbone.View.extend({
 /**
  * 流れ図を構成するブロックのベースになるクラス
  * イベントの種類に合わせてそれぞれ継承先で template を準備すること
+ * @property {BlockList} blockList このブロックが属するブロックリストへの参照
+ * 条件分岐によって分岐された命令はそれぞれのブロックリストに属する
  */
-var BlockView = Backbone.View.extend({
+var MethodBlockView = Backbone.View.extend({
 	tagName: 'div',
+	initialize: function(options) {
+		this.blockList = options.blockList;
+	},
 	render: function() {
 		var view = this;
 		var connectorView = new ConnectorView({
@@ -165,7 +171,8 @@ var BlockView = Backbone.View.extend({
 				// 何もない場所にドラッグされた
 				view.$el.fadeOut(function() {
 					view.remove();
-					blockList.remove(view.model);
+					console.log(view.blockList);
+					view.blockList.remove(view.model);
 					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
 				});
 			},
@@ -190,63 +197,63 @@ var BlockView = Backbone.View.extend({
 /**
  * シーンの変更ブロック
  */
-var ChangeSceneBlockView = BlockView.extend({
+var ChangeSceneBlockView = MethodBlockView.extend({
 	template: _.template($('#change_scene_template').html())
 });
 
 /**
  * アイテム追加ブロック
  */
-var AddItemBlockView = BlockView.extend({
+var AddItemBlockView = MethodBlockView.extend({
 	template: _.template($('#add_item_template').html())
 });
 
 /**
  * アイテム削除ブロック
  */
-var RemoveItemBlockView = BlockView.extend({
+var RemoveItemBlockView = MethodBlockView.extend({
 	template: _.template($('#remove_item_template').html())
 });
 
 /**
  * メッセージ表示ブロック
  */
-var MessageBlockView = BlockView.extend({
+var MessageBlockView = MethodBlockView.extend({
 	template: _.template($('#message_template').html())
 });
 
 /**
  * イベント非表示ブロック
  */
-var HideBlockView = BlockView.extend({
+var HideBlockView = MethodBlockView.extend({
 	template: _.template($('#hide_template').html())
 });
 
 /**
  * イベント表示ブロック
  */
-var ShowBlockView = BlockView.extend({
+var ShowBlockView = MethodBlockView.extend({
 	template: _.template($('#show_template').html())
 });
 
 /**
  * イベント削除ブロック
  */
-var RemoveBlockView = BlockView.extend({
+var RemoveBlockView = MethodBlockView.extend({
 	template: _.template($('#remove_template').html())
 });
 
 /**
  * 画像変更ブロック
  */
-var ChangeImageBlockView = BlockView.extend({
+var ChangeImageBlockView = MethodBlockView.extend({
 	template: _.template($('#change_image_template').html())
 });
 
 /**
  * 変数操作ブロック
  */
-var VariableBlockView = BlockView.extend({
+var VariableBlockView = MethodBlockView.extend({
 	template: _.template($('#variable_template').html())
 });
 
@@ -257,14 +264,27 @@ var IfBlockView = Backbone.View.extend({
 	tagName: 'div',
 	className: 'stack if_container',
 	template: _.template($('#if_template').html()),
+	initialize: function(options) {
+		this.blockList = options.blockList;
+	},
 	render: function() {
-		var connectorView = new ConnectorView({
-			eventList: blockList,
-			index: blockList.indexOf(this.model) + 1
-		});
-		
+		var view = this;
 		var ifBlock = $('<div class="stack block if"></div>');
 		ifBlock.html(this.template(this.model.toJSON()));
+		ifBlock.draggable({
+			start: function() {
+				view.$el.find('.if_body').remove();
+				view.$el.find('.if_footer').remove();
+				view.$el.find('.left').remove();
+				view.$el.find('.right').remove();
+				view.$el.find('.start_if_line').remove();
+			},
+			stop: function() {
+				view.$el.remove();
+				view.blockList.remove(view.model);
+			},
+			cursor: 'url("/client/event_editor/trashbox.png"), auto'
+		});
 		
 		// アイテムリストを選択肢に追加
 		_.each(itemList, function(item, key) {
@@ -290,10 +310,9 @@ var IfBlockView = Backbone.View.extend({
 		
 		// 左側の処理
 		var left = $('<div class="stack if_container_left"></div>');
-		
 		left.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
-			eventList: blockList,
+			eventList: this.model.get('true'),
 			index: 0
 		});
 		left.append(connectorView.render().el);
@@ -304,13 +323,12 @@ var IfBlockView = Backbone.View.extend({
 		var right = $('<div class="stack if_container_right"></div>');
 		right.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
-			eventList: blockList,
+			eventList: this.model.get('false'),
 			index: 0
 		});
 		right.append(connectorView.render().el);
 		right.append('<div class="stack line"></div>');
 		body.append(right);
-		
 		this.$el.append(body);
 		
 		// 分岐終了

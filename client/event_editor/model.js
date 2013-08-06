@@ -4,7 +4,17 @@
  */
 var BlockList = Backbone.Collection.extend({
 	url: '/sync/event/' + eventId,
-	initialize: function() {
+	initialize: function(attr) {
+		// DB から読み取った JSON を変換
+		_.each(attr, function(block) {
+			if(block.type == 'if') {
+				var ifBlock = new IfBlock(block);
+				this.add(ifBlock);
+			} else {
+				var methodBlock = new MethodBlock(block);
+				this.add(methodBlock);
+			}
+		}, this);
 		this.on('change add remove', this.update);
 	},
 	update: function() {
@@ -45,5 +55,11 @@ var IfBlock = Backbone.Model.extend({
 		target: '',
 		true: null,
 		false: null
+	},
+	initialize: function(attr) {
+//		this.set('true', new BlockList(attr.true));
+//		this.set('false', new BlockList(attr.false));
+		this.set('true', null);
+		this.set('false', null);
 	}
 });
