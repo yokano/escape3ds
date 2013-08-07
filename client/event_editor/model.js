@@ -61,5 +61,8 @@ var IfBlock = Backbone.Model.extend({
 //		this.set('false', new BlockList(attr.false));
 		this.set('true', null);
 		this.set('false', null);
+		if(this.get('target') == '' && _.keys(itemList).length > 0) {
+			this.set('target', _.keys(itemList)[0]);
+		}
 	}
 });

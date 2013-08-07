@@ -41,13 +41,19 @@ var ConnectorView = Backbone.View.extend({
 				if(type == 'if') {
 					view.eventList.add(new IfBlock({
 						type: 'if',
-						conditionType: '',
-						target: '',
+						conditionType: ui.draggable.find('.conditionType').val(),
+						target: ui.draggable.find('.target').val(),
 						true: new BlockList(),
 						false: new BlockList()
-					}, {at: view.index}));
+					}, {
+						at: view.index
+					}));
 				} else {
-					view.eventList.add(new MethodBlock({type: ui.draggable.attr('type')}), {at: view.index});
+					view.eventList.add(new MethodBlock({
+						type: ui.draggable.attr('type')
+					}), {
+						at: view.index
+					});
 				}
 			},
 			hoverClass: 'connector-hover',
@@ -171,7 +177,6 @@ var MethodBlockView = Backbone.View.extend({
 				// 何もない場所にドラッグされた
 				view.$el.fadeOut(function() {
 					view.remove();
-					console.log(view.blockList);
 					view.blockList.remove(view.model);
 					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
 				});
@@ -267,10 +272,23 @@ var IfBlockView = Backbone.View.extend({
 	initialize: function(options) {
 		this.blockList = options.blockList;
 	},
+	events: {
+		'change .target': 'targetHasSelected',
+		'change .conditionType': 'conditionTypeHasSelected'
+	},
+	targetHasSelected: function(event) {
+		this.model.set('target', $(event.target).val());
+	},
+	conditionTypeHasSelected: function(event) {
+		this.model.set('conditionType', $(event.target).val());
+	},
 	render: function() {
 		var view = this;
-		var ifBlock = $('<div class="stack block if"></div>');
-		ifBlock.html(this.template(this.model.toJSON()));
+		var ifBlock = $('<div type="if" class="stack block if"></div>');
+		ifBlock.html(this.template());
+		ifBlock.find('.target').val(this.model.get('target'));
+		
+		// ドラッグ
 		ifBlock.draggable({
 			start: function() {
 				view.$el.find('.if_body').remove();
@@ -278,6 +296,8 @@ var IfBlockView = Backbone.View.extend({
 				view.$el.find('.left').remove();
 				view.$el.find('.right').remove();
 				view.$el.find('.start_if_line').remove();
+				
+				$(this).removeClass('stack');
 			},
 			stop: function() {
 				view.$el.remove();
@@ -286,10 +306,22 @@ var IfBlockView = Backbone.View.extend({
 			cursor: 'url("/client/event_editor/trashbox.png"), auto'
 		});
 		
+		// ドラッグ時のズレを修正
+		ifBlock.on('mousedown', function() {
+			var marginLeft = $(this).css('margin-left').slice(0, -2);
+			marginLeft = parseInt(marginLeft) + $(this).width() / 2;
+			ifBlock.draggable('option', 'cursorAt', {right: marginLeft});
+		});
+		
 		// アイテムリストを選択肢に追加
 		_.each(itemList, function(item, key) {
-			ifBlock.find('.target').append('<option val="' + key + '">' + item + '</option>');
+			var option = $('<option value="' + key + '">' + item + '</option>');
+			ifBlock.find('.target').append(option);
 		}, this);
+		ifBlock.find('.target [value="' + this.model.get('target') + '"]').attr('selected', '');
+		
+		// 条件の選択
+		ifBlock.find('.conditionType [value="' + this.model.get('conditionType') + '"]').attr('selected', '');
 		
 		// 分岐開始
 		var header = $('<div class="stack if_header"></div>');

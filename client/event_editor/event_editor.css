@@ -97,6 +97,7 @@ html, body, #root {
 	position: relative;
 	z-index: 1;
 	padding-top: 20px;
+	cursor: move;
 }
 #event_view .yes {
 	position: absolute;
