@@ -149,7 +149,8 @@ var BlockListView = Backbone.View.extend({
 		this.$el.append('<div class="block if" type="if">条件分岐</div>');
 		
 		this.$el.find('.block').draggable({
-			helper: 'clone'
+			helper: 'clone',
+			zIndex: 3
 		});
 		
 		var closeButton = $('<button class="close">閉じる</button>');
@@ -198,7 +199,8 @@ var MethodBlockView = Backbone.View.extend({
 					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
 				});
 			},
-			cursor: 'url("/client/event_editor/trashbox.png"), auto'
+			cursor: 'url("/client/event_editor/trashbox.png"), auto',
+			zIndex: 3
 		});
 		
 		// ドラッグ開始直前にjQueryUIの座標のずれを修正する
@@ -328,7 +330,8 @@ var IfBlockView = Backbone.View.extend({
 				view.$el.remove();
 				view.blockList.remove(view.model);
 			},
-			cursor: 'url("/client/event_editor/trashbox.png"), auto'
+			cursor: 'url("/client/event_editor/trashbox.png"), auto',
+			zIndex: 3
 		});
 		
 		// ドラッグ時のズレを修正
