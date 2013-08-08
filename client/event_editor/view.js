@@ -53,21 +53,27 @@ var ConnectorView = Backbone.View.extend({
 					view.index = view.eventList.indexOf(view.model) + 1;
 				}
 				
-				var type = ui.draggable.attr('type');
-				if(type == 'if') {
-					var ifBlock = new IfBlock({
-						type: 'if',
-						conditionType: ui.draggable.find('.conditionType').val(),
-						target: ui.draggable.find('.target').val(),
-						yes: new BlockList(),
-						no: new BlockList()
-					});
-					view.eventList.add(ifBlock, {at: view.index});
+				// 画面右のブロックリストからドラッグされた
+				if(model == undefined) {
+					var type = ui.draggable.attr('type');
+					if(type == 'if') {
+						var ifBlock = new IfBlock({
+							type: 'if',
+							conditionType: ui.draggable.find('.conditionType').val(),
+							target: ui.draggable.find('.target').val(),
+							yes: new BlockList(),
+							no: new BlockList()
+						});
+						view.eventList.add(ifBlock, {at: view.index});
+					} else {
+						var methodBlock = new MethodBlock({
+							type: ui.draggable.attr('type')
+						});
+						view.eventList.add(methodBlock, {at: view.index});
+					}
 				} else {
-					var methodBlock = new MethodBlock({
-						type: ui.draggable.attr('type')
-					});
-					view.eventList.add(methodBlock, {at: view.index});
+					// 配置済みのブロックがドラッグされた
+					view.eventList.add(model, {at: view.index});
 				}
 			},
 			hoverClass: 'connector-hover',
