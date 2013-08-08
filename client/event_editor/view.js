@@ -203,7 +203,8 @@ var MethodBlockView = Backbone.View.extend({
 		
 		// ドラッグ開始直前にjQueryUIの座標のずれを修正する
 		block.on('mousedown', function() {
-			var difference = $(this).offset().left + $(this).width() / 2;
+			var marginLeft = parseInt($(this).css('margin-left').slice(0, -2));
+			var difference = marginLeft + $(this).width() / 2;
 			$(this).draggable('option', 'cursorAt', {right: difference});
 		});
 		
@@ -365,14 +366,13 @@ var IfBlockView = Backbone.View.extend({
 		var body = $('<div class="stack if_body"></div>');
 		
 		// 左側の処理
-		var left = $('<div class="stack if_container_left"></div>');
+		var left = $('<div class="if_container_left"></div>');
 		var connectorView = new ConnectorView({
 			eventList: this.model.get('yes'),
 			model: null
 		});
 		left.append(connectorView.render().el);
 		left.append('<div class="stack line"></div>');
-		var blocks = $('<div></div>');
 		this.model.get('yes').each(function(block) {
 			var blockView = new BlockViewClasses[block.get('type')]({
 				model: block,
@@ -384,15 +384,23 @@ var IfBlockView = Backbone.View.extend({
 		body.append(left);
 		
 		// 右側の処理
-		var right = $('<div class="stack if_container_right"></div>');
-		right.append('<div class="stack line"></div>');
+		var right = $('<div class="if_container_right"></div>');
 		var connectorView = new ConnectorView({
 			eventList: this.model.get('no'),
 			model: null
 		});
 		right.append(connectorView.render().el);
 		right.append('<div class="stack line"></div>');
+		this.model.get('no').each(function(block) {
+			var blockView = new BlockViewClasses[block.get('type')]({
+				model: block,
+				blockList: this.model.get('no')
+			});
+			right.append(blockView.render().el);
+		}, this);
+		right.append('<div class="stack line"></div>');
 		body.append(right);
+		
 		this.$el.append(body);
 		
 		// 分岐終了
@@ -402,12 +410,27 @@ var IfBlockView = Backbone.View.extend({
 		footer.append('<div class="if_line_container right"><div class="stack line"></div></div>');
 		footer.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
-			eventList: blockList,
+			eventList: this.blockList,
 			model: this.model
 		});
 		footer.append(connectorView.render().el);
 		footer.append('<div class="stack line"></div>');
 		this.$el.append(footer);
+				
+		// 表示上のズレを修正
+//		left.ready(function() {
+//			right.css('top', -left.height());
+//		});
+//		footer.ready(function() {
+//			var hLeft = left.height();
+//			var hRight = right.height();
+//			if(hRight > hLeft) {
+//				footer.css('top', -hLeft);
+//			} else {
+//				footer.css('top', -hRight);
+//			}
+//		});
+
 		
 		return this;
 	}

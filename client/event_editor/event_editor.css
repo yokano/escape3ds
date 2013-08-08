@@ -70,20 +70,21 @@ html, body, #root {
 	cursor: move;
 }
 #event_view .if_container {
-	width: 50%;
+	width: 100%;
+	position: relative;
+	background-color: white;
 }
 #event_view .if_header {
-	width: 100%;
+	width: 50%;
 	height: 100px;
 	position: relative;
 }
 #event_view .if_body {
 	width: 100%;
-	position: relative;
+	display: -webkit-box;
 }
 #event_view .if_footer {
-	width: 100%;
-	height: auto;
+	width: 50%;
 	position: relative;
 }
 #event_view .block.if {
@@ -138,7 +139,7 @@ html, body, #root {
 	height: 50px;
 	width: 100%;
 	position: absolute;
-	top: 0px;
+	top: -0px;
 }
 #event_view .if_line_container.left {
 	left: -50%;
@@ -149,17 +150,14 @@ html, body, #root {
 #event_view .if_line_container .line {
 	height: 50px;
 }
-#event_view .stack.if_container_left {
-	width: 100%;
-	position: relative;
-	left: -50%;
+#event_view .if_container_left {
+	width: 50%;
+	background-image: url("/client/event_editor/line.png");
+	background-repeat: repeat-y;
+	background-position: center;
 }
-#event_view .stack.if_container_right {
-	width: 100%;
-	height: 100%;
-	position: absolute;
-	top: 0px;
-	right: -50%;
+#event_view .if_container_right {
+	width: 50%;
 	background-image: url("/client/event_editor/line.png");
 	background-repeat: repeat-y;
 	background-position: center;
