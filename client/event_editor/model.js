@@ -4,18 +4,31 @@
  */
 var BlockList = Backbone.Collection.extend({
 	url: '/sync/event/' + eventId,
-	initialize: function(attr) {
+	initialize: function(models, code, root) {
 		// DB から読み取った JSON を変換
-		_.each(attr, function(block) {
+		_.each(code, function(block) {
 			if(block.type == 'if') {
-				var ifBlock = new IfBlock(block);
+				var ifBlock = new IfBlock({
+					conditionType: block.conditionType,
+					target: block.target,
+					yes: new BlockList(null, block.yes),
+					no: new BlockList(null, block.no)
+				});
 				this.add(ifBlock);
 			} else {
 				var methodBlock = new MethodBlock(block);
 				this.add(methodBlock);
 			}
 		}, this);
-		this.on('change add remove', this.update);
+		
+		// 大元になるブロックリストだけを保存
+		if(root) {
+			this.on('change add remove', this.update);
+		} else {
+			this.on('change add remove', function() {
+				blockList.update();
+			});
+		}
 	},
 	update: function() {
 		$.ajax('/update_code', {
@@ -52,15 +65,9 @@ var IfBlock = Backbone.Model.extend({
 	defaults: {
 		type: 'if',
 		conditionType: '',
-		target: '',
-		true: null,
-		false: null
+		target: ''
 	},
-	initialize: function(attr) {
-//		this.set('true', new BlockList(attr.true));
-//		this.set('false', new BlockList(attr.false));
-		this.set('true', null);
-		this.set('false', null);
+	initialize: function() {
 		if(this.get('target') == '' && _.keys(itemList).length > 0) {
 			this.set('target', _.keys(itemList)[0]);
 		}

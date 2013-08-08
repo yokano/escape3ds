@@ -41,12 +41,11 @@ html, body, #root {
 	border-style: dashed;
 	border-color: gray;
 	border-radius: 5px;
-	background-color: lightgray;
+	background-color: #eee;
 	font-family: sans-serif;
 	font-size: x-small;
 	text-align: center;
 	line-height: 15px;
-	opacity: 0.5;
 	-webkit-transition-duration: 0.3s;
 	-khtml-user-drag: element;
 }
@@ -157,9 +156,13 @@ html, body, #root {
 }
 #event_view .stack.if_container_right {
 	width: 100%;
+	height: 100%;
 	position: absolute;
 	top: 0px;
 	right: -50%;
+	background-image: url("/client/event_editor/line.png");
+	background-repeat: repeat-y;
+	background-position: center;
 }
 #event_view .end_if_line {
 	height: 45px;

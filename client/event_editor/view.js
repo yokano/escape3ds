@@ -35,7 +35,18 @@ var ConnectorView = Backbone.View.extend({
 		this.$el.droppable({
 			accept: '.block',
 			drop: function(event, ui) {
-				view.eventList.remove(ui.draggable.attr('cid'), {'silent': true});
+				// このコネクタを所有しているブロック
+				var model = ui.draggable.data('model');
+				
+				// ドラッグされたモデルが所属しているブロックリスト
+				var collection = ui.draggable.data('collection');
+				
+				// 移動元のブロックを削除する
+				if(collection != undefined) {
+					collection.remove(model, {silent: true});
+				}
+				
+				// このコネクタにドラッグされた時にどこへ挿入するか
 				if(view.model == null) {
 					view.index = 0;
 				} else {
@@ -48,8 +59,8 @@ var ConnectorView = Backbone.View.extend({
 						type: 'if',
 						conditionType: ui.draggable.find('.conditionType').val(),
 						target: ui.draggable.find('.target').val(),
-						true: new BlockList(),
-						false: new BlockList()
+						yes: new BlockList(),
+						no: new BlockList()
 					});
 					view.eventList.add(ifBlock, {at: view.index});
 				} else {
@@ -67,6 +78,8 @@ var ConnectorView = Backbone.View.extend({
 				$('body').css('cursor', 'url("/client/event_editor/trashbox.png"), auto');
 			}
 		});
+		
+		this.$el.html('ここへドラッグ');
 		
 		return this;
 	}
@@ -163,14 +176,16 @@ var MethodBlockView = Backbone.View.extend({
 	render: function() {
 		var view = this;
 		var connectorView = new ConnectorView({
-			eventList: blockList,
+			eventList: this.blockList,
 			model: this.model
 		});
 		
 		var block = $(this.template());
-		block.attr('cid', view.model.cid);
 		block.draggable({
 			start: function(event, ui) {
+				$(this).data('model', view.model);
+				$(this).data('collection', view.blockList);
+
 				view.$el.find('.line').remove();
 				connectorView.remove();
 				block.removeClass('stack');
@@ -273,6 +288,8 @@ var IfBlockView = Backbone.View.extend({
 	template: _.template($('#if_template').html()),
 	initialize: function(options) {
 		this.blockList = options.blockList;
+		this.listenTo(this.model.get('yes'), 'add remove', this.render);
+		this.listenTo(this.model.get('no'), 'add remove', this.render);
 	},
 	events: {
 		'change .target': 'targetHasSelected',
@@ -285,15 +302,19 @@ var IfBlockView = Backbone.View.extend({
 		this.model.set('conditionType', $(event.target).val());
 	},
 	render: function() {
+		this.$el.empty();
+		
 		var view = this;
 		var ifBlock = $('<div type="if" class="stack block if"></div>');
 		ifBlock.html(this.template());
-		ifBlock.attr('cid', view.model.cid);
 		ifBlock.find('.target').val(this.model.get('target'));
 		
 		// ドラッグ
 		ifBlock.draggable({
 			start: function() {
+				$(this).data('model', view.model);
+				$(this).data('collection', view.blockList);
+				
 				view.$el.find('.if_body').remove();
 				view.$el.find('.if_footer').remove();
 				view.$el.find('.left').remove();
@@ -345,11 +366,20 @@ var IfBlockView = Backbone.View.extend({
 		
 		// 左側の処理
 		var left = $('<div class="stack if_container_left"></div>');
-		left.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
-			eventList: this.model.get('true')
+			eventList: this.model.get('yes'),
+			model: null
 		});
 		left.append(connectorView.render().el);
+		left.append('<div class="stack line"></div>');
+		var blocks = $('<div></div>');
+		this.model.get('yes').each(function(block) {
+			var blockView = new BlockViewClasses[block.get('type')]({
+				model: block,
+				blockList: this.model.get('yes')
+			});
+			left.append(blockView.render().el);
+		}, this);
 		left.append('<div class="stack line"></div>');
 		body.append(left);
 		
@@ -357,7 +387,8 @@ var IfBlockView = Backbone.View.extend({
 		var right = $('<div class="stack if_container_right"></div>');
 		right.append('<div class="stack line"></div>');
 		var connectorView = new ConnectorView({
-			eventList: this.model.get('false')
+			eventList: this.model.get('no'),
+			model: null
 		});
 		right.append(connectorView.render().el);
 		right.append('<div class="stack line"></div>');
