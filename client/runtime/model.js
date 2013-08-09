@@ -198,6 +198,7 @@ var Event = Backbone.Model.extend({
 	},
 	remove: function() {
 		this.set('removed', true);
+		console.log('remove');
 	},
 	execute: function() {
 		_.each(this.get('code'), function(method) {
@@ -214,11 +215,15 @@ var Event = Backbone.Model.extend({
 				state.removeItem(method.attr);
 				break;
 			}
+			case 'remove': {
+				this.remove();
+				break;
+			}
 			default: {
 				console.log('不明なイベント内容が実行されました', method);
 			}
 			}
-		});
+		}, this);
 	}
 });
 
