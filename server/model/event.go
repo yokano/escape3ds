@@ -12,7 +12,7 @@ import(
 type Event struct {
 	Name string `json:"name"`     // イベント名
 	Image string `json:"image"`    // 画像
-	Code string `json:"code"`     // クリックされた時のコード
+	Code []byte `json:"code"`     // クリックされた時のコード
 	Position []int `json:"position"`  // 位置
 	Size []int `json:"size"`      // 大きさ
 	Color string `json:"color"`    // エディタ上で領域に表示される色
@@ -23,7 +23,7 @@ func (this *Model) NewEvent(name string, image string, code string, position []i
 	event := new(Event)
 	event.Name = name
 	event.Image = image
-	event.Code = code
+	event.Code = []byte(code)
 	event.Position = position
 	event.Size = size
 	event.Color = color
@@ -94,11 +94,8 @@ func (this *Model) GetEventList(encodedSceneKey string) map[string]*Event {
 // イベントコードの更新
 func (this *Model) UpdateEventCode(id string, code string) {
 	event := this.GetEvent(id)
-	event.Code = code
+	event.Code = []byte(code)
 	this.UpdateEvent(event, id)
-	this.c.Debugf("UPDATE CODE")
-	this.c.Debugf("ID: %s", id)
-	this.c.Debugf("CODE: %s", code)
 }
 
 // イベントの同期
@@ -125,12 +122,7 @@ func (this *Model) SyncEvent(w http.ResponseWriter, r *http.Request, path []stri
 		event := new(Event)
 		json.Unmarshal(body, event)
 		
-		eventKey, err := datastore.DecodeKey(path[4])
-		Check(this.c, err)
-
-		eventKey, err = datastore.Put(this.c, eventKey, event)
-		Check(this.c, err)
-		
+		this.UpdateEvent(event, path[4])
 		fmt.Fprintf(w, `{}`)
 		
 	case "GET":

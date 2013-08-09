@@ -109,7 +109,7 @@ func (this *View) EventEditor(gameKey string, eventKey string) {
 	
 	contents := make(map[string]interface{}, 4)
 	contents["id"] = eventKey
-	contents["code"] = event.Code
+	contents["code"] = string(event.Code)
 	contents["itemList"] = itemList
 	contents["sceneList"] = sceneList
 	
