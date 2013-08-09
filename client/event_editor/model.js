@@ -29,6 +29,11 @@ var BlockList = Backbone.Collection.extend({
 				blockList.update();
 			});
 		}
+		
+		// ブロック内の属性が変更されたら保存
+		this.on('change:attr', function() {
+			blockList.update();
+		});
 	},
 	update: function() {
 		$.ajax('/update_code', {

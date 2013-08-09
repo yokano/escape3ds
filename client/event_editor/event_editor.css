@@ -67,6 +67,7 @@ html, body, #root {
 	border-style: solid;
 	border-radius: 5px;
 	overflow: scroll;
+	text-align: center;
 	cursor: move;
 }
 #event_view .if_container {
@@ -169,6 +170,9 @@ html, body, #root {
 	border-top-style: solid;
 	position: relative;
 	top: 45px;
+}
+#event_view .scene {
+	width: 100px;
 }
 
 #block_list_view {

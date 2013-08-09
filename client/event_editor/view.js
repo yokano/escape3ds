@@ -201,7 +201,7 @@ var MethodBlockView = Backbone.View.extend({
 				// 何もない場所にドラッグされた
 				view.$el.fadeOut(function() {
 					view.remove();
-					view.blockList.remove(view.model);
+					view.options.blockList.remove(view.model);
 					$('body').css('cursor', 'auto'); // jQuery UI が body の cursor を書き換えるため
 				});
 			},
@@ -216,6 +216,20 @@ var MethodBlockView = Backbone.View.extend({
 			$(this).draggable('option', 'cursorAt', {right: difference});
 		});
 		
+		// シーンの選択肢を持っていたら表示
+		var scene = block.find('.scene');
+		if(scene.length > 0) {
+			_.each(sceneList, function(val, key) {
+				var option = $('<option></option>');
+				option.html(val);
+				option.val(key);
+				if(key == view.model.get('attr')) {
+					option.attr('selected', '');
+				}
+				scene.append(option);
+			});
+		}
+		
 		this.$el.append(block);
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
@@ -229,7 +243,20 @@ var MethodBlockView = Backbone.View.extend({
  * シーンの変更ブロック
  */
 var ChangeSceneBlockView = MethodBlockView.extend({
-	template: _.template($('#change_scene_template').html())
+	template: _.template($('#change_scene_template').html()),
+	constructor: function(options) {
+		MethodBlockView.call(this, options);
+		if(this.model.get('attr') == '') {
+			this.model.set('attr', _.keys(sceneList)[0], {silent: true});
+		}
+	},
+	events: {
+		'change .scene': 'sceneHasSelected'
+	},
+	sceneHasSelected: function() {
+		var scene = this.$el.find('.scene').val();
+		this.model.set('attr', scene);
+	}
 });
 
 /**
@@ -425,21 +452,6 @@ var IfBlockView = Backbone.View.extend({
 		footer.append(connectorView.render().el);
 		footer.append('<div class="stack line"></div>');
 		this.$el.append(footer);
-				
-		// 表示上のズレを修正
-//		left.ready(function() {
-//			right.css('top', -left.height());
-//		});
-//		footer.ready(function() {
-//			var hLeft = left.height();
-//			var hRight = right.height();
-//			if(hRight > hLeft) {
-//				footer.css('top', -hLeft);
-//			} else {
-//				footer.css('top', -hRight);
-//			}
-//		});
-
 		
 		return this;
 	}
