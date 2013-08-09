@@ -14,7 +14,6 @@ var EventEditorView = Backbone.View.extend({
 		'change #color': 'colorHasChanged',
 		'change #change_event_img': 'eventImageFileHasChanged',
 		'click #remove_img': 'removeImageButtonHasClicked',
-//		'change #event_code': 'eventCodeHasChanged',
 		'change .event_name': 'eventNameHasChanged',
 		'click #edit_event': 'editButtonHasClicked'
 	},
@@ -83,10 +82,6 @@ var EventEditorView = Backbone.View.extend({
 		this.$el.find('#change_event_img').val('');
 		this.model.set('image', '');
 	},
-//	eventCodeHasChanged: function(event) {
-//		var code = $(event.target).val();
-//		this.model.set('code', code);
-//	},
 	eventNameHasChanged: function(event) {
 		var name = $(event.target).val();
 		this.model.set('name', name);

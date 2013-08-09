@@ -58,6 +58,7 @@ func (this *Controller) Handle() {
 	table["/uploaded"] = (*Controller).Uploaded
 	table["/download"] = (*Controller).Download
 	table["/geturl"]   = (*Controller).GetURL
+	table["/delete_blog"] = (*Controller).Delete
 
 	// admin
 	table["/debug"]             = (*Controller).Debug

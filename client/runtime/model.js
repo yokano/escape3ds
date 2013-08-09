@@ -198,7 +198,9 @@ var Event = Backbone.Model.extend({
 	},
 	remove: function() {
 		this.set('removed', true);
-		console.log('remove');
+	},
+	changeImage: function(blobkey) {
+		this.set('image', blobkey);
 	},
 	execute: function() {
 		_.each(this.get('code'), function(method) {
@@ -225,6 +227,10 @@ var Event = Backbone.Model.extend({
 			}
 			case 'show': {
 				this.show();
+				break;
+			}
+			case 'changeImage': {
+				this.changeImage(method.attr);
 				break;
 			}
 			default: {

@@ -344,7 +344,49 @@ var RemoveBlockView = MethodBlockView.extend({
  * 画像変更ブロック
  */
 var ChangeImageBlockView = MethodBlockView.extend({
-	template: _.template($('#change_image_template').html())
+	template: _.template($('#change_image_template').html()),
+	constructor: function(options) {
+		MethodBlockView.call(this, options);
+	},
+	events: {
+		'change .img': 'imageHasChanged'
+	},
+	imageHasChanged: function() {
+		var view = this;
+
+		// 古い画像を削除
+		if(this.model.get('attr') != '') {
+			$.ajax('/delete_blog', {
+				method: 'POST',
+				async: false,
+				data: {
+					blobkey: view.model.get('attr')
+				},
+				error: function() {
+					console.log('画像の削除に失敗');
+				}
+			});
+		}
+		
+		var file = this.$el.find('.img').get(0).files[0];
+		var formdata = new FormData();
+		formdata.append('file', file);
+		
+		// 新しい画像をアップロード
+		$.ajax(geturl(), {
+			method: 'POST',
+			contentType: false,
+			processData: false,
+			data: formdata,
+			dataType: 'json',
+			error: function() {
+				console.log('ファイルのアップロードに失敗しました');
+			},
+			success: function(data) {
+				view.model.set('attr', data.blobkey);
+			}
+		});
+	}
 });
 
 /**
