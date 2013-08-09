@@ -99,7 +99,7 @@ var EventView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'event_view',
 	initialize: function() {
-		this.listenTo(this.collection, 'add', this.render);
+		this.listenTo(this.collection, 'add remove', this.render);
 	},
 	render: function() {
 		var view = this;
@@ -230,6 +230,20 @@ var MethodBlockView = Backbone.View.extend({
 			});
 		}
 		
+		// アイテムの選択肢を持っていたら表示
+		var item = block.find('.item');
+		if(item.length > 0) {
+			_.each(itemList, function(val, key) {
+				var option = $('<option></option>');
+				option.html(val);
+				option.val(key);
+				if(key == view.model.get('attr')) {
+					option.attr('selected', '');
+				}
+				item.append(option);
+			});
+		}
+		
 		this.$el.append(block);
 		this.$el.append('<div class="stack line"></div>');
 		this.$el.append(connectorView.render().el);
@@ -263,7 +277,20 @@ var ChangeSceneBlockView = MethodBlockView.extend({
  * アイテム追加ブロック
  */
 var AddItemBlockView = MethodBlockView.extend({
-	template: _.template($('#add_item_template').html())
+	template: _.template($('#add_item_template').html()),
+	constructor: function(options) {
+		MethodBlockView.call(this, options);
+		if(this.model.get('attr') == '') {
+			this.model.set('attr', _.keys(itemList)[0], {silent: true});
+		}
+	},
+	events: {
+		'change .item': 'itemHasSelected'
+	},
+	itemHasSelected: function() {
+		var item = this.$el.find('.item').val();
+		this.model.set('attr', item);
+	}
 });
 
 /**

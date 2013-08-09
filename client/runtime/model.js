@@ -206,6 +206,10 @@ var Event = Backbone.Model.extend({
 				state.changeScene(method.attr);
 				break;
 			}
+			case 'addItem': {
+				state.addItem(method.attr);
+				break;
+			}
 			default: {
 				console.log('不明なイベント内容が実行されました', method);
 			}
