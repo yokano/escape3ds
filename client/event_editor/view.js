@@ -261,7 +261,7 @@ var ChangeSceneBlockView = MethodBlockView.extend({
 	constructor: function(options) {
 		MethodBlockView.call(this, options);
 		if(this.model.get('attr') == '') {
-			this.model.set('attr', _.keys(sceneList)[0], {silent: true});
+			this.model.set('attr', _.keys(sceneList)[0]);
 		}
 	},
 	events: {
@@ -281,7 +281,7 @@ var AddItemBlockView = MethodBlockView.extend({
 	constructor: function(options) {
 		MethodBlockView.call(this, options);
 		if(this.model.get('attr') == '') {
-			this.model.set('attr', _.keys(itemList)[0], {silent: true});
+			this.model.set('attr', _.keys(itemList)[0]);
 		}
 	},
 	events: {
@@ -297,7 +297,20 @@ var AddItemBlockView = MethodBlockView.extend({
  * アイテム削除ブロック
  */
 var RemoveItemBlockView = MethodBlockView.extend({
-	template: _.template($('#remove_item_template').html())
+	template: _.template($('#remove_item_template').html()),
+	constructor: function(options) {
+		MethodBlockView.call(this, options);
+		if(this.model.get('attr') == '') {
+			this.model.set('attr', _.keys(itemList)[0]);
+		}
+	},
+	events: {
+		'change .item': 'itemHasChanged'
+	},
+	itemHasChanged: function() {
+		var item = this.$el.find('.item').val();
+		this.model.set('attr', item);
+	}
 });
 
 /**

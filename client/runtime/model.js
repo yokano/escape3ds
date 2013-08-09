@@ -210,6 +210,10 @@ var Event = Backbone.Model.extend({
 				state.addItem(method.attr);
 				break;
 			}
+			case 'removeItem': {
+				state.removeItem(method.attr);
+				break;
+			}
 			default: {
 				console.log('不明なイベント内容が実行されました', method);
 			}
