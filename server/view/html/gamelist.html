@@ -24,7 +24,6 @@
 				<div class="description">{{$val.Description}}</div>
 				<div class="thumbnail"><img width="200" src="/client/gamelist/img/black.png"></div>
 				<a href="/editor?game_key={{$key}}"><button class="edit">作る</button></a>
-				<a href="/runtime?game_key={{$key}}"><button class="runtime">テストプレイ</button></a>
 				<button class="copy">コピー</button>
 				<button class="delete">消す</button>
 			</li>
@@ -32,7 +31,6 @@
 		</ul>
 		
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 		<script src="/client/gamelist/gamelist.js"></script>
 		<script>
 			var userKey = "{{.Key}}";

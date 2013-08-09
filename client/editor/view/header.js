@@ -13,16 +13,16 @@ var HeaderView = Backbone.View.extend({
 		
 		if(rootView.mode == 'scene_editor') {
 			this.$el.find('#scene_mode')
-			
 		}
 		
 		return this;
 	},
 	events: {
-		'click #scene_mode' : 'changeToSceneMode',
+		'click #scene_mode': 'changeToSceneMode',
 		'click #item_mode': 'changeToItemMode',
-		'click #back' : 'backToGameList',
-		'click #save' : 'save'
+		'click #back': 'backToGameList',
+		'click #save': 'save',
+		'click #test_play': 'testplayHasClicked'
 	},
 	changeToSceneMode: function() {
 		rootView.changeMode('scene_editor');
@@ -32,6 +32,14 @@ var HeaderView = Backbone.View.extend({
 	},
 	backToGameList: function() {
 		console.log('ゲームリストへ戻る');
+	},
+	testplayHasClicked: function() {
+		var width = 320;
+		var height = 417;
+		var left = window.screen.width / 2 - width / 2;
+		var top = window.screen.height / 2 - height / 2;
+		var options = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',status=no,location=no,toolbar=no,menubar=no';
+		window.open('/runtime?game_key=' + GAME_ID, null, options);
 	},
 	save: function() {
 		// ゲーム更新
