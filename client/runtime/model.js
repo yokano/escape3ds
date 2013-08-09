@@ -223,6 +223,10 @@ var Event = Backbone.Model.extend({
 				this.hide();
 				break;
 			}
+			case 'show': {
+				this.show();
+				break;
+			}
 			default: {
 				console.log('不明なイベント内容が実行されました', method);
 			}
