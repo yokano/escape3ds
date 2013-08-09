@@ -151,7 +151,6 @@ var BlockListView = Backbone.View.extend({
 		this.$el.append('<div class="block method" type="show">表示</div>');
 		this.$el.append('<div class="block method" type="remove">消滅</div>');
 		this.$el.append('<div class="block method" type="changeImage">画像変更</div>');
-		this.$el.append('<div class="block method" type="variable">変数操作</div>');
 		this.$el.append('<div class="block if" type="if">条件分岐</div>');
 		
 		this.$el.find('.block').draggable({
@@ -349,13 +348,6 @@ var ChangeImageBlockView = MethodBlockView.extend({
 });
 
 /**
- * 変数操作ブロック
- */
-var VariableBlockView = MethodBlockView.extend({
-	template: _.template($('#variable_template').html())
-});
-
-/**
  * 条件分岐ブロック
  */
 var IfBlockView = Backbone.View.extend({
@@ -509,6 +501,5 @@ var BlockViewClasses = {
 	'show': ShowBlockView,
 	'remove': RemoveBlockView,
 	'changeImage': ChangeImageBlockView,
-	'variable': VariableBlockView,
 	'if': IfBlockView
 };
