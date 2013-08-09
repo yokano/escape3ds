@@ -198,6 +198,19 @@ var Event = Backbone.Model.extend({
 	},
 	remove: function() {
 		this.set('removed', true);
+	},
+	execute: function() {
+		_.each(this.get('code'), function(method) {
+			switch(method.type) {
+			case 'changeScene': {
+				state.changeScene(method.attr);
+				break;
+			}
+			default: {
+				console.log('不明なイベント内容が実行されました', method);
+			}
+			}
+		});
 	}
 });
 
@@ -213,7 +226,7 @@ var EventList = Backbone.Collection.extend({
 				image: val.image,
 				position: val.position,
 				size: val.size,
-				code: val.code
+				code: JSON.parse(val.rawcode)
 			});
 		}, this);
 		

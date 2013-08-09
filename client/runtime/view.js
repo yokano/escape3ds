@@ -203,9 +203,7 @@ var EventView = Backbone.View.extend({
 		if(state.get('busy')) {
 			return;
 		}
-		
-		var callback = new Function(this.model.get('code'));
-		callback.call(this.model);
+		this.model.execute();
 		
 		return false;
 	}

@@ -12,7 +12,8 @@ import(
 type Event struct {
 	Name string `json:"name"`     // イベント名
 	Image string `json:"image"`    // 画像
-	Code []byte `json:"code"`     // クリックされた時のコード
+	Code []byte `json:"-"`     // クリックされた時のコード
+	RawCode string `json:"rawcode" datastore:"-"`  // Codeをクライアントが読めるように文字列にしたもの
 	Position []int `json:"position"`  // 位置
 	Size []int `json:"size"`      // 大きさ
 	Color string `json:"color"`    // エディタ上で領域に表示される色
@@ -24,6 +25,7 @@ func (this *Model) NewEvent(name string, image string, code string, position []i
 	event.Name = name
 	event.Image = image
 	event.Code = []byte(code)
+	event.RawCode = code
 	event.Position = position
 	event.Size = size
 	event.Color = color
@@ -50,6 +52,8 @@ func (this *Model) GetEvent(encodedEventKey string) *Event {
 	event := new(Event)
 	err := datastore.Get(this.c, eventKey, event)
 	Check(this.c, err)
+
+	event.RawCode = string(event.Code)
 	return event
 }
 
@@ -95,6 +99,7 @@ func (this *Model) GetEventList(encodedSceneKey string) map[string]*Event {
 func (this *Model) UpdateEventCode(id string, code string) {
 	event := this.GetEvent(id)
 	event.Code = []byte(code)
+	this.c.Debugf("event.Code: %#v", event.Code)
 	this.UpdateEvent(event, id)
 }
 
