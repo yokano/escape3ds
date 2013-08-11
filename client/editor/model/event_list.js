@@ -11,6 +11,16 @@ var EventList = Backbone.Collection.extend({
 		this.on('removeButtonHasClicked', this.removeButtonHasClicked);
 		this.on('add', this.eventHasAdded);
 		this.on('remove', this.eventHasRemoved);
+		this.on('cancel', this.cancelEvent);
+	},
+	
+	/**
+	 * イベントの選択を解除する
+	 */
+	cancelEvent: function() {
+		this.each(function(event) {
+			event.set('selected', false);
+		});
 	},
 	
 	/**
@@ -40,7 +50,6 @@ var EventList = Backbone.Collection.extend({
 	 * @param {Event} event 追加されたイベント
 	 */
 	eventHasAdded: function(event) {
-		console.log('added');
 		Backbone.sync('create', event, {
 			success: function(data) {
 				event.set('id', data.id);

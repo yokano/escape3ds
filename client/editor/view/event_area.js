@@ -21,6 +21,7 @@ var EventAreaView = Backbone.View.extend({
 		this.listenTo(this.model, 'remove', this.eventHasRemoved);
 		this.listenTo(this.model, 'change:color', this.colorHasChanged);
 		this.listenTo(this.model, 'change:image', this.imageHasChanged);
+		this.listenTo(this.model, 'change:position change:size', this.render);
 	},
 	render: function() {
 		var model = this.model.toJSON();
@@ -37,7 +38,8 @@ var EventAreaView = Backbone.View.extend({
 		return this;
 	},
 	events: {
-		'click': 'eventAreaHasClicked'
+		'mousedown': 'eventAreaHasClicked'
+//		'click': 'eventAreaHasClicked'
 	},
 	eventAreaHasClicked: function() {
 		this.model.trigger('eventAreaHasSelected', this.model);
@@ -45,11 +47,18 @@ var EventAreaView = Backbone.View.extend({
 	eventSelectedHasChanged: function() {
 		if(this.model.get('selected')) {
 			this.$el.addClass('selected');
+
+			// jcrop の範囲選択を有効化
+			var p = this.model.get('position');
+			var s = this.model.get('size');
+			rootView.jcropAPI.animateTo([p[0], p[1], p[0] + s[0], p[1] + s[1]]);
+			rootView.jcropAPI.mode = 'update';  // イベント更新モード
 		} else {
 			this.$el.removeClass('selected');
 		}
 	},
 	eventHasRemoved: function() {
+		rootView.jcropAPI.release();
 		this.remove();
 	},
 	colorHasChanged: function() {

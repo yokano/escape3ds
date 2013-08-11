@@ -99,12 +99,8 @@ button {
 	background-position: center;
 }
 #scene .event_area.selected {
-	border-style: solid;
-	border-color: red;
-	border-width: 3px;
-	margin-left: -3px;
-	margin-top: -3px;
-	z-index: 701;
+	z-index: 500;
+	opacity: 0.3;
 }
 
 #scene_info .scene_img {

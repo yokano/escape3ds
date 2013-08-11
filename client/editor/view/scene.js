@@ -23,6 +23,8 @@ var SceneView = Backbone.View.extend({
 		}
 		this.$el.show();
 		this.$el.html(this.template(this.model.toJSON()));
+		
+		// ゲーム開始時のシーンならチェック
 		if(game.get('firstScene') == this.model.id) {
 			this.$el.find('#scene_info .is_first_scene').attr('checked', true);
 		}
@@ -39,9 +41,25 @@ var SceneView = Backbone.View.extend({
 		this.$el.find('#scene').Jcrop({
 			bgColor: 'white',
 			onSelect: function(event) {
-				var jcropAPI = this;
-				self.eventAreaHasSelected(event, jcropAPI, self);
+				if(rootView.jcropAPI.mode == 'add') {
+					self.eventAreaHasSelected(event, rootView.jcropAPI, self);
+				} else if(rootView.jcropAPI.mode == 'update') {
+					// update
+					var currentEvent = self.model.get('eventList').getSelected();
+					currentEvent.set({
+						position: [event.x, event.y],
+						size: [event.w, event.h]
+					});
+					rootView.jcropAPI.mode = 'add';
+				}
+				rootView.jcropAPI.release();
+			},
+			onRelease: function(event) {
+				self.model.get('eventList').trigger('cancel');
 			}
+		}, function() {
+			rootView.jcropAPI = this;
+			rootView.jcropAPI.mode = 'add'; // イベント新規追加モード
 		});
 		
 		return this;
@@ -182,7 +200,7 @@ var SceneView = Backbone.View.extend({
 	 * @param {string} image 画像のURL。ドラッグアンドドロップで画像を追加した場合にセット。
 	 */
 	eventAreaHasSelected: function(event, jcropAPI, self, url) {
-		// this は JcropObject を指す
+		// this は JcropObject を指す, self が view を指す
 		var name = window.prompt('イベント名を入力してください');
 		jcropAPI.release();
 		
@@ -200,7 +218,8 @@ var SceneView = Backbone.View.extend({
 		});
 		self.model.get('eventList').urlRoot = '/sync/event/' + self.model.id;
 		self.model.get('eventList').add(e);
-		self.model.get('eventList').trigger('eventAreaHasSelected', e);
+//		self.model.get('eventList').trigger('eventAreaHasSelected', e);
+
 	},
 	
 	/**

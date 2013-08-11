@@ -30,6 +30,10 @@ var EventEditorView = Backbone.View.extend({
 		
 		return this;
 	},
+	eventHasCanceled: function() {
+		this.model = null;
+		this.render();
+	},
 	sceneHasSelected: function() {
 		if(this.collection != undefined) {
 			this.stopListening(this.collection);
@@ -37,7 +41,9 @@ var EventEditorView = Backbone.View.extend({
 		this.collection = game.get('sceneList').getSelected().get('eventList');
 		this.listenTo(this.collection, 'eventAreaHasSelected', this.eventHasSelected);
 		this.listenTo(this.collection, 'remove', this.eventHasRemoved);
+		this.listenTo(this.collection, 'cancel', this.eventHasCanceled);
 		this.$el.empty();
+
 	},
 	eventHasSelected: function(selectedEvent) {
 		this.model = selectedEvent;
@@ -87,7 +93,7 @@ var EventEditorView = Backbone.View.extend({
 		this.model.set('name', name);
 	},
 	editButtonHasClicked: function() {
-		var eventEditorWindow = window.open('/event_editor?game_key=' + GAME_ID + '&event_key=' + this.model.get('id'), 'イベントエディタ', 'width=640, height=700px, menubar=no, location=no, status=no');
+		var eventEditorWindow = window.open('/event_editor?game_key=' + GAME_ID + '&event_key=' + this.model.get('id'), 'イベントエディタ', 'width=640, height=800px, menubar=no, location=no, status=no');
 		if(eventEditorWindow == null) {
 			alert('イベントエディタの起動に失敗しました。ポップアップのブロックを解除してください。');
 		} else {

@@ -14,6 +14,7 @@ var RootView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'root_view',
 	mode: 'scene_editor',  // 表示中のエディタ
+	jcropAPI: null,
 	render: function() {
 		this.$el.empty();
 		
