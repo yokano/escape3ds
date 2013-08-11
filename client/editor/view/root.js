@@ -15,6 +15,9 @@ var RootView = Backbone.View.extend({
 	id: 'root_view',
 	mode: 'scene_editor',  // 表示中のエディタ
 	jcropAPI: null,
+	initialize: function() {
+		$(window).on('keydown', this.keyHasDown);
+	},
 	render: function() {
 		this.$el.empty();
 		
@@ -44,5 +47,14 @@ var RootView = Backbone.View.extend({
 			this.mode = mode;
 			this.render();
 		}
-	}
+	},
+	
+	/**
+	 * キーボードが押された
+	 */
+	 keyHasDown: function(e) {
+		if((e.keyCode == 8 || e.keyCode == 46) && game.get('sceneList').getSelected().get('eventList').getSelected() != undefined) {
+			$('#remove_event').click();
+		}
+	 }
 });

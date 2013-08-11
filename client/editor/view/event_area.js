@@ -39,7 +39,6 @@ var EventAreaView = Backbone.View.extend({
 	},
 	events: {
 		'mousedown': 'eventAreaHasClicked'
-//		'click': 'eventAreaHasClicked'
 	},
 	eventAreaHasClicked: function() {
 		this.model.trigger('eventAreaHasSelected', this.model);
