@@ -53,6 +53,9 @@ func (this *Model) GetGame(encodedGameKey string) *Game {
 	err = datastore.Get(this.c, gameKey, game)
 	Check(this.c, err)
 	
+	game.SceneList = this.GetScenes(encodedGameKey)
+	game.ItemList = this.GetItems(encodedGameKey)
+	
 	return game
 }
 
@@ -85,6 +88,12 @@ func (this *Model) UpdateGame(encodedGameKey string, game *Game)  {
 // 削除を命令したユーザとゲームの所有者が一致していることを事前に確認すること。
 // この関数内ではチェックを行わない。
 func (this *Model) DeleteGame(encodedGameKey string) {
+	game := this.GetGame(encodedGameKey)
+	
+	for key, _ := range game.SceneList {
+		this.DeleteScene(key)
+	}
+	
 	gameKey, err := datastore.DecodeKey(encodedGameKey)
 	Check(this.c, err)
 	
@@ -153,5 +162,6 @@ func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []strin
 		model.UpdateGame(gameKey, game)
 		fmt.Fprintf(w, `{}`)
 	case "DELETE":
+		this.c.Debugf("DELETE GAME")
 	}
 }
