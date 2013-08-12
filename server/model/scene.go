@@ -65,6 +65,18 @@ func (this *Model) GetSceneFromEvent(encodedEventKey string) (string, *Scene) {
 
 // 引数として指定された id のシーンをデータストアから削除する。
 func (this *Model) DeleteScene(encodedSceneKey string) {
+	scene := this.GetScene(encodedSceneKey)
+
+	// 内包するイベントを削除
+	for key, _ := range scene.EventList {
+		this.DeleteEvent(key)
+	}
+
+	// 他のシーンから画像が参照されていなければ画像を削除する
+	if scene.Background != "" && !this.CheckDuplicateBackground(scene.Background) {
+		this.DeleteBlob(scene.Background)
+	}
+
 	sceneKey := DecodeKey(this.c, encodedSceneKey)
 	err := datastore.Delete(this.c, sceneKey)
 	Check(this.c, err)
@@ -143,17 +155,7 @@ func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []stri
 
 	case "DELETE":
 		encodedSceneKey := path[4]
-		sceneKey := DecodeKey(this.c, encodedSceneKey)
-		scene := this.GetScene(encodedSceneKey)
-		
-		// 他のシーンから画像が参照されていなければ画像を削除する
-		if scene.Background != "" && !this.CheckDuplicateBackground(scene.Background) {
-			this.DeleteBlob(scene.Background)
-		}
-		
-		err := datastore.Delete(this.c, sceneKey)
-		Check(this.c, err)
-
+		this.DeleteScene(encodedSceneKey)
 		fmt.Fprintf(w, `{}`)
 	}
 }
