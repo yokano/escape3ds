@@ -101,7 +101,6 @@ $(function() {
 				pass: pass
 			},
 			success: function() {
-				console.log('成功');
 			},
 			error: function() {
 				console.log('error');
@@ -125,7 +124,6 @@ $(function() {
 				console.log('error');
 			},
 			success: function() {
-				console.log('success');
 			}
 		});
 		

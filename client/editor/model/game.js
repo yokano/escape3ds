@@ -15,9 +15,13 @@ var Game = Backbone.Model.extend({
 	initialize: function() {
 		this.set('sceneList', new SceneList());
 		this.set('itemList', new ItemList());
-		this.on('change:firstScene', this.firstSceneHasChanged);
+		this.on('change:firstScene change:thumbnail', this.update);
 	},
-	firstSceneHasChanged: function() {
+	update: function() {
+		if(this.get('firstScene') == '') {
+			this.set('thumbnail', '', {silent: true});
+		}
+	
 		Backbone.sync('update', this, {
 			success: function() {
 			},

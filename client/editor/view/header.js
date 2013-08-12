@@ -31,7 +31,6 @@ var HeaderView = Backbone.View.extend({
 		rootView.changeMode('item_editor');
 	},
 	backToGameList: function() {
-		console.log('ゲームリストへ戻る');
 	},
 	testplayHasClicked: function() {
 		var width = 320;

@@ -171,9 +171,15 @@ var SceneView = Backbone.View.extend({
 	firstSceneCheckboxHasClicked: function() {
 		var checked = this.$el.find('#scene_info .is_first_scene:checked').length;
 		if(checked == 1) {
-			game.set('firstScene', this.model.id);
+			game.set({
+				firstScene: this.model.id,
+				thumbnail: this.model.get('background')
+			});
 		} else {
-			game.set('firstScene', null);
+			game.set({
+				firstScene: null,
+				thumbnail: ''
+			});
 		}
 	},
 	

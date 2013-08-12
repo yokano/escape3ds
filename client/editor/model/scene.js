@@ -9,7 +9,20 @@ var Scene = Backbone.Model.extend({
 		leave: null,
 		eventList: null
 	},
+	initialize: function(attr) {
+		this.urlRoot = '/sync/scene/' + GAME_ID;
+		this.on('change:name change:background', this.sceneHasChanged);
+		this.on('remove', this.sceneHasRemoved);
+
+		if(attr.eventList == undefined) {
+			this.set('eventList', new EventList());
+		}
+	},
 	sceneHasChanged: function() {
+		if(game.get('firstScene') == this.id) {
+			game.set('thumbnail', this.get('background'));
+		}
+		
 		Backbone.sync('update', this, {
 			success: function() {
 			},
@@ -18,12 +31,9 @@ var Scene = Backbone.Model.extend({
 			}
 		});
 	},
-	initialize: function(attr) {
-		this.urlRoot = '/sync/scene/' + GAME_ID;
-		this.on('change:name change:background', this.sceneHasChanged);
-
-		if(attr.eventList == undefined) {
-			this.set('eventList', new EventList());
+	sceneHasRemoved: function() {
+		if(game.get('firstScene') == this.id) {
+			game.set('firstScene', null)
 		}
 	}
 });
