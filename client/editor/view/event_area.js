@@ -34,6 +34,8 @@ var EventAreaView = Backbone.View.extend({
 		
 		if(this.model.get('image') != '') {
 			this.$el.css('background-image', 'url("/download?blobkey=' + this.model.get('image') + '")');
+		} else {
+			this.$el.css('background-image', '');
 		}
 		return this;
 	},
