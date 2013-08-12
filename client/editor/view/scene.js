@@ -71,9 +71,17 @@ var SceneView = Backbone.View.extend({
 		'click #copy_scene': 'copyButtonHasClicked',
 		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked',
 		'drop .dropbox': 'eventImageHasDropped',
-		'dragenter .dropbox': 'eventImageHasEntered'
+		'dragenter .dropbox': 'eventImageHasEntered',
+		'click .scene_img': 'sceneImageHasClicked'
 	},
 	
+	/**
+	 * シーン画像（画面下）がクリックされた
+	 */
+	sceneImageHasClicked: function() {
+		this.$el.find('#change_scene_img').click();
+	},
+	 
 	/**
 	 * シーンの画像ファイルが変更された
 	 * @method

@@ -21,7 +21,6 @@ var HeaderView = Backbone.View.extend({
 		'click #scene_mode': 'changeToSceneMode',
 		'click #item_mode': 'changeToItemMode',
 		'click #back': 'backToGameList',
-		'click #save': 'save',
 		'click #test_play': 'testplayHasClicked'
 	},
 	changeToSceneMode: function() {
@@ -39,15 +38,5 @@ var HeaderView = Backbone.View.extend({
 		var top = window.screen.height / 2 - height / 2;
 		var options = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top + ',status=no,location=no,toolbar=no,menubar=no';
 		window.open('/runtime?game_key=' + GAME_ID, null, options);
-	},
-	save: function() {
-		// ゲーム更新
-		Backbone.sync('update', game, {
-			success: function() {
-			},
-			error: function() {
-				console.log('error');
-			}
-		});
 	}
 });

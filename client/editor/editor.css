@@ -25,6 +25,24 @@ button {
 	padding: 5px;
 	margin: 2px;
 	cursor: pointer;
+	-webkit-transition: all 0.2s ease 0;
+}
+button:hover {
+	background-color: white;
+}
+#delete_scene:hover {
+	background-color: red;
+	color: white;
+}
+#change_scene_img {
+	cursor: pointer;
+}
+#change_scene_img:hover {
+	background-color: gray;
+	color: white;
+}
+.scene_img {
+	cursor: pointer;
 }
 
 #add_scene {
@@ -202,4 +220,12 @@ button {
 	background-color: black;
 	cursor: pointer;
 	background-size: 50px 50px;
+}
+
+#is_first_scene_box, #is_first_scene_box * {
+	cursor: pointer;
+}
+#is_first_scene_box:hover {
+	background-color: gray;
+	color: white;
 }

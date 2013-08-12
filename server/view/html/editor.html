@@ -15,7 +15,6 @@
 				<button id="test_play">テストプレイ</button>
 				<button id="scene_mode">シーン管理</button>
 				<button id="item_mode">アイテム管理</button>
-				<button id="save">ゲームを保存</button>
 				<a href="/gamelist"><button id="back">ゲーム一覧へ戻る</button></a>
 			</div>
 			<hr>
@@ -39,7 +38,7 @@
 				<div>
 					シーン名: <input class="scene_name" type="text" value="<%= name %>">
 				</div>
-				<div><label>ゲーム開始時のシーンにする <input class="is_first_scene" type="checkbox"></input></label></div>
+				<div id="is_first_scene_box"><label>ゲーム開始時のシーンにする <input class="is_first_scene" type="checkbox"></input></label></div>
 				<div>背景画像:
 					<form id="change_scene_img_form">
 						<label>
