@@ -55,6 +55,10 @@ var EventEditorView = Backbone.View.extend({
 		}
 		
 		game.get('sceneList').getSelected().get('eventList').remove(this.model);
+		
+		// イベント選択中はイベントの大きさや位置を更新するための update モードになっている
+		// イベントを削除したら、次のドラッグでイベントを追加するために add モードに変更する
+		rootView.jcropAPI.mode = 'add';
 	},
 	eventHasRemoved: function() {
 		this.model = null;
