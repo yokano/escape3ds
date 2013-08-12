@@ -7,9 +7,38 @@
 	border-width: 1px;
 	padding: 5px;
 	margin: 5px;
-	width: 300px;
+	width: 200px;
+	height: 230px;
+	float: left;
+	text-align: center;
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 .title {
 	font-size: large;
 }
+
+.thumbnail {
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+button {
+	cursor: pointer;
+	-webkit-transition: all 0.2s ease 0;
+	width: 60px;
+	height: 30px;
+}
+button:hover {
+	background-color: white;
+}
+
+.delete:hover, #resign:hover {
+	background-color: red;
+	color: white;
+}
+
+#logout  {
+	width: 100px;
+}
+
