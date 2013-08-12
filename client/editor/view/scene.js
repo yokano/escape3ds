@@ -68,7 +68,6 @@ var SceneView = Backbone.View.extend({
 		'change #change_scene_img': 'sceneImageHasChanged',
 		'change #scene_info .scene_name': 'sceneNameHasChanged',
 		'click #delete_scene': 'deleteButtonHasClicked',
-		'click #copy_scene': 'copyButtonHasClicked',
 		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked',
 		'drop .dropbox': 'eventImageHasDropped',
 		'dragenter .dropbox': 'eventImageHasEntered',
@@ -156,22 +155,7 @@ var SceneView = Backbone.View.extend({
 		}
 		game.get('sceneList').remove([scene]);
 	},
-	
-	/**
-	 * 「シーンをコピー」ボタンがクリックされた
-	 * @method
-	 */
-	copyButtonHasClicked: function() {
-		var name = window.prompt('コピー先のシーン名を入力してください');
-		if(name == '') {
-			return;
-		}
-		var clone = this.model.clone();
-		clone.set('name', name, {silent: true});
-		clone.set('id', '', {silent: true});
-		game.get('sceneList').add(clone);
-	},
-	
+		
 	/**
 	 * 「ゲーム開始時のシーンにする」がクリックされた
 	 * @method
