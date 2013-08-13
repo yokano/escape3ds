@@ -99,7 +99,6 @@ func (this *Model) GetEventList(encodedSceneKey string) map[string]*Event {
 func (this *Model) UpdateEventCode(id string, code string) {
 	event := this.GetEvent(id)
 	event.Code = []byte(code)
-	this.c.Debugf("event.Code: %#v", event.Code)
 	this.UpdateEvent(event, id)
 }
 

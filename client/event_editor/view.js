@@ -99,7 +99,7 @@ var EventView = Backbone.View.extend({
 	tagName: 'div',
 	id: 'event_view',
 	initialize: function() {
-		this.listenTo(this.collection, 'add remove', this.render);
+		this.listenTo(this.collection, 'add remove reset', this.render);
 	},
 	render: function() {
 		var view = this;
@@ -163,6 +163,14 @@ var BlockListView = Backbone.View.extend({
 			window.close();
 		});
 		this.$el.append(closeButton);
+		
+		var clearButton = $('<button class="clear">クリア</button>');
+		clearButton.on('click', function() {
+			if(window.confirm('イベント内容をすべて削除しますか？')) {
+				blockList.reset([]);
+			}
+		});
+		this.$el.append(clearButton);
 		
 		return this;
 	}

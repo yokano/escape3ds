@@ -23,7 +23,7 @@ var BlockList = Backbone.Collection.extend({
 		
 		// 大元になるブロックリストだけを保存
 		if(root) {
-			this.on('change add remove', this.update);
+			this.on('change add remove reset', this.update);
 		} else {
 			this.on('change add remove', function() {
 				blockList.update();
