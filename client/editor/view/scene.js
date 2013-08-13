@@ -14,7 +14,16 @@ var SceneView = Backbone.View.extend({
 		this.listenTo(game.get('sceneList'), 'remove', this.sceneHasRemoved);
 		this.children = [];
 	},
-	
+	events: {
+		'change #change_scene_img': 'sceneImageHasChanged',
+		'change #scene_info .scene_name': 'sceneNameHasChanged',
+		'click #delete_scene': 'deleteButtonHasClicked',
+		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked',
+		'drop .dropbox': 'eventImageHasDropped',
+		'dragenter .dropbox': 'eventImageHasEntered',
+		'click .scene_img': 'sceneImageHasClicked',
+		'click #edit_enter_event': 'editEnterEventHasClicked'
+	},
 	// 描画処理
 	render: function() {
 		if(this.model == null) {
@@ -63,15 +72,6 @@ var SceneView = Backbone.View.extend({
 		});
 		
 		return this;
-	},
-	events: {
-		'change #change_scene_img': 'sceneImageHasChanged',
-		'change #scene_info .scene_name': 'sceneNameHasChanged',
-		'click #delete_scene': 'deleteButtonHasClicked',
-		'click #scene_info .is_first_scene': 'firstSceneCheckboxHasClicked',
-		'drop .dropbox': 'eventImageHasDropped',
-		'dragenter .dropbox': 'eventImageHasEntered',
-		'click .scene_img': 'sceneImageHasClicked'
 	},
 	
 	/**
@@ -276,5 +276,15 @@ var SceneView = Backbone.View.extend({
 	},
 	
 	eventImageHasEntered: function(event) {
+	},
+	
+	/**
+	 * シーン開始時のイベント編集ボタンがクリックされた
+	 */
+	editEnterEventHasClicked: function() {
+		var eventEditorWindow = window.open('/enter_event_editor?game_key=' + GAME_ID + '&scene_key=' + this.model.id, 'イベントエディタ', 'width=640, height=800px, menubar=no, location=no, status=no');
+		if(eventEditorWindow == null) {
+			alert('イベントエディタの起動に失敗しました。ポップアップのブロックを解除してください。');
+		}
 	}
 });

@@ -9,7 +9,17 @@
 	</head>
 	<body>
 		<script>
-			var eventId = {{.id}};
+			var trigger = {{.trigger}};
+			var eventId;
+			var sceneId;
+			if(trigger == 'click') {
+				eventId = {{.id}};
+				sceneId = '';
+			} else if(trigger == 'enter'){
+				eventId = '';
+				sceneId = {{.id}};
+			}
+			
 			var code;
 			if({{.code}} == '') {
 				code = '';

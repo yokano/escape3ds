@@ -145,6 +145,9 @@ var MessageView = Backbone.View.extend({
 var SceneView = Backbone.View.extend({
 	id: 'scene',
 	tagName: 'div',
+	initialize: function() {
+		this.listenTo(this.model, 'change:currentScene', this.sceneHasEntered);
+	},
 	render: function() {
 		this.$el.empty();
 		
@@ -160,8 +163,21 @@ var SceneView = Backbone.View.extend({
 		
 		return this;
 	},
-	initialize: function() {
-		this.listenTo(this.model, 'change:currentScene', this.render);
+	
+	/**
+	 * シーン開始時の処理
+	 */
+	sceneHasEntered: function() {
+		var scene = this.model.get('currentScene');
+		var code = scene.get('enter');
+		if(code != '') {
+			var event = new Event({
+				code: JSON.parse(code)
+			});
+			event.execute();
+		}
+		
+		this.render();
 	}
 });
 

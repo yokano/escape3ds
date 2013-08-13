@@ -30,7 +30,7 @@ button {
 button:hover {
 	background-color: white;
 }
-#delete_scene:hover {
+#delete_scene:hover, #remove_event:hover {
 	background-color: red;
 	color: white;
 }

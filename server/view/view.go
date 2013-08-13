@@ -100,16 +100,36 @@ func (this *View) Runtime(gameKey string) {
 	t.Execute(this.w, game)
 }
 
-// イベントエディタの表示
+// イベントエディタの表示（クリック時）
 func (this *View) EventEditor(gameKey string, eventKey string) {
 	model := NewModel(this.c)
 	event := model.GetEvent(eventKey)
 	itemList := model.GetItems(gameKey)
 	sceneList := model.GetScenes(gameKey)
 	
-	contents := make(map[string]interface{}, 4)
+	contents := make(map[string]interface{}, 0)
+	contents["trigger"] = "click"
 	contents["id"] = eventKey
 	contents["code"] = event.RawCode
+	contents["itemList"] = itemList
+	contents["sceneList"] = sceneList
+	
+	t, err := template.ParseFiles("server/view/html/event_editor.html")
+	Check(this.c, err)
+	t.Execute(this.w, contents)
+}
+
+// イベントエディタの表示（シーン開始時）
+func (this *View) EnterEventEditor(gameKey string, sceneKey string) {
+	model := NewModel(this.c)
+	scene := model.GetScene(sceneKey)
+	itemList := model.GetItems(gameKey)
+	sceneList := model.GetScenes(gameKey)
+	
+	contents := make(map[string]interface{}, 0)
+	contents["trigger"] = "enter"
+	contents["id"] = sceneKey
+	contents["code"] = scene.RawEnter
 	contents["itemList"] = itemList
 	contents["sceneList"] = sceneList
 	

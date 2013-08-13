@@ -52,11 +52,20 @@ func (this *Controller) Runtime(w http.ResponseWriter, r *http.Request) {
 	view.Runtime(gameKey)
 }
 
-// イベントエディタ
+// イベントエディタ（シーン内のイベント用：クリックされたら何かする）
 func (this *Controller) EventEditor(w http.ResponseWriter, r *http.Request) {
 	eventKey := r.FormValue("event_key")
 	gameKey := r.FormValue("game_key")
 	c := appengine.NewContext(r)
 	view := NewView(c, w)
 	view.EventEditor(gameKey, eventKey)
+}
+
+// イベントエディタ（シーン開始時のイベント用：シーンが表示されたら何かする）
+func (this *Controller) EnterEventEditor(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	gameKey := r.FormValue("game_key")
+	sceneKey := r.FormValue("scene_key")
+	view := NewView(c, w)
+	view.EnterEventEditor(gameKey, sceneKey)
 }

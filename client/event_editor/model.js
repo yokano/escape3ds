@@ -31,13 +31,23 @@ var BlockList = Backbone.Collection.extend({
 		}
 	},
 	update: function() {
-		$.ajax('/update_code', {
-			method: 'POST',
-			data: {
-				id: eventId,
-				code: JSON.stringify(this.toJSON())
-			}
-		});
+		if(trigger == 'click') {
+			$.ajax('/update_code', {
+				method: 'POST',
+				data: {
+					id: eventId,
+					code: JSON.stringify(this.toJSON())
+				}
+			});
+		} else if(trigger == 'enter') {
+			$.ajax('/update_enter_code', {
+				method: 'POST',
+				data: {
+					id: sceneId,
+					code: JSON.stringify(this.toJSON())
+				}
+			});
+		}
 	}
 });
 

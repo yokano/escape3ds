@@ -199,3 +199,17 @@ func (this *Controller) UpdateEventCode(w http.ResponseWriter, r *http.Request) 
 	model.UpdateEventCode(id, code)
 	fmt.Fprintf(w, `{}`)
 }
+
+// シーン開始時のイベントコードのアップデート
+func (this *Controller) UpdateEnterCode(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	code := r.FormValue("code")
+	sceneId := r.FormValue("id")
+	
+	model := NewModel(c)
+	scene := model.GetScene(sceneId)
+	scene.Enter = []byte(code)
+	model.UpdateScene(sceneId, scene)
+	
+	fmt.Fprintf(w, `{}`)
+}
