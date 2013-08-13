@@ -99,7 +99,6 @@ func (this *Model) ClearBlob() {
 	err = blobstore.DeleteMulti(this.c, blobKeys)
 	Check(this.c, err)
 	
-	
 	// __BlobFileIndex__ のクリア
 	q = datastore.NewQuery("__BlobFileIndex__").KeysOnly()
 	indexKeys, err := q.GetAll(this.c, nil)

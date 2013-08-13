@@ -137,3 +137,22 @@ func (this *View) EnterEventEditor(gameKey string, sceneKey string) {
 	Check(this.c, err)
 	t.Execute(this.w, contents)
 }
+
+// イベントエディタの表示（シーン終了時）
+func (this *View) LeaveEventEditor(gameKey string, sceneKey string) {
+	model := NewModel(this.c)
+	scene := model.GetScene(sceneKey)
+	itemList := model.GetItems(gameKey)
+	sceneList := model.GetScenes(gameKey)
+	
+	contents := make(map[string]interface{}, 0)
+	contents["trigger"] = "leave"
+	contents["id"] = sceneKey
+	contents["code"] = scene.RawLeave
+	contents["itemList"] = itemList
+	contents["sceneList"] = sceneList
+	
+	t, err := template.ParseFiles("server/view/html/event_editor.html")
+	Check(this.c, err)
+	t.Execute(this.w, contents)
+}

@@ -37,6 +37,7 @@ func (this *Controller) Handle() {
 	table["/runtime"]  = (*Controller).Runtime
 	table["/event_editor"] = (*Controller).EventEditor
 	table["/enter_event_editor"] = (*Controller).EnterEventEditor
+	table["/leave_event_editor"] = (*Controller).LeaveEventEditor
 
 	// oauth
 	table["/login_twitter"]     = (*Controller).LoginTwitter
@@ -55,6 +56,7 @@ func (this *Controller) Handle() {
 	table["/registration"]         = (*Controller).Registration
 	table["/update_code"] = (*Controller).UpdateEventCode
 	table["/update_enter_code"] = (*Controller).UpdateEnterCode
+	table["/update_leave_code"] = (*Controller).UpdateLeaveCode
 
 	// blob
 	table["/uploaded"] = (*Controller).Uploaded

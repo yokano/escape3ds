@@ -11,12 +11,13 @@ import (
 // シーンオブジェクト。ゲームを構成する場面を表す。
 // 背景画像、開始時のイベント、終了時のイベントを持つ。
 type Scene struct {
-	Name string `json:"name"`        // シーン名
-	Background string `json:"background"`  // 背景画像のBlobkey、設定していなければ空文字
-	Enter []byte `json:"-"`       // シーン開始時のイベント（データベース保存用バイナリ）
-	RawEnter string `json:"enter" datastore:"-"`  // シーン開始時のイベント（クライアント用文字列）
-	Leave string `json:"leave"`       // シーン終了時のイベント
-	Sort int `json:"sort"`           // 並び順
+	Name string `json:"name"`						// シーン名
+	Background string `json:"background"`			// 背景画像のBlobkey、設定していなければ空文字
+	Enter []byte `json:"-"`							// シーン開始時のイベント（データベース保存用バイナリ）
+	RawEnter string `json:"enter" datastore:"-"`	// シーン開始時のイベント（クライアント用文字列）
+	Leave []byte `json:"-"`							// シーン終了時のイベント（データベース保存用バイナリ）
+	RawLeave string `json:"leave" datastore:"-"`	// シーン終了時のイベント（クライアント用文字列）
+	Sort int `json:"sort"`							// 並び順
 	EventList map[string]*Event `json:"eventList" datastore:"-"` // シーン内のイベントリスト
 }
 
@@ -52,6 +53,7 @@ func (this *Model) GetScene(encodedSceneKey string) *Scene {
 	
 	scene.EventList = this.GetEventList(encodedSceneKey)
 	scene.RawEnter = string(scene.Enter)
+	scene.RawLeave = string(scene.Leave)
 	
 	return scene
 }

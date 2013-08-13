@@ -69,3 +69,12 @@ func (this *Controller) EnterEventEditor(w http.ResponseWriter, r *http.Request)
 	view := NewView(c, w)
 	view.EnterEventEditor(gameKey, sceneKey)
 }
+
+// イベントエディタ（シーン終了時のイベント用：別のシーンへ移動する直前に実行される）
+func (this *Controller) LeaveEventEditor(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	gameKey := r.FormValue("game_key")
+	sceneKey := r.FormValue("scene_key")
+	view := NewView(c, w)
+	view.LeaveEventEditor(gameKey, sceneKey)
+}

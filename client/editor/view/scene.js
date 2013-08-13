@@ -22,7 +22,8 @@ var SceneView = Backbone.View.extend({
 		'drop .dropbox': 'eventImageHasDropped',
 		'dragenter .dropbox': 'eventImageHasEntered',
 		'click .scene_img': 'sceneImageHasClicked',
-		'click #edit_enter_event': 'editEnterEventHasClicked'
+		'click #edit_enter_event': 'editEnterEventHasClicked',
+		'click #edit_leave_event': 'editLeaveEventHasClicked'
 	},
 	// 描画処理
 	render: function() {
@@ -283,6 +284,16 @@ var SceneView = Backbone.View.extend({
 	 */
 	editEnterEventHasClicked: function() {
 		var eventEditorWindow = window.open('/enter_event_editor?game_key=' + GAME_ID + '&scene_key=' + this.model.id, 'イベントエディタ', 'width=640, height=800px, menubar=no, location=no, status=no');
+		if(eventEditorWindow == null) {
+			alert('イベントエディタの起動に失敗しました。ポップアップのブロックを解除してください。');
+		}
+	},
+	
+	/**
+	 * シーン終了時のイベント編集ボタンがクリックされた
+	 */
+	editLeaveEventHasClicked: function() {
+		var eventEditorWindow = window.open('/leave_event_editor?game_key=' + GAME_ID + '&scene_key=' + this.model.id, 'イベントエディタ', 'width=640, height=800px, menubar=no, location=no, status=no');
 		if(eventEditorWindow == null) {
 			alert('イベントエディタの起動に失敗しました。ポップアップのブロックを解除してください。');
 		}

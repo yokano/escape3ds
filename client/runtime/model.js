@@ -160,6 +160,17 @@ var Scene = Backbone.Model.extend({
 		enter: '',
 		leave: '',
 		eventList: null
+	},
+	initialize: function() {
+		this.on('leave', this.sceneHasLeaved);
+	},
+	sceneHasLeaved: function() {
+		if(this.get('leave') != '') {
+			var leaveEvent = new Event({
+				code: JSON.parse(this.get('leave'))
+			});
+			leaveEvent.execute();
+		}
 	}
 });
 
@@ -206,6 +217,7 @@ var Event = Backbone.Model.extend({
 		_.each(this.get('code'), function(method) {
 			switch(method.type) {
 			case 'changeScene': {
+				state.get('currentScene').trigger('leave');
 				state.changeScene(method.attr);
 				break;
 			}
@@ -248,12 +260,15 @@ var EventList = Backbone.Collection.extend({
 	model: Event,
 	initialize: function(attr, options) {
 		_.each(options, function(val, key) {
+			if(val.rawcode != '') {
+				val.rawcode = JSON.parse(val.rawcode);
+			}
 			this.add({
 				id: key,
 				image: val.image,
 				position: val.position,
 				size: val.size,
-				code: JSON.parse(val.rawcode)
+				code: val.rawcode
 			});
 		}, this);
 		

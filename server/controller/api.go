@@ -213,3 +213,18 @@ func (this *Controller) UpdateEnterCode(w http.ResponseWriter, r *http.Request) 
 	
 	fmt.Fprintf(w, `{}`)
 }
+
+// シーン終了時のイベントコードのアップデート
+func (this *Controller) UpdateLeaveCode(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	code := r.FormValue("code")
+	sceneId := r.FormValue("id")
+	c.Debugf("UPDATE LEAVE CODE: %s, %s", code, sceneId)
+	
+	model := NewModel(c)
+	scene := model.GetScene(sceneId)
+	scene.Leave = []byte(code)
+	model.UpdateScene(sceneId, scene)
+	
+	fmt.Fprintf(w, `{}`)
+}

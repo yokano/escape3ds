@@ -47,6 +47,14 @@ var BlockList = Backbone.Collection.extend({
 					code: JSON.stringify(this.toJSON())
 				}
 			});
+		} else if(trigger == 'leave') {
+			$.ajax('/update_leave_code', {
+				method: 'POST',
+				data: {
+					id: sceneId,
+					code: JSON.stringify(this.toJSON())
+				}
+			});
 		}
 	}
 });
