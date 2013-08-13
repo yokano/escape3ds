@@ -66,6 +66,7 @@ var SceneView = Backbone.View.extend({
 			},
 			onRelease: function(event) {
 				self.model.get('eventList').trigger('cancel');
+				rootView.jcropAPI.mode = 'add';
 			}
 		}, function() {
 			rootView.jcropAPI = this;
