@@ -166,10 +166,9 @@ var Scene = Backbone.Model.extend({
 	},
 	sceneHasLeaved: function() {
 		if(this.get('leave') != '') {
-			var leaveEvent = new Event({
+			new Event({
 				code: JSON.parse(this.get('leave'))
-			});
-			leaveEvent.execute();
+			}).execute();
 		}
 	}
 });
@@ -243,6 +242,45 @@ var Event = Backbone.Model.extend({
 			}
 			case 'changeImage': {
 				this.changeImage(method.attr);
+				break;
+			}
+			case 'if': {
+				// 条件文の真偽を判断
+				var condition;
+				switch(method.conditionType) {
+					case 'currentItem':
+						var currentItem = state.getCurrentItem();
+						if(currentItem == null) {
+							condition = false;
+						} else {
+							condition = (state.getCurrentItem().id == method.target)
+						}
+						break;
+					case 'hasItem':
+						condition = state.get('itemList').find(function(item) {
+							return item.id == method.target;
+						});
+						if(condition != undefined) {
+							condition = true;
+						} else {
+							condition = false;
+						}
+						break;
+					default:
+						console.log('不明な条件文が渡されました', method);
+				}
+				
+				// 真偽に対応するコードを実行
+				if(condition) {
+					if(method.yes != '') {
+						new Event({code: method.yes}).execute();
+					}
+				} else {
+					if(method.no != '') {
+						new Event({code: method.no}).execute();
+					}
+				}
+				
 				break;
 			}
 			default: {
