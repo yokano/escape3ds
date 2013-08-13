@@ -114,6 +114,10 @@ var ItemList = Backbone.Collection.extend({
 			}));
 		}, this);
 	},
+	/**
+	 * 選択中のアイテムの次のアイテムを選択
+	 * 選択していない状態なら最初のアイテムを選択
+	 */
 	next: function() {
 		if(this.length == 0) {
 			return;
@@ -131,6 +135,10 @@ var ItemList = Backbone.Collection.extend({
 		
 		this.at(this.cursor).set('selected', true);
 	},
+	/**
+	 * 選択中のアイテムの前のアイテムを選択
+	 * 選択していない場合は最後のアイテムを選択
+	 */
 	prev: function() {
 		if(this.length == 0) {
 			return;
@@ -146,6 +154,17 @@ var ItemList = Backbone.Collection.extend({
 			this.cursor--;
 		}
 		
+		this.at(this.cursor).set('selected', true);
+	},
+	/**
+	 * 指定されたアイテムを直接選択する
+	 */
+	select: function(item) {
+		var cursor = this.indexOf(item);
+		if(this.cursor != -1) {
+			this.at(this.cursor).set('selected', false);
+		}
+		this.cursor = cursor;
 		this.at(this.cursor).set('selected', true);
 	}
 });

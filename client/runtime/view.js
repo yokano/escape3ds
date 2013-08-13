@@ -100,12 +100,18 @@ var ItemView = Backbone.View.extend({
 	initialize: function() {
 		this.listenTo(this.model, 'change:selected', this.itemHasSelected);
 	},
+	events: {
+		'click': 'itemHasClicked'
+	},
 	itemHasSelected: function() {
 		if(this.model.get('selected')) {
 			this.$el.addClass('selected');
 		} else {
 			this.$el.removeClass('selected');
 		}
+	},
+	itemHasClicked: function() {
+		state.get('itemList').select(this.model);
 	}
 });
 
