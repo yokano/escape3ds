@@ -3,8 +3,11 @@ package controller
 import (
 	"net/http"
 	"appengine"
+	"appengine/taskqueue"
 	"fmt"
 	"strings"
+	"time"
+	"net/url"
 	. "server/model"
 	. "server/view"
 	. "server/lib"
@@ -66,6 +69,7 @@ func (this *Controller) Logout(w http.ResponseWriter, r *http.Request) {
 
 // Ajax のリクエストパラメータとして渡されたユーザを仮登録データベースに保存して、
 // 本登録のためのメールを送信する。
+// 24時間以内に登録されなかった場合のキャンセル処理を予約する。
 func (this *Controller) InterimRegistration(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
@@ -77,6 +81,16 @@ func (this *Controller) InterimRegistration(w http.ResponseWriter, r *http.Reque
 	key := model.InterimRegistration(name, mail, pass)
 	
 	SendMail(c, "infomation@escape-3ds.appspotmail.com", mail, "仮登録完了のお知らせ", fmt.Sprintf(INTERIM_MAIL_BODY, name, key))
+	
+	// キャンセルタスクを予約
+	values := url.Values{}
+	values.Set("interim_key", key)
+	delay, err := time.ParseDuration("24h")
+	Check(c, err)
+
+	task := taskqueue.NewPOSTTask("/cancel", values)
+	task.Delay = delay
+	taskqueue.Add(c, task, "default")
 	
 	view := NewView(c, w)
 	view.InterimRegistration()
@@ -93,6 +107,20 @@ func (this *Controller) Registration(w http.ResponseWriter, r *http.Request) {
 	
 	view := NewView(c, w)
 	view.Registration()
+}
+
+// 仮登録のキャンセル
+// 24時間以内に本登録されなかったらキャンセルする
+// 既に登録されている場合は何もしない
+func (this *Controller) Cancel(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	encodedInterimKey := r.FormValue("interim_key")
+	
+	model := NewModel(c)
+	if(model.ExistInterimUser(encodedInterimKey)) {
+		model.DeleteInterimUser(encodedInterimKey)
+	}
+	
 }
 
 // ゲームの新規追加
@@ -219,7 +247,6 @@ func (this *Controller) UpdateLeaveCode(w http.ResponseWriter, r *http.Request) 
 	c := appengine.NewContext(r)
 	code := r.FormValue("code")
 	sceneId := r.FormValue("id")
-	c.Debugf("UPDATE LEAVE CODE: %s, %s", code, sceneId)
 	
 	model := NewModel(c)
 	scene := model.GetScene(sceneId)

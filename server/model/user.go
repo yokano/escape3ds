@@ -229,6 +229,26 @@ func (this *Model) GetInterimUsers() map[string]*InterimUser {
 	return result
 }
 
+// 指定された仮登録ユーザがいるか調べる
+func (this *Model) ExistInterimUser(encodedInterimKey string) bool {
+	interimKey, err := datastore.DecodeKey(encodedInterimKey)
+	Check(this.c, err)
+	
+	err = datastore.Get(this.c, interimKey, new(InterimUser))
+	if(err == nil) {
+		return true
+	}
+	Check(this.c, err)
+	return false
+}
+
+// 仮登録ユーザを削除する
+func (this *Model) DeleteInterimUser(encodedInterimKey string) {
+	interimKey, err := datastore.DecodeKey(encodedInterimKey)
+	Check(this.c, err)
+	datastore.Delete(this.c, interimKey)
+}
+
 // すべてのユーザを取得する
 func (this *Model) GetAllUser() map[string]*User {
 	query := datastore.NewQuery("User")

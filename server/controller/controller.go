@@ -69,6 +69,7 @@ func (this *Controller) Handle() {
 	table["/get_users"]         = (*Controller).GetUsers
 	table["/get_interim_users"] = (*Controller).GetInterimUsers
 	table["/clear_blob"]        = (*Controller).ClearBlob
+	table["/cancel"]			= (*Controller).Cancel
 
 	for url, callback := range table {
 		http.HandleFunc(url, this.GetHandler(callback))
