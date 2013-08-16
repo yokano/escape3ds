@@ -132,6 +132,9 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.ExistOAuthUser">func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.ExistUser">func (this *Model) ExistUser(encodedUserKey string) bool</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetAllUser">func (this *Model) GetAllUser() map[string]*User</a></dd>
 				
 					
@@ -558,7 +561,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteInterimUser">func (*Model) <a href="/target/user.go?s=9173:9235#L263">DeleteInterimUser</a></h3>
+				<h3 id="Model.DeleteInterimUser">func (*Model) <a href="/target/user.go?s=9437:9499#L274">DeleteInterimUser</a></h3>
 				<pre>func (this *Model) DeleteInterimUser(encodedInterimKey string)</pre>
 				<p>
 仮登録ユーザを削除する
@@ -598,7 +601,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.ExistInterimUser">func (*Model) <a href="/target/user.go?s=8855:8921#L250">ExistInterimUser</a></h3>
+				<h3 id="Model.ExistInterimUser">func (*Model) <a href="/target/user.go?s=9139:9205#L262">ExistInterimUser</a></h3>
 				<pre>func (this *Model) ExistInterimUser(encodedInterimKey string) bool</pre>
 				<p>
 指定された仮登録ユーザがいるか調べる
@@ -621,7 +624,17 @@ oauthId に調べる対象の OAuthId を指定する。
 				
 			
 				
-				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=9398:9446#L270">GetAllUser</a></h3>
+				<h3 id="Model.ExistUser">func (*Model) <a href="/target/user.go?s=8846:8902#L250">ExistUser</a></h3>
+				<pre>func (this *Model) ExistUser(encodedUserKey string) bool</pre>
+				<p>
+指定されたユーザがいるか調べる
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=9662:9710#L281">GetAllUser</a></h3>
 				<pre>func (this *Model) GetAllUser() map[string]*User</pre>
 				<p>
 すべてのユーザを取得する
@@ -703,7 +716,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetGameList">func (*Model) <a href="/target/user.go?s=9949:10019#L290">GetGameList</a></h3>
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/user.go?s=10213:10283#L301">GetGameList</a></h3>
 				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
 				<p>
 ユーザが所有しているゲーム一覧を返す。
