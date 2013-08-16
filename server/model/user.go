@@ -256,6 +256,18 @@ func (this *Model) GetInterimUsers() map[string]*InterimUser {
 	return result
 }
 
+// 指定されたユーザがいるか調べる
+func (this *Model) ExistUser(encodedUserKey string) bool {
+	userKey, err := datastore.DecodeKey(encodedUserKey)
+	Check(this.c, err)
+	
+	err = datastore.Get(this.c, userKey, new(User))
+	if(err == nil) {
+		return true
+	}
+	return false
+}
+
 // 指定された仮登録ユーザがいるか調べる
 func (this *Model) ExistInterimUser(encodedInterimKey string) bool {
 	interimKey, err := datastore.DecodeKey(encodedInterimKey)
@@ -265,7 +277,6 @@ func (this *Model) ExistInterimUser(encodedInterimKey string) bool {
 	if(err == nil) {
 		return true
 	}
-	Check(this.c, err)
 	return false
 }
 

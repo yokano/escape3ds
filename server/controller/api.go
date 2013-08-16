@@ -84,7 +84,7 @@ func (this *Controller) GuestLogin(w http.ResponseWriter, r *http.Request) {
 	delay, err := time.ParseDuration("10s")
 	Check(c, err)
 
-	task := taskqueue.NewPOSTTask("/delete_user", values)
+	task := taskqueue.NewPOSTTask("/bye_guest", values)
 	task.Delay = delay
 	taskqueue.Add(c, task, "default")
 	
@@ -299,7 +299,8 @@ func (this *Controller) ByeGuest(w http.ResponseWriter, r *http.Request) {
 	encodedUserKey := r.FormValue("user_key")
 	
 	model := NewModel(c)
-	model.DeleteUser(encodedUserKey)
-	
-	this.Logout(w, r)
+	if model.ExistUser(encodedUserKey) {
+		model.DeleteUser(encodedUserKey)
+		this.Logout(w, r)
+	}	
 }
