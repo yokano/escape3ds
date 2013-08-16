@@ -30,6 +30,15 @@ func (this *Controller) AddUser(w http.ResponseWriter, r *http.Request) {
 	model.AddUser(user)
 }
 
+// ユーザの削除
+func (this *Controller) DeleteUser(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	userKey := r.FormValue("user_key")
+	model := NewModel(c)
+	model.DeleteUser(userKey)
+	this.Logout(w, r)
+}
+
 // ログイン。成功か失敗か判断してからページを遷移するために Ajax で呼び出す。
 // 成功したらリダイレクト先の URL を含む JSON を返す。
 // 失敗したらエラーメッセージを含む JSON を返す。
@@ -51,6 +60,36 @@ func (this *Controller) Login(w http.ResponseWriter, r *http.Request) {
 		// ログイン失敗
 		fmt.Fprintf(w, `{"result":false, "message":"メールアドレスまたはパスワードが間違っています"}`)
 	}
+}
+
+// ゲストとしてログインする
+func (this *Controller) GuestLogin(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	model := NewModel(c)
+	
+	// ゲストユーザ追加
+	user := model.NewUser(map[string]string{
+		"user_type": "guest",
+		"user_name": "ゲスト",
+		"user_pass": "",
+		"user_mail": "",
+		"user_oauth_type": "",
+	})
+	userKey := model.AddUser(user)
+	this.StartSession(w, r, userKey)
+	
+	// 24時間後にゲストユーザを削除
+	values := url.Values{}
+	values.Set("user_key", userKey)
+	delay, err := time.ParseDuration("10s")
+	Check(c, err)
+
+	task := taskqueue.NewPOSTTask("/delete_user", values)
+	task.Delay = delay
+	taskqueue.Add(c, task, "default")
+	
+	view := NewView(c, w)
+	view.Gamelist(userKey)
 }
 
 // ログアウト。クッキーと memcache に保存されたセッション情報を削除する。

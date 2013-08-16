@@ -20,7 +20,7 @@
 			<button id="add_game">新規作成</button>
 		</div>
 		<ul id="gamelist">
-			{{range $key, $val := .}}
+			{{range $key, $val := .gameList}}
 			<li class="game" key="{{$key}}">
 				<div class="title">{{$val.Name}}</div>
 				<div class="description">{{$val.Description}}</div>
@@ -40,7 +40,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 		<script src="/client/gamelist/gamelist.js"></script>
 		<script>
-			var userKey = "{{.Key}}";
+			var userKey = "{{.userKey}}";
 		</script>
 	</body>
 </html>

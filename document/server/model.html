@@ -114,7 +114,16 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.DeleteGame">func (this *Model) DeleteGame(encodedGameKey string)</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.DeleteInterimUser">func (this *Model) DeleteInterimUser(encodedInterimKey string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.DeleteScene">func (this *Model) DeleteScene(encodedSceneKey string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.DeleteUser">func (this *Model) DeleteUser(encodedUserKey string)</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.ExistInterimUser">func (this *Model) ExistInterimUser(encodedInterimKey string) bool</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.ExistOAuthUser">func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</a></dd>
@@ -274,14 +283,15 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 		
 			
 			
-			<h2 id="Event">type <a href="/target/event.go?s=160:514#L2">Event</a></h2>
+			<h2 id="Event">type <a href="/target/event.go?s=160:633#L2">Event</a></h2>
 			<pre>type Event struct {
-    Name     string `json:&#34;name&#34;`     <span class="comment">// イベント名</span>
-    Image    string `json:&#34;image&#34;`    <span class="comment">// 画像</span>
-    Code     string `json:&#34;code&#34;`     <span class="comment">// クリックされた時のコード</span>
-    Position []int  `json:&#34;position&#34;` <span class="comment">// 位置</span>
-    Size     []int  `json:&#34;size&#34;`     <span class="comment">// 大きさ</span>
-    Color    string `json:&#34;color&#34;`    <span class="comment">// エディタ上で領域に表示される色</span>
+    Name     string `json:&#34;name&#34;`                  <span class="comment">// イベント名</span>
+    Image    string `json:&#34;image&#34;`                 <span class="comment">// 画像</span>
+    Code     []byte `json:&#34;-&#34;`                     <span class="comment">// クリックされた時のコード</span>
+    RawCode  string `json:&#34;rawcode&#34; datastore:&#34;-&#34;` <span class="comment">// Codeをクライアントが読めるように文字列にしたもの</span>
+    Position []int  `json:&#34;position&#34;`              <span class="comment">// 位置</span>
+    Size     []int  `json:&#34;size&#34;`                  <span class="comment">// 大きさ</span>
+    Color    string `json:&#34;color&#34;`                 <span class="comment">// エディタ上で領域に表示される色</span>
 }</pre>
 			<p>
 シーンに含まれるイベントオブジェクト
@@ -329,7 +339,7 @@ datastore の ancestor path を参照。
 		
 			
 			
-			<h2 id="InterimUser">type <a href="/target/user.go?s=2342:2471#L55">InterimUser</a></h2>
+			<h2 id="InterimUser">type <a href="/target/user.go?s=2359:2488#L55">InterimUser</a></h2>
 			<pre>type InterimUser struct {
     Name string <span class="comment">// ユーザ名</span>
     Mail string <span class="comment">// メールアドレス</span>
@@ -430,7 +440,7 @@ datastore の ancestor path を参照。
 				
 			
 				
-				<h3 id="Model.AddEvent">func (*Model) <a href="/target/event.go?s=982:1054#L25">AddEvent</a></h3>
+				<h3 id="Model.AddEvent">func (*Model) <a href="/target/event.go?s=1131:1203#L27">AddEvent</a></h3>
 				<pre>func (this *Model) AddEvent(event *Event, encodedSceneKey string) string</pre>
 				<p>
 イベントの追加。エンコード済みのキーを返す。
@@ -465,7 +475,7 @@ datastore の ancestor path を参照。
 				
 			
 				
-				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=1377:1459#L25">AddScene</a></h3>
+				<h3 id="Model.AddScene">func (*Model) <a href="/target/scene.go?s=1692:1774#L27">AddScene</a></h3>
 				<pre>func (this *Model) AddScene(scene *Scene, id string, encodedGameKey string) string</pre>
 				<p>
 シーンをデータストアへ追加する。
@@ -479,7 +489,7 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
-				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=3656:3701#L88">AddUser</a></h3>
+				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=3673:3718#L88">AddUser</a></h3>
 				<pre>func (this *Model) AddUser(user *User) string</pre>
 				<p>
 データストアに引数として渡したユーザを新規追加する。
@@ -490,7 +500,7 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
-				<h3 id="Model.CheckDuplicateBackground">func (*Model) <a href="/target/scene.go?s=5570:5637#L154">CheckDuplicateBackground</a></h3>
+				<h3 id="Model.CheckDuplicateBackground">func (*Model) <a href="/target/scene.go?s=5978:6045#L160">CheckDuplicateBackground</a></h3>
 				<pre>func (this *Model) CheckDuplicateBackground(background string) bool</pre>
 				<p>
 指定された背景画像が２つ以上のシーンから参照されているかどうかを調べる。
@@ -523,7 +533,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteEvent">func (*Model) <a href="/target/event.go?s=1859:1913#L56">DeleteEvent</a></h3>
+				<h3 id="Model.DeleteEvent">func (*Model) <a href="/target/event.go?s=2045:2099#L60">DeleteEvent</a></h3>
 				<pre>func (this *Model) DeleteEvent(encodedEventKey string)</pre>
 				<p>
 イベントの削除
@@ -533,7 +543,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=3279:3331#L77">DeleteGame</a></h3>
+				<h3 id="Model.DeleteGame">func (*Model) <a href="/target/game.go?s=3377:3429#L80">DeleteGame</a></h3>
 				<pre>func (this *Model) DeleteGame(encodedGameKey string)</pre>
 				<p>
 データストアから指定したキーのゲームを削除する。
@@ -545,7 +555,17 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=2486:2540#L57">DeleteScene</a></h3>
+				<h3 id="Model.DeleteInterimUser">func (*Model) <a href="/target/user.go?s=8833:8895#L248">DeleteInterimUser</a></h3>
+				<pre>func (this *Model) DeleteInterimUser(encodedInterimKey string)</pre>
+				<p>
+仮登録ユーザを削除する
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.DeleteScene">func (*Model) <a href="/target/scene.go?s=2877:2931#L61">DeleteScene</a></h3>
 				<pre>func (this *Model) DeleteScene(encodedSceneKey string)</pre>
 				<p>
 引数として指定された id のシーンをデータストアから削除する。
@@ -555,7 +575,27 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=6849:6920#L177">ExistOAuthUser</a></h3>
+				<h3 id="Model.DeleteUser">func (*Model) <a href="/target/user.go?s=4043:4095#L101">DeleteUser</a></h3>
+				<pre>func (this *Model) DeleteUser(encodedUserKey string)</pre>
+				<p>
+ユーザの削除
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.ExistInterimUser">func (*Model) <a href="/target/user.go?s=8515:8581#L235">ExistInterimUser</a></h3>
+				<pre>func (this *Model) ExistInterimUser(encodedInterimKey string) bool</pre>
+				<p>
+指定された仮登録ユーザがいるか調べる
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=7210:7281#L189">ExistOAuthUser</a></h3>
 				<pre>func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</pre>
 				<p>
 指定されたOAuthユーザが既にデータベース上に存在するかどうか調べる。
@@ -568,7 +608,7 @@ oauthId に調べる対象の OAuthId を指定する。
 				
 			
 				
-				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=8136:8184#L223">GetAllUser</a></h3>
+				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=9058:9106#L255">GetAllUser</a></h3>
 				<pre>func (this *Model) GetAllUser() map[string]*User</pre>
 				<p>
 すべてのユーザを取得する
@@ -590,7 +630,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetEvent">func (*Model) <a href="/target/event.go?s=1369:1427#L38">GetEvent</a></h3>
+				<h3 id="Model.GetEvent">func (*Model) <a href="/target/event.go?s=1518:1576#L40">GetEvent</a></h3>
 				<pre>func (this *Model) GetEvent(encodedEventKey string) *Event</pre>
 				<p>
 イベントを取得
@@ -600,7 +640,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetEventList">func (*Model) <a href="/target/event.go?s=2125:2198#L65">GetEventList</a></h3>
+				<h3 id="Model.GetEventList">func (*Model) <a href="/target/event.go?s=2311:2384#L69">GetEventList</a></h3>
 				<pre>func (this *Model) GetEventList(encodedSceneKey string) map[string]*Event</pre>
 				<p>
 指定されたシーンに属するイベント一覧を返す
@@ -610,7 +650,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetEvents">func (*Model) <a href="/target/scene.go?s=2991:3061#L71">GetEvents</a></h3>
+				<h3 id="Model.GetEvents">func (*Model) <a href="/target/scene.go?s=3736:3806#L87">GetEvents</a></h3>
 				<pre>func (this *Model) GetEvents(encodedSceneKey string) map[string]*Event</pre>
 				<p>
 シーン内のイベントリストを取得する
@@ -630,7 +670,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetGameFromScene">func (*Model) <a href="/target/game.go?s=4300:4375#L111">GetGameFromScene</a></h3>
+				<h3 id="Model.GetGameFromScene">func (*Model) <a href="/target/game.go?s=4505:4580#L120">GetGameFromScene</a></h3>
 				<pre>func (this *Model) GetGameFromScene(encodedSceneKey string) (string, *Game)</pre>
 				<p>
 指定されたシーンが含まれているゲームを取得する
@@ -640,7 +680,7 @@ blobstore に保存したファイルを読み出す。
 				
 			
 				
-				<h3 id="Model.GetGameJSON">func (*Model) <a href="/target/game.go?s=2300:2360#L50">GetGameJSON</a></h3>
+				<h3 id="Model.GetGameJSON">func (*Model) <a href="/target/game.go?s=2398:2458#L53">GetGameJSON</a></h3>
 				<pre>func (this *Model) GetGameJSON(encodedGameKey string) string</pre>
 				<p>
 JSON 形式でゲームを取得する
@@ -650,7 +690,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetGameList">func (*Model) <a href="/target/user.go?s=8687:8757#L243">GetGameList</a></h3>
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/user.go?s=9609:9679#L275">GetGameList</a></h3>
 				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
 				<p>
 ユーザが所有しているゲーム一覧を返す。
@@ -661,7 +701,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=7655:7715#L204">GetInterimUsers</a></h3>
+				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=8016:8076#L216">GetInterimUsers</a></h3>
 				<pre>func (this *Model) GetInterimUsers() map[string]*InterimUser</pre>
 				<p>
 仮登録ユーザ一覧を返す
@@ -681,7 +721,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetScene">func (*Model) <a href="/target/scene.go?s=1764:1822#L35">GetScene</a></h3>
+				<h3 id="Model.GetScene">func (*Model) <a href="/target/scene.go?s=2079:2137#L37">GetScene</a></h3>
 				<pre>func (this *Model) GetScene(encodedSceneKey string) *Scene</pre>
 				<p>
 シーンをデータストアから取得する
@@ -691,7 +731,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetSceneFromEvent">func (*Model) <a href="/target/scene.go?s=2111:2188#L48">GetSceneFromEvent</a></h3>
+				<h3 id="Model.GetSceneFromEvent">func (*Model) <a href="/target/scene.go?s=2502:2579#L52">GetSceneFromEvent</a></h3>
 				<pre>func (this *Model) GetSceneFromEvent(encodedEventKey string) (string, *Scene)</pre>
 				<p>
 指定されたイベントが属しているシーンを取得する
@@ -701,7 +741,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetScenes">func (*Model) <a href="/target/game.go?s=3702:3771#L87">GetScenes</a></h3>
+				<h3 id="Model.GetScenes">func (*Model) <a href="/target/game.go?s=3907:3976#L96">GetScenes</a></h3>
 				<pre>func (this *Model) GetScenes(encodedGameKey string) map[string]*Scene</pre>
 				<p>
 ゲーム内のシーン一覧を取得する。引数としてゲームキーを渡す。
@@ -712,7 +752,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=5093:5144#L127">GetUser</a></h3>
+				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=5454:5505#L139">GetUser</a></h3>
 				<pre>func (this *Model) GetUser(encodedKey string) *User</pre>
 				<p>
 引数として渡されたユーザキーのユーザをデータストアから取得する。
@@ -723,7 +763,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=7312:7374#L190">GetUserKey</a></h3>
+				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=7673:7735#L202">GetUserKey</a></h3>
 				<pre>func (this *Model) GetUserKey(params map[string]string) string</pre>
 				<p>
 パラメータで指定されたユーザを探してユーザキーを返す。
@@ -746,7 +786,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=5581:5665#L143">InterimRegistration</a></h3>
+				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=5942:6026#L155">InterimRegistration</a></h3>
 				<pre>func (this *Model) InterimRegistration(name string, mail string, pass string) string</pre>
 				<p>
 ユーザを仮登録データベースに登録する。
@@ -759,7 +799,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=4244:4316#L103">LoginCheck</a></h3>
+				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=4605:4677#L115">LoginCheck</a></h3>
 				<pre>func (this *Model) LoginCheck(mail string, pass string) (string, string)</pre>
 				<p>
 引数として渡したメールアドレスとパスワードのユーザがいるか調べる。
@@ -771,7 +811,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewEvent">func (*Model) <a href="/target/event.go?s=559:675#L12">NewEvent</a></h3>
+				<h3 id="Model.NewEvent">func (*Model) <a href="/target/event.go?s=678:794#L13">NewEvent</a></h3>
 				<pre>func (this *Model) NewEvent(name string, image string, code string, position []int, size []int, color string) *Event</pre>
 				<p>
 イベントオブジェクトの作成
@@ -791,7 +831,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2667:2752#L63">NewInterimUser</a></h3>
+				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2684:2769#L63">NewInterimUser</a></h3>
 				<pre>func (this *Model) NewInterimUser(name string, mail string, pass string) *InterimUser</pre>
 				<p>
 仮登録ユーザを作成する。引数としてユーザ名、メールアドレス、パスワードを渡す。
@@ -802,7 +842,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=789:855#L13">NewScene</a></h3>
+				<h3 id="Model.NewScene">func (*Model) <a href="/target/scene.go?s=1104:1170#L15">NewScene</a></h3>
 				<pre>func (this *Model) NewScene(name string, background string) *Scene</pre>
 				<p>
 シーンオブジェクトを新しく作成する。
@@ -812,7 +852,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=672:728#L14">NewUser</a></h3>
+				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=680:736#L14">NewUser</a></h3>
 				<pre>func (this *Model) NewUser(data map[string]string) *User</pre>
 				<p>
 ユーザオブジェクトを作成する。
@@ -823,7 +863,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=5989:6039#L152">Registration</a></h3>
+				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=6350:6400#L164">Registration</a></h3>
 				<pre>func (this *Model) Registration(encodedKey string)</pre>
 				<p>
 仮登録ユーザキーを指定して、該当するユーザを登録する。
@@ -855,7 +895,7 @@ memcache から指定されたセッションIDのセッション情報を削除
 				
 			
 				
-				<h3 id="Model.SyncEvent">func (*Model) <a href="/target/event.go?s=2949:3032#L95">SyncEvent</a></h3>
+				<h3 id="Model.SyncEvent">func (*Model) <a href="/target/event.go?s=3051:3134#L96">SyncEvent</a></h3>
 				<pre>func (this *Model) SyncEvent(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
 イベントの同期
@@ -865,7 +905,7 @@ memcache から指定されたセッションIDのセッション情報を削除
 				
 			
 				
-				<h3 id="Model.SyncGame">func (*Model) <a href="/target/game.go?s=4732:4814#L124">SyncGame</a></h3>
+				<h3 id="Model.SyncGame">func (*Model) <a href="/target/game.go?s=4937:5019#L133">SyncGame</a></h3>
 				<pre>func (this *Model) SyncGame(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
 ゲームデータの同期。
@@ -887,7 +927,7 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE
 				
 			
 				
-				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=3942:4025#L100">SyncScene</a></h3>
+				<h3 id="Model.SyncScene">func (*Model) <a href="/target/scene.go?s=4687:4770#L116">SyncScene</a></h3>
 				<pre>func (this *Model) SyncScene(w http.ResponseWriter, r *http.Request, path []string)</pre>
 				<p>
 シーンデータの同期処理を行う。
@@ -901,7 +941,7 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				
 			
 				
-				<h3 id="Model.UpdateEvent">func (*Model) <a href="/target/event.go?s=1614:1682#L47">UpdateEvent</a></h3>
+				<h3 id="Model.UpdateEvent">func (*Model) <a href="/target/event.go?s=1800:1868#L51">UpdateEvent</a></h3>
 				<pre>func (this *Model) UpdateEvent(event *Event, encodedEventKey string)</pre>
 				<p>
 イベントを更新する
@@ -911,7 +951,7 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				
 			
 				
-				<h3 id="Model.UpdateEventCode">func (*Model) <a href="/target/event.go?s=2692:2750#L85">UpdateEventCode</a></h3>
+				<h3 id="Model.UpdateEventCode">func (*Model) <a href="/target/event.go?s=2878:2936#L89">UpdateEventCode</a></h3>
 				<pre>func (this *Model) UpdateEventCode(id string, code string)</pre>
 				<p>
 イベントコードの更新
@@ -921,7 +961,7 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				
 			
 				
-				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2817:2881#L66">UpdateGame</a></h3>
+				<h3 id="Model.UpdateGame">func (*Model) <a href="/target/game.go?s=2915:2979#L69">UpdateGame</a></h3>
 				<pre>func (this *Model) UpdateGame(encodedGameKey string, game *Game)</pre>
 				<p>
 ゲームを更新する。引数として渡されたキー encodedGameKey のゲームを、ゲームオブジェクト game で上書きする。
@@ -931,7 +971,7 @@ POST:CREATE, GET:READ, PUT:UPDATE, DELETE:DELETE.
 				
 			
 				
-				<h3 id="Model.UpdateScene">func (*Model) <a href="/target/scene.go?s=2737:2805#L64">UpdateScene</a></h3>
+				<h3 id="Model.UpdateScene">func (*Model) <a href="/target/scene.go?s=3482:3550#L80">UpdateScene</a></h3>
 				<pre>func (this *Model) UpdateScene(encodedSceneKey string, scene *Scene)</pre>
 				<p>
 id で指定されたシーンを新しいシーン scene で更新する。
@@ -943,12 +983,14 @@ id で指定されたシーンを新しいシーン scene で更新する。
 		
 			
 			
-			<h2 id="Scene">type <a href="/target/scene.go?s=260:729#L3">Scene</a></h2>
+			<h2 id="Scene">type <a href="/target/scene.go?s=260:1044#L3">Scene</a></h2>
 			<pre>type Scene struct {
     Name       string            `json:&#34;name&#34;`                    <span class="comment">// シーン名</span>
     Background string            `json:&#34;background&#34;`              <span class="comment">// 背景画像のBlobkey、設定していなければ空文字</span>
-    Enter      string            `json:&#34;enter&#34;`                   <span class="comment">// シーン開始時のイベント</span>
-    Leave      string            `json:&#34;leave&#34;`                   <span class="comment">// シーン終了時のイベント</span>
+    Enter      []byte            `json:&#34;-&#34;`                       <span class="comment">// シーン開始時のイベント（データベース保存用バイナリ）</span>
+    RawEnter   string            `json:&#34;enter&#34; datastore:&#34;-&#34;`     <span class="comment">// シーン開始時のイベント（クライアント用文字列）</span>
+    Leave      []byte            `json:&#34;-&#34;`                       <span class="comment">// シーン終了時のイベント（データベース保存用バイナリ）</span>
+    RawLeave   string            `json:&#34;leave&#34; datastore:&#34;-&#34;`     <span class="comment">// シーン終了時のイベント（クライアント用文字列）</span>
     Sort       int               `json:&#34;sort&#34;`                    <span class="comment">// 並び順</span>
     EventList  map[string]*Event `json:&#34;eventList&#34; datastore:&#34;-&#34;` <span class="comment">// シーン内のイベントリスト</span>
 }</pre>
@@ -970,9 +1012,9 @@ id で指定されたシーンを新しいシーン scene で更新する。
 		
 			
 			
-			<h2 id="User">type <a href="/target/user.go?s=116:560#L3">User</a></h2>
+			<h2 id="User">type <a href="/target/user.go?s=116:568#L3">User</a></h2>
 			<pre>type User struct {
-    Type    string <span class="comment">// ユーザアカウントの種類 &#34;Twitter&#34;/&#34;Facebook&#34;/&#34;normal&#34;</span>
+    Type    string <span class="comment">// ユーザアカウントの種類 &#34;Twitter&#34;/&#34;Facebook&#34;/&#34;normal&#34;/&#34;guest&#34;</span>
     Name    string <span class="comment">// ユーザ名</span>
     Pass    []byte <span class="comment">// ユーザの暗号化済パスワード（user_type == &#34;normal&#34;の場合のみ）</span>
     Mail    string <span class="comment">// ユーザのメールアドレス（user_type == &#34;normal&#34;の場合のみ）</span>
@@ -994,7 +1036,7 @@ id で指定されたシーンを新しいシーン scene で更新する。
 
 			
 				
-				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3225:3298#L75">HashPassword</a></h3>
+				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3242:3315#L75">HashPassword</a></h3>
 				<pre>func (this *User) HashPassword(pass string, salt string) ([]byte, string)</pre>
 				<p>
 ユーザのパスワードをハッシュ化する。引数として平文のパスワードと、ソルトを渡す。

@@ -47,6 +47,7 @@ func (this *Controller) Handle() {
 
 	// api
 	table["/add_user"]    = (*Controller).AddUser
+	table["/delete_user"] = (*Controller).DeleteUser
 	table["/login"]       = (*Controller).Login
 	table["/add_game"]    = (*Controller).AddGame
 	table["/delete_game"] = (*Controller).DeleteGame
@@ -57,6 +58,7 @@ func (this *Controller) Handle() {
 	table["/update_code"] = (*Controller).UpdateEventCode
 	table["/update_enter_code"] = (*Controller).UpdateEnterCode
 	table["/update_leave_code"] = (*Controller).UpdateLeaveCode
+	table["/guest"] = (*Controller).GuestLogin
 
 	// blob
 	table["/uploaded"] = (*Controller).Uploaded

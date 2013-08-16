@@ -29,7 +29,6 @@ $(function() {
 				li.append('<div class="description">' + data.description + '</div>');
 				li.append('<div class="thumbnail"><img width="200" src="/client/gamelist/img/black.png"></div>');
 				li.append('<a href="/editor?game_key=' + data.key + '"><button>作る</button></a>');
-				li.append('<button class="copy">コピー</button>');
 				li.append('<button class="delete">消す</button>');
 				li.hide();
 				$('#gamelist').append(li);
@@ -62,5 +61,25 @@ $(function() {
 				game.fadeOut('fast');
 			}
 		});
+	});
+	
+	// 退会ボタン
+	$('#resign').on('click', function() {
+		if(window.confirm('退会するとユーザ情報とゲームがサーバから削除されます。退会しますか？')) {
+			$.ajax('/delete_user', {
+				method: 'POST',
+				data: {
+					user_key: userKey
+				},
+				success: function() {
+					alert('退会しました。トップページに戻ります。');
+					location.href = '/';
+				},
+				error: function() {
+					console.log('delete user error');
+				}
+			});
+		}
+		return false;
 	});
 });

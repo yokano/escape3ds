@@ -11,7 +11,7 @@ import (
 
 // ユーザデータ
 type User struct {
-	Type string  // ユーザアカウントの種類 "Twitter"/"Facebook"/"normal"
+	Type string  // ユーザアカウントの種類 "Twitter"/"Facebook"/"normal"/"guest"
 	Name string  // ユーザ名
 	Pass []byte  // ユーザの暗号化済パスワード（user_type == "normal"の場合のみ）
 	Mail string  // ユーザのメールアドレス（user_type == "normal"の場合のみ）
@@ -23,7 +23,7 @@ type User struct {
 // 戻り値は作成したユーザ、失敗したらnil。
 func (this *Model) NewUser(data map[string]string) *User {
 	// ユーザタイプチェック
-	if !Exist([]string {"Twitter", "Facebook", "normal"}, data["user_type"]) {
+	if !Exist([]string {"Twitter", "Facebook", "normal", "guest"}, data["user_type"]) {
 		this.c.Errorf("不正なユーザタイプが入力されました")
 		return nil
 	}
@@ -105,6 +105,18 @@ func (this *Model) AddUser(user *User) string {
 	Check(this.c, err)
 	encodedKey := completeKey.Encode()
 	return encodedKey
+}
+
+// ユーザの削除
+func (this *Model) DeleteUser(encodedUserKey string) {
+	if encodedUserKey == "" {
+		this.c.Errorf("ユーザキーの指定なしで DeleteUser() が実行されました")
+		return
+	}
+	userKey, err := datastore.DecodeKey(encodedUserKey)
+	Check(this.c, err)
+	err = datastore.Delete(this.c, userKey)
+	Check(this.c, err)
 }
 
 // 引数として渡したメールアドレスとパスワードのユーザがいるか調べる。

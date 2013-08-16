@@ -85,9 +85,13 @@ func (this *View) Gamelist(userKey string) {
 	model := NewModel(this.c)
 	gameList := model.GetGameList(userKey)
 	
+	contents := make(map[string]interface{})
+	contents["gameList"] = gameList
+	contents["userKey"] = userKey
+	
 	t, err := template.ParseFiles("server/view/html/gamelist.html")
 	Check(this.c, err)
-	t.Execute(this.w, gameList)
+	t.Execute(this.w, contents)
 }
 
 // テストプレイ画面の表示
