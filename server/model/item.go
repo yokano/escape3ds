@@ -42,6 +42,21 @@ func (this *Model) AddItem(item *Item, encodedGameKey string) string {
 	return encodedItemKey
 }
 
+// アイテムの削除
+func (this *Model) DeleteItem(encodedItemKey string) {
+	itemKey, err := datastore.DecodeKey(encodedItemKey)
+	Check(this.c, err)
+	
+	item := new(Item)
+	err = datastore.Get(this.c, itemKey, item)
+	Check(this.c, err)
+	
+	this.DeleteBlob(item.Img)
+	
+	err = datastore.Delete(this.c, itemKey)
+	Check(this.c, err)
+}
+
 // アイテム一覧の取得。
 func (this *Model) GetItems(encodedGameKey string) map[string]*Item {
 	gameKey, err := datastore.DecodeKey(encodedGameKey)
@@ -103,19 +118,7 @@ func (this *Model) SyncItem(w http.ResponseWriter, r *http.Request, path []strin
 		this.c.Debugf("GET")
 		
 	case "DELETE":
-		encodedItemKey := path[4]
-		itemKey, err := datastore.DecodeKey(encodedItemKey)
-		Check(this.c, err)
-		
-		item := new(Item)
-		err = datastore.Get(this.c, itemKey, item)
-		Check(this.c, err)
-		
-		this.DeleteBlob(item.Img)
-		
-		err = datastore.Delete(this.c, itemKey)
-		Check(this.c, err)
-
+		this.DeleteItem(path[4])
 		fmt.Fprintf(w, `{}`)
 	}
 }

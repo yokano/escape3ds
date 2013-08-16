@@ -90,13 +90,19 @@ func (this *Model) UpdateGame(encodedGameKey string, game *Game)  {
 func (this *Model) DeleteGame(encodedGameKey string) {
 	game := this.GetGame(encodedGameKey)
 	
-	for key, _ := range game.SceneList {
-		this.DeleteScene(key)
+	// シーン削除
+	for sceneKey, _ := range game.SceneList {
+		this.DeleteScene(sceneKey)
 	}
 	
+	// アイテム削除
+	for itemKey, _ := range game.ItemList {
+		this.DeleteItem(itemKey)
+	}
+	
+	// ゲーム削除
 	gameKey, err := datastore.DecodeKey(encodedGameKey)
 	Check(this.c, err)
-	
 	err = datastore.Delete(this.c, gameKey)
 	Check(this.c, err)
 }

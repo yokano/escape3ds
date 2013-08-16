@@ -115,6 +115,21 @@ func (this *Model) DeleteUser(encodedUserKey string) {
 	}
 	userKey, err := datastore.DecodeKey(encodedUserKey)
 	Check(this.c, err)
+	
+	// ゲームの削除
+	query := datastore.NewQuery("Game").Ancestor(userKey)
+	count, err := query.Count(this.c)
+	Check(this.c, err)
+	iterator := query.Run(this.c)
+	for i := 0; i < count; i++ {
+		gameKey, err := iterator.Next(nil)
+		if err != nil {
+			break
+		}
+		encodedGameKey := gameKey.Encode()
+		this.DeleteGame(encodedGameKey)
+	}
+	
 	err = datastore.Delete(this.c, userKey)
 	Check(this.c, err)
 }
