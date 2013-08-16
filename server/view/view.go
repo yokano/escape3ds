@@ -84,10 +84,16 @@ func (this *View) Registration() {
 func (this *View) Gamelist(userKey string) {
 	model := NewModel(this.c)
 	gameList := model.GetGameList(userKey)
+	user := model.GetUser(userKey)
 	
 	contents := make(map[string]interface{})
 	contents["gameList"] = gameList
 	contents["userKey"] = userKey
+	if user.Type == "guest" {
+		contents["isGuest"] = true
+	} else {
+		contents["isGuest"] = false
+	}
 	
 	t, err := template.ParseFiles("server/view/html/gamelist.html")
 	Check(this.c, err)

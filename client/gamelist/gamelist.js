@@ -80,6 +80,34 @@ $(function() {
 				}
 			});
 		}
-		return false;
+	});
+	
+	// ログアウトボタン
+	$('#logout').on('click', function() {
+		$.ajax('/logout', {
+			success: function() {
+				location.href = '/';
+			},
+			error: function() {
+				console.log('logout error');
+			}
+		});
+	});
+	
+	// ゲストアカウント終了ボタン
+	$('#bye_guest').on('click', function() {
+		$.ajax('/bye_guest', {
+			method: 'POST',
+			data: {
+				user_key: userKey
+			},
+			success: function() {
+				alert('ゲストアカウントを終了しました。トップページへ戻ります。');
+				location.href = '/';
+			},
+			error: function() {
+				
+			}
+		});
 	});
 });

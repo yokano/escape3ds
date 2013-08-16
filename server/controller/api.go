@@ -102,8 +102,6 @@ func (this *Controller) Logout(w http.ResponseWriter, r *http.Request) {
 	model := NewModel(c)
 	model.RemoveSession(sessionId)
 	this.DeleteCookie(c, w)
-	
-	http.Redirect(w, r, "/", 302)
 }
 
 // Ajax のリクエストパラメータとして渡されたユーザを仮登録データベースに保存して、
@@ -293,4 +291,15 @@ func (this *Controller) UpdateLeaveCode(w http.ResponseWriter, r *http.Request) 
 	model.UpdateScene(sceneId, scene)
 	
 	fmt.Fprintf(w, `{}`)
+}
+
+// ゲストアカウントの終了
+func (this *Controller) ByeGuest(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	encodedUserKey := r.FormValue("user_key")
+	
+	model := NewModel(c)
+	model.DeleteUser(encodedUserKey)
+	
+	this.Logout(w, r)
 }
