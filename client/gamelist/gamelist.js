@@ -29,6 +29,7 @@ $(function() {
 				li.append('<div class="description">' + data.description + '</div>');
 				li.append('<div class="thumbnail"><img width="200" src="/client/gamelist/img/black.png"></div>');
 				li.append('<a href="/editor?game_key=' + data.key + '"><button>作る</button></a>');
+				li.append('<button class="rename">名前変更</button>');
 				li.append('<button class="delete">消す</button>');
 				li.hide();
 				$('#gamelist').append(li);
@@ -127,6 +128,34 @@ $(function() {
 			},
 			error: function() {
 				alert('パスワードが変更できませんでした');
+			}
+		});
+	});
+	
+	// 名前変更ボタン
+	$(document).on('click', '.rename', function() {
+		var li = $(this).parent();
+		var name = window.prompt('新しいゲーム名を入力してください', li.find('.title').html());
+		if(name == '') {
+			alert('名前が入力されていません');
+			return false;
+		}
+		var description = window.prompt('ゲームの説明を入力してください（省略可）', li.find('.description').html());
+		var key = li.attr('key');
+		
+		$.ajax('rename_game', {
+			method: 'POST',
+			data: {
+				key: key,
+				name: name,
+				description: description
+			},
+			success: function() {
+				li.find('.title').html(name);
+				li.find('.description').html(description);
+			},
+			error: function() {
+				alert('名前の変更に失敗しました');
 			}
 		});
 	});

@@ -26,7 +26,6 @@
 button {
 	cursor: pointer;
 	-webkit-transition: all 0.2s ease 0;
-	min-width: 60px;
 	height: 30px;
 }
 button:hover {

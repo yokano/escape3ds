@@ -325,3 +325,21 @@ func (this *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
 	model.ChangePassword(userKey, pass)
 	fmt.Fprintf(w, `{}`)
 }
+
+// ゲーム名、ゲームの説明の変更
+func (this *Controller) RenameGame(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	name := r.FormValue("name")
+	description := r.FormValue("description")
+	gameKey := r.FormValue("key")
+	if name == "" {
+		c.Warningf("ゲーム名を空文字列に変更しようとしました")
+		return
+	}
+	model := NewModel(c)
+	game := model.GetGame(gameKey)
+	game.Name = name
+	game.Description = description
+	model.UpdateGame(gameKey, game)
+	fmt.Fprintf(w, `{}`)
+}
