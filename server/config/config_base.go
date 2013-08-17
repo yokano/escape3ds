@@ -68,5 +68,5 @@ package config
 //- 連絡先：yuta.okano@gmail.com
 //- ブログ：http://yokano-jp.blogspot.jp/
 //---------------------------------
-
-`
+//
+//`

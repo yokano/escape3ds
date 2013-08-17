@@ -312,7 +312,16 @@ func (this *Controller) ResetPassword(w http.ResponseWriter, r *http.Request) {
 	model := NewModel(c)
 	key, user := model.GetUserFromMail(mail)
 	rawPassword := user.ResetPassword(key, c)
-
-	// メール送信
 	SendMail(c, "infomation@escape-3ds.appspotmail.com", user.Mail, "パスワードのリセットが完了しました", fmt.Sprintf(RESET_PASSWORD_MAIL_BODY, user.Name, rawPassword))
+}
+
+// パスワードの変更
+func (this *Controller) ChangePassword(w http.ResponseWriter, r *http.Request) {
+	userKey := this.Session(w, r)
+
+	c := appengine.NewContext(r)
+	pass := r.FormValue("password")
+	model := NewModel(c)
+	model.ChangePassword(userKey, pass)
+	fmt.Fprintf(w, `{}`)
 }

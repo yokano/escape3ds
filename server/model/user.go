@@ -382,3 +382,12 @@ func (this *Model) UpdateUser(encodedUserKey string, user *User) {
 	_, err = datastore.Put(this.c, userKey, user)
 	Check(this.c, err)
 }
+
+// ユーザのパスワードを変更
+func (this *Model) ChangePassword(encodedUserKey string, rawPass string) {
+	user := this.GetUser(encodedUserKey)
+	pass, salt := user.HashPassword(rawPass, "")
+	user.Pass = pass
+	user.Salt = salt
+	this.UpdateUser(encodedUserKey, user)
+}

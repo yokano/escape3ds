@@ -99,6 +99,9 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.AddUser">func (this *Model) AddUser(user *User) string</a></dd>
 				
 					
+					<dd>&nbsp; &nbsp; <a href="#Model.ChangePassword">func (this *Model) ChangePassword(encodedUserKey string, rawPass string)</a></dd>
+				
+					
 					<dd>&nbsp; &nbsp; <a href="#Model.CheckDuplicateBackground">func (this *Model) CheckDuplicateBackground(background string) bool</a></dd>
 				
 					
@@ -180,7 +183,7 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#Model.GetUser">func (this *Model) GetUser(encodedKey string) *User</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#Model.GetUserFromMail">func (this *Model) GetUserFromMail(mail string) *User</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#Model.GetUserFromMail">func (this *Model) GetUserFromMail(mail string) (string, *User)</a></dd>
 				
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.GetUserKey">func (this *Model) GetUserKey(params map[string]string) string</a></dd>
@@ -242,6 +245,9 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					
 					<dd>&nbsp; &nbsp; <a href="#Model.UpdateScene">func (this *Model) UpdateScene(encodedSceneKey string, scene *Scene)</a></dd>
 				
+					
+					<dd>&nbsp; &nbsp; <a href="#Model.UpdateUser">func (this *Model) UpdateUser(encodedUserKey string, user *User)</a></dd>
+				
 			
 				
 				<dd><a href="#Scene">type Scene</a></dd>
@@ -256,7 +262,7 @@ datastore や blobstore などのサーバ上のデータを操作をまとめ�
 					<dd>&nbsp; &nbsp; <a href="#User.HashPassword">func (this *User) HashPassword(pass string, salt string) ([]byte, string)</a></dd>
 				
 					
-					<dd>&nbsp; &nbsp; <a href="#User.ResetPassword">func (this *User) ResetPassword() string</a></dd>
+					<dd>&nbsp; &nbsp; <a href="#User.ResetPassword">func (this *User) ResetPassword(encodedUserKey string, c appengine.Context) string</a></dd>
 				
 			
 			
@@ -351,7 +357,7 @@ datastore の ancestor path を参照。
 		
 			
 			
-			<h2 id="InterimUser">type <a href="/target/user.go?s=2359:2488#L55">InterimUser</a></h2>
+			<h2 id="InterimUser">type <a href="/target/user.go?s=2372:2501#L56">InterimUser</a></h2>
 			<pre>type InterimUser struct {
     Name string <span class="comment">// ユーザ名</span>
     Mail string <span class="comment">// メールアドレス</span>
@@ -501,11 +507,21 @@ Backbone.js がモデルに対して自動的に割り振る cid をデータス
 				
 			
 				
-				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=4039:4084#L100">AddUser</a></h3>
+				<h3 id="Model.AddUser">func (*Model) <a href="/target/user.go?s=4158:4203#L104">AddUser</a></h3>
 				<pre>func (this *Model) AddUser(user *User) string</pre>
 				<p>
 データストアに引数として渡したユーザを新規追加する。
 追加が完了したらユーザキーを返す。
+</p>
+
+				
+				
+			
+				
+				<h3 id="Model.ChangePassword">func (*Model) <a href="/target/user.go?s=12434:12506#L377">ChangePassword</a></h3>
+				<pre>func (this *Model) ChangePassword(encodedUserKey string, rawPass string)</pre>
+				<p>
+ユーザのパスワードを変更
 </p>
 
 				
@@ -567,7 +583,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteInterimUser">func (*Model) <a href="/target/user.go?s=10591:10653#L307">DeleteInterimUser</a></h3>
+				<h3 id="Model.DeleteInterimUser">func (*Model) <a href="/target/user.go?s=10896:10958#L318">DeleteInterimUser</a></h3>
 				<pre>func (this *Model) DeleteInterimUser(encodedInterimKey string)</pre>
 				<p>
 仮登録ユーザを削除する
@@ -597,7 +613,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.DeleteUser">func (*Model) <a href="/target/user.go?s=4409:4461#L113">DeleteUser</a></h3>
+				<h3 id="Model.DeleteUser">func (*Model) <a href="/target/user.go?s=4528:4580#L117">DeleteUser</a></h3>
 				<pre>func (this *Model) DeleteUser(encodedUserKey string)</pre>
 				<p>
 ユーザの削除
@@ -607,7 +623,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.ExistInterimUser">func (*Model) <a href="/target/user.go?s=10293:10359#L295">ExistInterimUser</a></h3>
+				<h3 id="Model.ExistInterimUser">func (*Model) <a href="/target/user.go?s=10598:10664#L306">ExistInterimUser</a></h3>
 				<pre>func (this *Model) ExistInterimUser(encodedInterimKey string) bool</pre>
 				<p>
 指定された仮登録ユーザがいるか調べる
@@ -617,7 +633,7 @@ blogstore に保存されているフィアルを削除する。
 				
 			
 				
-				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=8704:8775#L237">ExistOAuthUser</a></h3>
+				<h3 id="Model.ExistOAuthUser">func (*Model) <a href="/target/user.go?s=9009:9080#L248">ExistOAuthUser</a></h3>
 				<pre>func (this *Model) ExistOAuthUser(userType string, oauthId string) bool</pre>
 				<p>
 指定されたOAuthユーザが既にデータベース上に存在するかどうか調べる。
@@ -630,7 +646,7 @@ oauthId に調べる対象の OAuthId を指定する。
 				
 			
 				
-				<h3 id="Model.ExistUser">func (*Model) <a href="/target/user.go?s=10000:10056#L283">ExistUser</a></h3>
+				<h3 id="Model.ExistUser">func (*Model) <a href="/target/user.go?s=10305:10361#L294">ExistUser</a></h3>
 				<pre>func (this *Model) ExistUser(encodedUserKey string) bool</pre>
 				<p>
 指定されたユーザがいるか調べる
@@ -640,7 +656,7 @@ oauthId に調べる対象の OAuthId を指定する。
 				
 			
 				
-				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=10816:10864#L314">GetAllUser</a></h3>
+				<h3 id="Model.GetAllUser">func (*Model) <a href="/target/user.go?s=11121:11169#L325">GetAllUser</a></h3>
 				<pre>func (this *Model) GetAllUser() map[string]*User</pre>
 				<p>
 すべてのユーザを取得する
@@ -722,7 +738,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetGameList">func (*Model) <a href="/target/user.go?s=11367:11437#L334">GetGameList</a></h3>
+				<h3 id="Model.GetGameList">func (*Model) <a href="/target/user.go?s=11672:11742#L345">GetGameList</a></h3>
 				<pre>func (this *Model) GetGameList(encodedUserKey string) map[string]*Game</pre>
 				<p>
 ユーザが所有しているゲーム一覧を返す。
@@ -733,7 +749,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=9510:9570#L264">GetInterimUsers</a></h3>
+				<h3 id="Model.GetInterimUsers">func (*Model) <a href="/target/user.go?s=9815:9875#L275">GetInterimUsers</a></h3>
 				<pre>func (this *Model) GetInterimUsers() map[string]*InterimUser</pre>
 				<p>
 仮登録ユーザ一覧を返す
@@ -784,7 +800,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=6160:6211#L166">GetUser</a></h3>
+				<h3 id="Model.GetUser">func (*Model) <a href="/target/user.go?s=6279:6330#L170">GetUser</a></h3>
 				<pre>func (this *Model) GetUser(encodedKey string) *User</pre>
 				<p>
 引数として渡されたユーザキーのユーザをデータストアから取得する。
@@ -795,12 +811,12 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetUserFromMail">func (*Model) <a href="/target/user.go?s=6634:6687#L181">GetUserFromMail</a></h3>
-				<pre>func (this *Model) GetUserFromMail(mail string) *User</pre>
+				<h3 id="Model.GetUserFromMail">func (*Model) <a href="/target/user.go?s=6780:6843#L185">GetUserFromMail</a></h3>
+				<pre>func (this *Model) GetUserFromMail(mail string) (string, *User)</pre>
 				<p>
 メールアドレスからユーザを取得する
-存在したらユーザを返す
-複数存在したり、存在しなかったらからユーザを返す
+存在したらエンコード済みキーとユーザを返す
+複数存在したり、存在しなかったら空ユーザを返す
 このシステムでは同じメールアドレスは２つ登録できない仕様
 </p>
 
@@ -808,7 +824,7 @@ JSON 形式でゲームを取得する
 				
 			
 				
-				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=9167:9229#L250">GetUserKey</a></h3>
+				<h3 id="Model.GetUserKey">func (*Model) <a href="/target/user.go?s=9472:9534#L261">GetUserKey</a></h3>
 				<pre>func (this *Model) GetUserKey(params map[string]string) string</pre>
 				<p>
 パラメータで指定されたユーザを探してユーザキーを返す。
@@ -831,7 +847,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=7436:7520#L203">InterimRegistration</a></h3>
+				<h3 id="Model.InterimRegistration">func (*Model) <a href="/target/user.go?s=7741:7825#L214">InterimRegistration</a></h3>
 				<pre>func (this *Model) InterimRegistration(name string, mail string, pass string) string</pre>
 				<p>
 ユーザを仮登録データベースに登録する。
@@ -844,7 +860,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=5311:5383#L142">LoginCheck</a></h3>
+				<h3 id="Model.LoginCheck">func (*Model) <a href="/target/user.go?s=5430:5502#L146">LoginCheck</a></h3>
 				<pre>func (this *Model) LoginCheck(mail string, pass string) (string, string)</pre>
 				<p>
 引数として渡したメールアドレスとパスワードのユーザがいるか調べる。
@@ -876,7 +892,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2684:2769#L63">NewInterimUser</a></h3>
+				<h3 id="Model.NewInterimUser">func (*Model) <a href="/target/user.go?s=2697:2782#L64">NewInterimUser</a></h3>
 				<pre>func (this *Model) NewInterimUser(name string, mail string, pass string) *InterimUser</pre>
 				<p>
 仮登録ユーザを作成する。引数としてユーザ名、メールアドレス、パスワードを渡す。
@@ -897,7 +913,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=680:736#L14">NewUser</a></h3>
+				<h3 id="Model.NewUser">func (*Model) <a href="/target/user.go?s=693:749#L15">NewUser</a></h3>
 				<pre>func (this *Model) NewUser(data map[string]string) *User</pre>
 				<p>
 ユーザオブジェクトを作成する。
@@ -908,7 +924,7 @@ memcache から指定されたセッションIDに関連づいているユーザ
 				
 			
 				
-				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=7844:7894#L212">Registration</a></h3>
+				<h3 id="Model.Registration">func (*Model) <a href="/target/user.go?s=8149:8199#L223">Registration</a></h3>
 				<pre>func (this *Model) Registration(encodedKey string)</pre>
 				<p>
 仮登録ユーザキーを指定して、該当するユーザを登録する。
@@ -1025,6 +1041,16 @@ id で指定されたシーンを新しいシーン scene で更新する。
 				
 				
 			
+				
+				<h3 id="Model.UpdateUser">func (*Model) <a href="/target/user.go?s=12184:12248#L369">UpdateUser</a></h3>
+				<pre>func (this *Model) UpdateUser(encodedUserKey string, user *User)</pre>
+				<p>
+ユーザを更新
+</p>
+
+				
+				
+			
 		
 			
 			
@@ -1057,7 +1083,7 @@ id で指定されたシーンを新しいシーン scene で更新する。
 		
 			
 			
-			<h2 id="User">type <a href="/target/user.go?s=116:568#L3">User</a></h2>
+			<h2 id="User">type <a href="/target/user.go?s=129:581#L4">User</a></h2>
 			<pre>type User struct {
     Type    string <span class="comment">// ユーザアカウントの種類 &#34;Twitter&#34;/&#34;Facebook&#34;/&#34;normal&#34;/&#34;guest&#34;</span>
     Name    string <span class="comment">// ユーザ名</span>
@@ -1081,7 +1107,7 @@ id で指定されたシーンを新しいシーン scene で更新する。
 
 			
 				
-				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3242:3315#L75">HashPassword</a></h3>
+				<h3 id="User.HashPassword">func (*User) <a href="/target/user.go?s=3255:3328#L76">HashPassword</a></h3>
 				<pre>func (this *User) HashPassword(pass string, salt string) ([]byte, string)</pre>
 				<p>
 ユーザのパスワードをハッシュ化する。引数として平文のパスワードと、ソルトを渡す。
@@ -1094,8 +1120,8 @@ id で指定されたシーンを新しいシーン scene で更新する。
 				
 			
 				
-				<h3 id="User.ResetPassword">func (*User) <a href="/target/user.go?s=3668:3708#L88">ResetPassword</a></h3>
-				<pre>func (this *User) ResetPassword() string</pre>
+				<h3 id="User.ResetPassword">func (*User) <a href="/target/user.go?s=3681:3763#L89">ResetPassword</a></h3>
+				<pre>func (this *User) ResetPassword(encodedUserKey string, c appengine.Context) string</pre>
 				<p>
 ユーザのパスワードをリセットする(16文字のランダム文字列)
 リセット後のパスワードを返す

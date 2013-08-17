@@ -110,4 +110,24 @@ $(function() {
 			}
 		});
 	});
+	
+	// パスワード変更ボタン
+	$('#change_pass').on('click', function() {
+		var pass = window.prompt('新しいパスワードを入力してください');
+		if(pass == '') {
+			return;
+		}
+		$.ajax('change_password', {
+			method: 'POST',
+			data: {
+				password: pass
+			},
+			success: function() {
+				alert('パスワードを変更しました');
+			},
+			error: function() {
+				alert('パスワードが変更できませんでした');
+			}
+		});
+	});
 });
