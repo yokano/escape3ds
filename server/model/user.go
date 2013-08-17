@@ -2,6 +2,7 @@ package model
 
 import (
 	"strings"
+	"appengine"
 	"appengine/datastore"
 	"bytes"
 	"fmt"
@@ -93,6 +94,21 @@ func (this *User) HashPassword(pass string, salt string) ([]byte, string) {
 	return hashedPass, salt
 }
 
+// ユーザのパスワードをリセットする(16文字のランダム文字列)
+// リセット後のパスワードを返す
+func (this *User) ResetPassword(encodedUserKey string, c appengine.Context) string {
+	rawPass := ""
+	for i := 0; i < 2; i++ {
+		rawPass = strings.Join([]string{rawPass, GetRandomizedString()}, "")
+	}
+	this.Pass, this.Salt = this.HashPassword(rawPass, "")
+	
+	model := NewModel(c)
+	model.UpdateUser(encodedUserKey, this)
+	
+	return rawPass
+}
+
 // データストアに引数として渡したユーザを新規追加する。
 // 追加が完了したらユーザキーを返す。
 func (this *Model) AddUser(user *User) string {
@@ -172,6 +188,34 @@ func (this *Model) GetUser(encodedKey string) *User {
 	return user
 }
 
+// メールアドレスからユーザを取得する
+// 存在したらエンコード済みキーとユーザを返す
+// 複数存在したり、存在しなかったら空ユーザを返す
+// このシステムでは同じメールアドレスは２つ登録できない仕様
+func (this *Model) GetUserFromMail(mail string) (string, *User) {
+	query := datastore.NewQuery("User").Filter("Mail =", mail)
+	iterator := query.Run(this.c)
+	count, err := query.Count(this.c)
+	Check(this.c, err)
+
+	user := new(User)
+	var userKey *datastore.Key
+	userKey = nil
+	if count == 1 {
+		userKey, err = iterator.Next(user)
+		Check(this.c, err)
+	} else if count == 0 {
+		this.c.Warningf("存在しないメールアドレスのユーザを検索しました")
+	} else if count > 1 {
+		this.c.Warningf("同じメールアドレスのユーザが複数存在します")
+	}
+	
+	encodedUserKey := ""
+	if userKey != nil {
+		encodedUserKey = userKey.Encode()
+	}
+	return encodedUserKey, user
+}
 
 // ユーザを仮登録データベースに登録する。
 // 仮登録されたユーザは24時間以内に本登録する。
@@ -329,4 +373,12 @@ func (this *Model) GetGameList(encodedUserKey string) map[string]*Game {
 	}
 	
 	return result
+}
+
+// ユーザを更新
+func (this *Model) UpdateUser(encodedUserKey string, user *User) {
+	userKey, err := datastore.DecodeKey(encodedUserKey)
+	Check(this.c, err)
+	_, err = datastore.Put(this.c, userKey, user)
+	Check(this.c, err)
 }

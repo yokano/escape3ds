@@ -27,4 +27,30 @@ $(function() {
 			}
 		});
 	});
+	
+	// パスワード忘れたボタン
+	$('#forget').on('click', function() {
+		var confirm = window.confirm('パスワードを再発行しますか？');
+		if(!confirm) {
+			return;
+		}
+		
+		var mail = window.prompt('登録したメールアドレスを入力してください');
+		if(mail == '') {
+			return;
+		}
+		
+		$.ajax('/reset_password', {
+			method: 'POST',
+			data: {
+				mail: mail
+			},
+			success: function() {
+				alert('新しいパスワードをメールアドレスへ送信しました。ご確認ください。');
+			},
+			error: function() {
+				alert('パスワードの再発行に失敗しました。正しいメールアドレスを入力したかご確認ください。');
+			}
+		});
+	});
 });

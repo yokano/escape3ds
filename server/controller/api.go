@@ -304,3 +304,15 @@ func (this *Controller) ByeGuest(w http.ResponseWriter, r *http.Request) {
 		this.Logout(w, r)
 	}	
 }
+
+// パスワードの再発行
+func (this *Controller) ResetPassword(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	mail := r.FormValue("mail")
+	model := NewModel(c)
+	key, user := model.GetUserFromMail(mail)
+	rawPassword := user.ResetPassword(key, c)
+
+	// メール送信
+	SendMail(c, "infomation@escape-3ds.appspotmail.com", user.Mail, "パスワードのリセットが完了しました", fmt.Sprintf(RESET_PASSWORD_MAIL_BODY, user.Name, rawPassword))
+}

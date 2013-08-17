@@ -60,6 +60,7 @@ func (this *Controller) Handle() {
 	table["/update_leave_code"] = (*Controller).UpdateLeaveCode
 	table["/guest"] = (*Controller).GuestLogin
 	table["/bye_guest"] = (*Controller).ByeGuest
+	table["/reset_password"] = (*Controller).ResetPassword
 
 	// blob
 	table["/uploaded"] = (*Controller).Uploaded
