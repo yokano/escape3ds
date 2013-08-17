@@ -72,7 +72,19 @@ h1 {
 
 .registration {
 	position: absolute;
-	top: 150px;
+	top: 135px;
 	left: 300px;
 	width: 250px;
+}
+
+.explain {
+	margin-top: 25px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 600px;
+	font-size: small;
+}
+
+a {
+	color: lightblue;
 }
