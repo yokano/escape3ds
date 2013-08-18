@@ -109,12 +109,26 @@ func (this *Controller) Logout(w http.ResponseWriter, r *http.Request) {
 // 24時間以内に登録されなかった場合のキャンセル処理を予約する。
 func (this *Controller) InterimRegistration(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+	model := NewModel(c)
 	
 	name := r.FormValue("name")
 	mail := r.FormValue("mail")
-	pass := r.FormValue("password")
+	pass := r.FormValue("pass")
 	
-	model := NewModel(c)
+	if name == "" {
+		fmt.Fprintf(w, `{"result":false, "msg":"ユーザ名が入力されていません"}`)
+		return
+	} else if mail == "" {
+		fmt.Fprintf(w, `{"result":false, "msg":"メールアドレスが入力されていません"}`)
+		return
+	} else if pass == "" {
+		fmt.Fprintf(w, `{"result":false, "msg":"パスワードが入力されていません"}`)
+		return
+	} else if model.ExistMail(mail) {
+		fmt.Fprintf(w, `{"result":false, "msg":"既に登録されているメールアドレスです"}`)
+		return
+	}
+	
 	key := model.InterimRegistration(name, mail, pass)
 	
 	SendMail(c, "infomation@escape-3ds.appspotmail.com", mail, "仮登録完了のお知らせ", fmt.Sprintf(INTERIM_MAIL_BODY, name, key))
@@ -129,8 +143,7 @@ func (this *Controller) InterimRegistration(w http.ResponseWriter, r *http.Reque
 	task.Delay = delay
 	taskqueue.Add(c, task, "default")
 	
-	view := NewView(c, w)
-	view.InterimRegistration()
+	fmt.Fprintf(w, `{"result":true}`)
 }
 
 // 仮登録済みのユーザを本登録する。

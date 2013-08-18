@@ -238,6 +238,11 @@ func (this *Model) Registration(encodedKey string) {
 	err = datastore.Get(this.c, key, interimUser)
 	Check(this.c, err)
 	
+	if this.ExistMail(interimUser.Mail) {
+		this.c.Warningf("既に登録されているメールアドレスが登録されようとしました")
+		return
+	}
+	
 	params := make(map[string]string, 5)
 	params["user_type"] = "normal"
 	params["user_name"] = interimUser.Name
@@ -319,6 +324,17 @@ func (this *Model) ExistInterimUser(encodedInterimKey string) bool {
 	
 	err = datastore.Get(this.c, interimKey, new(InterimUser))
 	if(err == nil) {
+		return true
+	}
+	return false
+}
+
+// 指定されたメールアドレスが登録されているか調べる
+func (this *Model) ExistMail(mail string) bool {
+	query := datastore.NewQuery("User").Filter("Mail =", mail)
+	count, err := query.Count(this.c)
+	Check(this.c, err)
+	if count >= 1 {
 		return true
 	}
 	return false

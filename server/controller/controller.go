@@ -38,6 +38,7 @@ func (this *Controller) Handle() {
 	table["/event_editor"] = (*Controller).EventEditor
 	table["/enter_event_editor"] = (*Controller).EnterEventEditor
 	table["/leave_event_editor"] = (*Controller).LeaveEventEditor
+	table["/registration_successed"] = (*Controller).RegistrationSuccessed
 
 	// oauth
 	table["/login_twitter"]     = (*Controller).LoginTwitter

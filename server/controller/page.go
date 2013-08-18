@@ -35,6 +35,13 @@ func (this *Controller) Editor(w http.ResponseWriter, r *http.Request) {
 	view.Editor(gameKey)
 }
 
+// 仮登録完了ページ
+func (this *Controller) RegistrationSuccessed(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	view := NewView(c, w)
+	view.InterimRegistration()
+}
+
 // ゲーム一覧の表示。ログインした状態でトップページを表示するとここへ飛ぶ。
 func (this *Controller) Gamelist(w http.ResponseWriter, r *http.Request) {
 	userKey := this.Session(w, r)

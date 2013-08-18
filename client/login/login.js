@@ -53,4 +53,31 @@ $(function() {
 			}
 		});
 	});
+	
+	// 新規登録
+	var registration = $('.registration');
+	registration.find('.submit').on('click', function() {
+		var name = registration.find('.name').val();
+		var mail = registration.find('.mail').val();
+		var pass = registration.find('.password').val();
+		$.ajax('/interim_registration', {
+			method: 'POST',
+			data: {
+				name: name,
+				mail: mail,
+				pass: pass
+			},
+			dataType: 'json',
+			success: function(data) {
+				if(data.result == false) {
+					alert(data.msg);
+					return;
+				}
+				location.href = "/registration_successed";
+			},
+			error: function(data) {
+				console.log('registration error');
+			}
+		});
+	});
 });

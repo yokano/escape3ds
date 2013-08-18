@@ -46,18 +46,16 @@
 			
 			<div class="registration login_board">
 				- 新規登録 -
-				<form action="/interim_registration" method="post">
-					<div>
-						<label>ユーザ名：<input type="text" name="name"></input></label>
-					</div>
-					<div>
-						<label>メールアドレス:<input type="text" name="mail"></input></label>
-					</div>
-					<div>
-						<label>パスワード:<input type="password" name="password"></input></label>
-					</div>
-					<input type="submit"></input>
-				</form>
+				<div>
+					<label>ユーザ名：<input class="name" type="text"></input></label>
+				</div>
+				<div>
+					<label>メールアドレス:<input class="mail" type="text"></input></label>
+				</div>
+				<div>
+					<label>パスワード:<input class="password" type="password"></input></label>
+				</div>
+				<button class="submit">送信</button>
 			</div>
 			
 			<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
