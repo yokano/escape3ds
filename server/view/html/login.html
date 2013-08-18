@@ -34,13 +34,15 @@
 				<div>
 					<label>パスワード:<input type="password" class="pass"></input></label>
 				</div>
-				<button class="submit">送信</button>
-				<button id="forget">パスワードを忘れた</button>
+				<div class="buttons">
+					<button class="submit">送信</button>
+					<button id="forget">パスワードを忘れた</button>
+				</div>
 			</div>
 			
 			<div class="trial login_board">
 				- ゲストとしてログイン -
-				<p>登録なしで 24 時間有効なゲストアカウントを発行します。とりあえず使ってみたい方はこちらからどうぞ。</p>
+				<div class="description">登録なしで 24 時間有効なゲストアカウントを発行します。とりあえず使ってみたい方はこちらからどうぞ。</div>
 				<a href="/guest"><button>ゲストとしてログイン</button></a>
 			</div>
 			
@@ -55,6 +57,12 @@
 				<div>
 					<label>パスワード:<input class="password" type="password"></input></label>
 				</div>
+				<button class="submit">送信</button>
+			</div>
+			
+			<div class="inquiry login_board">
+				- バグ報告・新機能要望・質問等 -
+				<textarea rows="3" cols="30"></textarea>
 				<button class="submit">送信</button>
 			</div>
 			

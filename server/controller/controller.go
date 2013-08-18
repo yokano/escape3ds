@@ -64,6 +64,7 @@ func (this *Controller) Handle() {
 	table["/reset_password"] = (*Controller).ResetPassword
 	table["/change_password"] = (*Controller).ChangePassword
 	table["/rename_game"] = (*Controller).RenameGame
+	table["/inquiry"] = (*Controller).Inquiry
 
 	// blob
 	table["/uploaded"] = (*Controller).Uploaded

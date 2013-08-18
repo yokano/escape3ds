@@ -14,6 +14,10 @@ package config
 //var FACEBOOK_CLIENT_ID = ""
 //var FACEBOOK_CLIENT_SECRET = ""
 
+// 管理者のメールアドレス
+// お問い合わせフォームのメッセージ送信先として使用される
+//var ADMIN_MAIL = ""
+
 // ユーザ新規登録時に送られるメールテンプレート
 //var INTERIM_MAIL_BODY = `
 //

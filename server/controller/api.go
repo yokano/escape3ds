@@ -356,3 +356,15 @@ func (this *Controller) RenameGame(w http.ResponseWriter, r *http.Request) {
 	model.UpdateGame(gameKey, game)
 	fmt.Fprintf(w, `{}`)
 }
+
+// 問合せ
+func (this *Controller) Inquiry(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	body := r.FormValue("body")
+	if body == "" {
+		c.Warningf("メッセージ無しで問合せが実行されました")
+		return
+	}
+	SendMail(c, "infomation@escape-3ds.appspotmail.com", ADMIN_MAIL, "ESCAPE-3DS にお問い合わせが来ました", fmt.Sprintf(body))
+	fmt.Fprintf(w, `{}`)
+}

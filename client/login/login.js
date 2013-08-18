@@ -80,4 +80,27 @@ $(function() {
 			}
 		});
 	});
+	
+	// お問い合わせ
+	var inquiry = $('.inquiry');
+	inquiry.find('.submit').on('click', function() {
+		var body = inquiry.find('textarea').val();
+		if(body == '') {
+			alert('お問い合わせ内容が入力されていません');
+			return;
+		}
+		$.ajax('/inquiry', {
+			method: 'POST',
+			data: {
+				body: body
+			},
+			success: function() {
+				alert('メッセージの送信が完了しました');
+				inquiry.find('textarea').val('');
+			},
+			error: function() {
+				alert('メッセージの送信に失敗しました');
+			}
+		});
+	});
 });
