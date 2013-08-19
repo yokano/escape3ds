@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="../lib/jqueryui/css/jquery-ui.min.css"></link>
 	</head>
 	<body>
+		<!-- サーバからのデータ埋め込み -->
 		<script>
 			var trigger = {{.trigger}};
 			var eventId;
@@ -55,7 +56,7 @@
 			<div type="removeItem" class="stack block method"><select class="item"></select><br>を削除</div>
 		</script>
 		<script id="message_template" type="text/template">
-			<div type="message" class="stack block method">メッセージを表示<textarea class="message"></textarea></div>
+			<div type="message" class="stack block method">メッセージを表示<br><button>メッセージ編集</button></div>
 		</script>
 		<script id="hide_template" type="text/template">
 			<div type="hide" class="stack block method">イベントを隠す</div>
@@ -80,7 +81,14 @@
 				<option value="currentItem">選択している</option>
 			</select>
 		</script>
-		
+		<script id="message_dialog_template" type="text/template">
+			<textarea class="message" rows="10" cols="40"><%= attr %></textarea>
+			<div>
+				<span class="small">※１行開けるとページが切り替わります</span>
+				<button class="close">閉じる</button>
+			</div>
+		</script>
+				
 		<!-- main -->
 		<script src="/client/lib/functions.js"></script>
 		<script src="model.js"></script>

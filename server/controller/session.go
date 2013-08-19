@@ -50,11 +50,11 @@ func (this *Controller) DeleteCookie(c appengine.Context, w http.ResponseWriter)
 	http.SetCookie(w, cookie)
 }
 
-// 現在の通信にセッションが存在するかどうかを調べる。
-// ページ表示時に必ず実行する。
-// 持っていなければトップページへ飛ばして空文字を返す。
-// 持っていたら対応するユーザIDを返す。
-// これによってログインせずに内部ページを表示することを防止する。
+// ユーザがログインしているかどうか、クライアントからセッションIDを受け取って調べる。
+// ログインが必要な処理の前にかならず実行すること。
+// ログインしていなければトップページへ飛ばして空文字を返す。
+// 有効なセッションIDを持っていたら対応するユーザIDを返す。
+// このとき、最後に操作した時刻を現在として、セッションの有効期限を設定し直す。
 func (this *Controller) Session(w http.ResponseWriter, r *http.Request) string {
 	c := appengine.NewContext(r)
 	sessionId := this.GetSession(c, r)

@@ -12,7 +12,7 @@ var RootView = Backbone.View.extend({
 		
 		var blockListView = new BlockListView();
 		this.$el.append(blockListView.render().el);
-		
+				
 		return this;
 	}
 });
@@ -322,9 +322,68 @@ var RemoveItemBlockView = MethodBlockView.extend({
 
 /**
  * メッセージ表示ブロック
+ * メッセージを編集するためのダイアログ(MessageEditorView)を内部に持つ
  */
 var MessageBlockView = MethodBlockView.extend({
-	template: _.template($('#message_template').html())
+	template: _.template($('#message_template').html()),
+	events: {
+		'click button': 'editButtonHasClicked'
+	},
+	editButtonHasClicked: function() {
+		this.messageEditorView.$el.dialog('open');
+	},
+	render: function() {
+		MethodBlockView.prototype.render.call(this);
+
+		var messageEditorView = new MessageEditorView({model: this.model});
+		this.$el.append(messageEditorView.render().el);
+		messageEditorView.$el.ready(function() {
+			messageEditorView.trigger('ready');
+		})
+		this.messageEditorView = messageEditorView;
+		
+		return this;
+	}
+});
+
+/**
+ * メッセージ編集ダイアログ
+ */
+var MessageEditorView = Backbone.View.extend({
+	tagName: 'div',
+	className: 'message_editor',
+	template: _.template($('#message_dialog_template').html()),
+	attributes: {
+		title: 'メッセージ編集'
+	},
+	initialize: function() {
+		this.on('ready', this.domHasReady);
+	},
+	events: {
+		'click .close': 'closeButtonHasClicked',
+		'change .message': 'messageHasChanged'
+	},
+	render: function() {
+		var view = this;
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
+	},
+	closeButtonHasClicked: function() {
+		this.$el.dialog('close');
+	},
+	domHasReady: function() {
+		var view = this;
+		this.$el.ready(function() {
+			view.$el.dialog({
+				autoOpen: false,
+				width: 400
+			});
+		});
+	},
+	messageHasChanged: function() {
+		var body = this.$el.find('.message').val();
+		this.model.set('attr', body);
+	}
 });
 
 /**
@@ -538,6 +597,8 @@ var IfBlockView = Backbone.View.extend({
 		return this;
 	}
 });
+
+
 
 /**
  * ブロックの種類リスト

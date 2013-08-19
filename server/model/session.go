@@ -18,7 +18,7 @@ func (this *Model) StartSession(userKey string) string {
 	}
 	expire := time.Now().Add(time.Hour * 24)
 	
-	data := make(map[string]string, 2)
+	data := make(map  [string]string, 2)
 	data["u"] = userKey
 	data["e"] = expire.String()
 	

@@ -239,3 +239,21 @@ html, body, #root {
 select {
 	width: 100px;
 }
+
+button {
+	width: 100px;
+	height: 25px;
+	cursor: pointer;
+	-webkit-transition-duration: 0.3s;
+}
+button:hover {
+	background-color: white;
+}
+
+.message {
+	widht: 100%;
+}
+
+.small {
+	font-size: small;
+}
