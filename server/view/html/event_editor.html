@@ -82,9 +82,10 @@
 			</select>
 		</script>
 		<script id="message_dialog_template" type="text/template">
-			<textarea class="message" rows="10" cols="40"><%= attr %></textarea>
+			<textarea class="message" rows="10" cols="34"><%= attr %></textarea>
 			<div>
-				<span class="small">※１行開けるとページが切り替わります</span>
+				<span class="small">※空行を１行入れるとページが切り替わります</span><br>
+				<span class="small">※１ページ当たり全角17文字×3行表示できます</span>
 				<button class="close">閉じる</button>
 			</div>
 		</script>

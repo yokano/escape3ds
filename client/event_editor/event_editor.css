@@ -251,7 +251,7 @@ button:hover {
 }
 
 .message {
-	widht: 100%;
+	resize: vertical;
 }
 
 .small {

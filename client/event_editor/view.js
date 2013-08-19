@@ -376,7 +376,7 @@ var MessageEditorView = Backbone.View.extend({
 		this.$el.ready(function() {
 			view.$el.dialog({
 				autoOpen: false,
-				width: 400
+				width: 360
 			});
 		});
 	},

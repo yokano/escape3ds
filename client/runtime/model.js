@@ -263,6 +263,25 @@ var Event = Backbone.Model.extend({
 				this.changeImage(method.attr);
 				break;
 			}
+			case 'message': {
+				// 改行コードを \n に統一
+				var message = method.attr.replace('\r\n', '\n');
+				message = method.attr.replace('\r', '\n');
+
+				var lines = method.attr.split('\n')
+				var pages = [''];
+				var pageNum = 0;
+				for(var i = 0; i < lines.length; i++) {
+					if(lines[i] == '') {
+						pageNum++;
+						pages[pageNum] = '';
+					} else {
+						pages[pageNum] += lines[i] + '<br>';
+					}
+				}
+				game.get('message').show(pages);
+				break;
+			}
 			case 'if': {
 				// 条件文の真偽を判断
 				var condition;
