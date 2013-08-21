@@ -65,6 +65,7 @@ func (this *Controller) Handle() {
 	table["/change_password"] = (*Controller).ChangePassword
 	table["/rename_game"] = (*Controller).RenameGame
 	table["/inquiry"] = (*Controller).Inquiry
+	table["/timeout"] = (*Controller).Timeout
 
 	// blob
 	table["/uploaded"] = (*Controller).Uploaded
@@ -78,6 +79,7 @@ func (this *Controller) Handle() {
 	table["/get_interim_users"] = (*Controller).GetInterimUsers
 	table["/clear_blob"]        = (*Controller).ClearBlob
 	table["/cancel"]			= (*Controller).Cancel
+	table["/reset_session"]     = (*Controller).ResetSession
 
 	for url, callback := range table {
 		http.HandleFunc(url, this.GetHandler(callback))

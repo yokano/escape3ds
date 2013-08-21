@@ -28,6 +28,10 @@ handlers:
 - url: /clear_blob
   login: admin
   script: _go_app
+# session のクリア
+- url: /reset_session
+  login: admin
+  script: _go_app
 
 - url: /.*
   script: _go_app

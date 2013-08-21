@@ -81,7 +81,7 @@ func (this *Controller) GuestLogin(w http.ResponseWriter, r *http.Request) {
 	// 24時間後にゲストユーザを削除
 	values := url.Values{}
 	values.Set("user_key", userKey)
-	delay, err := time.ParseDuration("10s")
+	delay, err := time.ParseDuration("24h")
 	Check(c, err)
 
 	task := taskqueue.NewPOSTTask("/bye_guest", values)
@@ -92,7 +92,8 @@ func (this *Controller) GuestLogin(w http.ResponseWriter, r *http.Request) {
 	view.Gamelist(userKey)
 }
 
-// ログアウト。クッキーと memcache に保存されたセッション情報を削除する。
+// ログアウト。クッキーと memcache に保存されたセッション情報を削除する
+// セッションタイムアウト用のタスクも削除する
 func (this *Controller) Logout(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	cookie, err := r.Cookie("escape3ds")
@@ -102,6 +103,11 @@ func (this *Controller) Logout(w http.ResponseWriter, r *http.Request) {
 	model := NewModel(c)
 	model.RemoveSession(sessionId)
 	this.DeleteCookie(c, w)
+	
+	// GAE の taskqueue.Lease() が正常に動作しないので治ってから実装する
+//	_, err = taskqueue.LeaseByTag(c, 10, "Session", 100, "tag")
+//	Check(c, err)
+//	c.Debugf("Lease")
 }
 
 // Ajax のリクエストパラメータとして渡されたユーザを仮登録データベースに保存して、
@@ -367,4 +373,13 @@ func (this *Controller) Inquiry(w http.ResponseWriter, r *http.Request) {
 	}
 	SendMail(c, "infomation@escape-3ds.appspotmail.com", ADMIN_MAIL, "ESCAPE-3DS にお問い合わせが来ました", fmt.Sprintf(body))
 	fmt.Fprintf(w, `{}`)
+}
+
+// しばらく操作しなかった場合にセッションを終了する
+// config.go の SESSION_TIME_LIMIT で時間を設定する
+func (this *Controller) Timeout(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	sessionId := r.FormValue("session_id")
+	this.CloseSession(c, sessionId, w, r)
+	c.Debugf("セッションを削除します")
 }

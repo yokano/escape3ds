@@ -2,7 +2,10 @@ package controller
 
 import (
 	"net/http"
+//	"net/url"
+//	"time"
 	"appengine"
+//	"appengine/taskqueue"
 	. "server/model"
 	. "server/config"
 	. "server/lib"
@@ -15,8 +18,20 @@ func (this *Controller) StartSession(w http.ResponseWriter, r *http.Request, key
 	c := appengine.NewContext(r)
 	model := NewModel(c)
 	sessionId := model.StartSession(key)
-	cookie := NewCookie("escape3ds", sessionId, HOSTNAME, "/", 24)
+	cookie := NewCookie("escape3ds", sessionId, HOSTNAME, "/", 1)
 	http.SetCookie(w, cookie)
+	
+	// セッションタイムアウトの設定（SESSION_TIME_OUT は config.go で設定する）
+//	values := url.Values{}
+//	values.Add("session_id", sessionId)
+//	delay, err := time.ParseDuration(SESSION_TIME_LIMIT)
+//	Check(c, err)
+//	task := taskqueue.NewPOSTTask("/timeout", values)
+//	task.Delay = delay
+//	task.Name = sessionId
+//	_, err = taskqueue.Add(c, task, "Session")
+//	Check(c, err)
+//	c.Debugf("セッション開始しました。制限時間を設定しました。")
 }
 
 // ブラウザの Cookie に保存されているセッションIDを取得する。
@@ -36,9 +51,7 @@ func (this *Controller) GetSession(c appengine.Context, r *http.Request) string 
 }
 
 // セッションを終了する。
-func (this *Controller) CloseSession(c appengine.Context, w http.ResponseWriter, r *http.Request) {
-	sessionId := this.GetSession(c, r)
-		
+func (this *Controller) CloseSession(c appengine.Context, sessionId string, w http.ResponseWriter, r *http.Request) {
 	model := NewModel(c)
 	model.RemoveSession(sessionId)
 	this.DeleteCookie(c, w)
@@ -72,6 +85,9 @@ func (this *Controller) Session(w http.ResponseWriter, r *http.Request) string {
 		http.Redirect(w, r, "/", 302)
 		return ""
 	}
+	
+//	tasks, err := taskqueue.Lease(c, 1, `taskname`, 30)
+//	Check(c, err)
 	
 	return userKey
 }

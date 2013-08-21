@@ -14,6 +14,8 @@ package config
 //var FACEBOOK_CLIENT_ID = ""
 //var FACEBOOK_CLIENT_SECRET = ""
 
+//var SESSION_TIME_LIMIT = "30m"
+
 // 管理者のメールアドレス
 // お問い合わせフォームのメッセージ送信先として使用される
 //var ADMIN_MAIL = ""

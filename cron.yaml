@@ -1,0 +1,4 @@
+cron:
+- description: セッションのリセット。taskqueue.Lease() が正常に動かないため。
+  url: /reset_session
+  schedule: every day 03:00

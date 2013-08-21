@@ -57,3 +57,11 @@ func (this *Controller) ClearBlob(w http.ResponseWriter, r *http.Request) {
 	model.ClearBlob()
 	fmt.Fprintf(w, "{}")
 }
+
+// セッションのリセット
+// 管理者専用
+func (this *Controller) ResetSession(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	model := NewModel(c)
+	model.ResetSession()
+}

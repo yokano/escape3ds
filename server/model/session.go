@@ -53,3 +53,9 @@ func (this *Model) GetUserKeyFromSession(sessionId string) string {
 	Check(this.c, err)
 	return data["u"]
 }
+
+// セッションのクリア
+func (this *Model) ResetSession() {
+	err := memcache.Flush(this.c)
+	Check(this.c, err)
+}
