@@ -44,6 +44,7 @@
 						<label>
 							<input id="change_scene_img" name="file" type="file"></input>
 						</label>
+						<button id="remove_scene_background">背景画像を削除</button>
 						<div>
 							<img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>">
 						</div>
@@ -87,12 +88,6 @@
 					</div>
 				<div><button id="edit_event">イベントを編集</button></div>
 				<div><button id="remove_event">イベントを削除</button></div>
-				<!--
-				<div id="event_editor">
-					<div>JavaScriptコード</div>
-					<textarea id="event_code" rows="25" cols="35"><%= code %></textarea>
-				</div>
-				-->
 			</div>
 		</script>
 

@@ -23,8 +23,10 @@ var SceneView = Backbone.View.extend({
 		'dragenter .dropbox': 'eventImageHasEntered',
 		'click .scene_img': 'sceneImageHasClicked',
 		'click #edit_enter_event': 'editEnterEventHasClicked',
-		'click #edit_leave_event': 'editLeaveEventHasClicked'
+		'click #edit_leave_event': 'editLeaveEventHasClicked',
+		'click #remove_scene_background': 'removeSceneBackgroundHasClicked'
 	},
+	
 	// 描画処理
 	render: function() {
 		if(this.model == null) {
@@ -298,5 +300,14 @@ var SceneView = Backbone.View.extend({
 		if(eventEditorWindow == null) {
 			alert('イベントエディタの起動に失敗しました。ポップアップのブロックを解除してください。');
 		}
+	},
+	
+	/**
+	 * シーンの背景画像削除ボタンがクリックされた
+	 */
+	removeSceneBackgroundHasClicked: function() {
+		this.model.set('background', '');
+		$('#change_scene_img').val('');
+		return false;
 	}
 });
