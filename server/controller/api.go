@@ -247,7 +247,7 @@ func (this *Controller) DeleteGame(w http.ResponseWriter, r *http.Request) {
 // URL を解析して更に細かいハンドラへ処理を割り振る。
 func (this *Controller) SyncHandler(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	path := strings.Split(r.URL.String(), "/") // "[0]/[1]sync/[2]kind/[3]id"
+	path := strings.Split(r.URL.Path, "/") // "[0]/[1]sync/[2]kind/[3]id"
 	
 	model := NewModel(c)
 	switch path[2] {
@@ -381,5 +381,4 @@ func (this *Controller) Timeout(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	sessionId := r.FormValue("session_id")
 	this.CloseSession(c, sessionId, w, r)
-	c.Debugf("セッションを削除します")
 }
