@@ -45,7 +45,7 @@
 							<input id="change_scene_img" name="file" type="file"></input>
 						</label>
 						<button id="remove_scene_background">背景画像を削除</button>
-						<div>
+						<div id="scene_img_container">
 							<img class="scene_img" src="<% if(background == '') { %>/client/editor/img/black.png<% } else { %>/download?blobkey=<%= background %><% } %>">
 						</div>
 					</form>

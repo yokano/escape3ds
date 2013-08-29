@@ -44,6 +44,12 @@ button:hover {
 .scene_img {
 	cursor: pointer;
 }
+#scene_img_container {
+	width: 75px;
+}
+#scene_img_container:hover {
+	opacity: 0.5;
+}
 
 #add_scene {
 	padding: 3px;
