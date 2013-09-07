@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="/client/gamelist/gamelist.css"></link>
+		<link rel="stylesheet" href="/client/lib/jqueryui/css/jquery-ui.min.css"></link>
 		<title>ゲーム一覧</title>
 	</head>
 	<body>
@@ -37,13 +38,20 @@
 					{{end}}
 				</div>
 				<a href="/editor?game_key={{$key}}"><button class="edit">作る</button></a>
+				<button class="share">共有</button>
 				<button class="rename">名前変更</button>
 				<button class="delete">消す</button>
 			</li>
 			{{end}}
 		</ul>
 		
+		<div id="share_dialog" title="ゲームの共有">
+			<p>この URL を 3DS で開くとゲームを遊ぶことができます</p>
+			<input type="text" id="game_play_url"></input>
+		</div>
+		
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+		<script src="/client/lib/jqueryui/js/jquery-ui.min.js"></script>
 		<script src="/client/gamelist/gamelist.js"></script>
 		<script>
 			var userKey = "{{.userKey}}";

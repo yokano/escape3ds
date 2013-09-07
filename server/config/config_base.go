@@ -14,6 +14,8 @@ package config
 //var FACEBOOK_CLIENT_ID = ""
 //var FACEBOOK_CLIENT_SECRET = ""
 
+//var GOOGLE_API_KEY = ""
+
 //var SESSION_TIME_LIMIT = "30m"
 
 // 管理者のメールアドレス

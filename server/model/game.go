@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	. "server/lib"
+	. "server/config"
 )
 
 // ゲームオブジェクト。ゲームはそれを所有するユーザにぶら下がる形で定義される。
@@ -19,6 +20,7 @@ type Game struct {
 	FirstScene string `json:"firstScene"`  // 最初のシーンのエンコード済みキー
 	SceneList map[string]*Scene `json:"sceneList" datastore:"-"`  // シーン一覧
 	ItemList map[string]*Item `json:"itemList" datastore:"-"`  // アイテム一覧
+	ShortURL string `json:"shortURL"`  // 短縮URL
 }
 
 // 新しいゲームオブジェクトを作成して返す。新しく作られるゲームのパラメータを格納した map 引数として渡す。
@@ -41,6 +43,26 @@ func (this *Model) AddGame(game *Game, encodedUserKey string) string {
 	incompleteKey := datastore.NewIncompleteKey(this.c, "Game", userKey)
 	completeKey, err := datastore.Put(this.c, incompleteKey, game)
 	Check(this.c, err)
+	
+	// 短縮URLを取得する
+	key := GOOGLE_API_KEY
+	longUrl := Join("http://", HOSTNAME, "/runtime?game_key=", completeKey.Encode())
+	requestBody := Join(`{"key":"`, key, `","longUrl":"`, longUrl, `"}`)
+	params := make(map[string]string, 1)
+	params["Content-Type"] = "application/json"
+	response := Request(this.c, "POST", "https://www.googleapis.com/urlshortener/v1/url", params, requestBody)
+
+	responseBody := make([]byte, response.ContentLength)
+	_, err = response.Body.Read(responseBody)
+	Check(this.c, err)
+
+	result := make(map[string]string, 3)
+	err = json.Unmarshal(responseBody, &result)
+	Check(this.c, err)
+	
+	game.ShortURL = result["id"]
+	this.UpdateGame(completeKey.Encode(), game)
+	
 	return completeKey.Encode()
 }
 

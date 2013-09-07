@@ -3,6 +3,18 @@
  * @file
  */
 $(function() {
+	// ゲーム共有ダイアログを隠す
+	var shareDialog = $('#share_dialog').dialog({
+		autoOpen: false
+	});
+
+	// ゲーム共有ボタン
+	$('.share').on('click', function() {
+		var gameKey = $(this).parent().attr('key');
+		var gamePlayURL = 'http://' + location.host + '/runtime?game_key=' + gameKey;
+		shareDialog.append('<p>' + gamePlayURL + '</p>');
+		$('#share_dialog').dialog('open');
+	});
 
 	// ゲーム新規作成ボタン
 	$('#add_game').click(function() {
