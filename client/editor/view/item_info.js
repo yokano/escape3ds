@@ -92,6 +92,7 @@ var ItemInfoView = Backbone.View.extend({
 			method: 'POST',
 			contentType: false,
 			processData: false,
+			async: false,
 			data: formData,
 			dataType: 'json',
 			error: function() {

@@ -79,6 +79,7 @@ var EventEditorView = Backbone.View.extend({
 			data: formData,
 			contentType: false,
 			processData: false,
+			async: false,
 			dataType: 'json',
 			error: function() {
 				console.log('error');

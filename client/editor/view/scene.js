@@ -102,6 +102,7 @@ var SceneView = Backbone.View.extend({
 			processData: false,
 			data: formData,
 			dataType: 'json',
+			async: false,
 			error: function() {
 				console.log('error');
 			},
@@ -257,6 +258,7 @@ var SceneView = Backbone.View.extend({
 			error: function() {
 				console.log('error');
 			},
+			async: false,
 			success: function(data) {
 				// 画像サイズを取得
 				var image = new Image();
