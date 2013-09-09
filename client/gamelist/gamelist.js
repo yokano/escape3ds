@@ -9,13 +9,14 @@ $(function() {
 	});
 
 	// ゲーム共有ボタン
-	$('.share').on('click', function() {
+	var shareButtonHasClicked = function() {
 		var gameKey = $(this).parent().attr('key');
-		var gamePlayURL = 'http://' + location.host + '/runtime?game_key=' + gameKey;
-		shareDialog.append('<p>' + gamePlayURL + '</p>');
+		var url = $(this).parent().attr('url') || $(this).attr('url');
+		shareDialog.find('#game_play_url').val(url);
 		$('#share_dialog').dialog('open');
-	});
-
+	};
+	$('.share').on('click', shareButtonHasClicked);
+	
 	// ゲーム新規作成ボタン
 	$('#add_game').click(function() {
 		var div = $('#add_game_div');
@@ -35,12 +36,14 @@ $(function() {
 				game_description: description
 			},
 			dataType: 'json',
+			async: false,
 			success: function(data) {
-				var li = $('<li class="game" key="' + data.key + '"></li>');
+				var li = $('<li class="game" key="' + data.key + '" url="' + data.url + '"></li>');
 				li.append('<div class="title">' + data.name + '</div>');
 				li.append('<div class="description">' + data.description + '</div>');
 				li.append('<div class="thumbnail"><img width="200" src="/client/gamelist/img/black.png"></div>');
 				li.append('<a href="/editor?game_key=' + data.key + '"><button>作る</button></a>');
+				li.append('<button class="share">共有</button>').on('click', shareButtonHasClicked);
 				li.append('<button class="rename">名前変更</button>');
 				li.append('<button class="delete">消す</button>');
 				li.hide();

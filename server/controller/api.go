@@ -208,8 +208,9 @@ func (this *Controller) AddGame(w http.ResponseWriter, r *http.Request) {
 	params["user_key"] = userKey
 	game := model.NewGame(params)
 	gameKey := model.AddGame(game, userKey)
+	gameURL := game.ShortURL
 	
-	fmt.Fprintf(w, `{"key":"%s", "result":true, "name":"%s", "description":"%s"}`, gameKey, gameName, gameDescription)
+	fmt.Fprintf(w, `{"key":"%s", "result":true, "name":"%s", "description":"%s", "url":"%s"}`, gameKey, gameName, gameDescription, gameURL)
 }
 
 // ゲームの削除。

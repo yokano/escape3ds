@@ -66,7 +66,7 @@ func (this *Controller) Handle() {
 	table["/rename_game"] = (*Controller).RenameGame
 	table["/inquiry"] = (*Controller).Inquiry
 	table["/timeout"] = (*Controller).Timeout
-
+	
 	// blob
 	table["/uploaded"] = (*Controller).Uploaded
 	table["/download"] = (*Controller).Download

@@ -27,7 +27,7 @@
 		</div>
 		<ul id="gamelist">
 			{{range $key, $val := .gameList}}
-			<li class="game" key="{{$key}}">
+			<li class="game" key="{{$key}}" url="{{$val.ShortURL}}">
 				<div class="title">{{$val.Name}}</div>
 				<div class="description">{{$val.Description}}</div>
 				<div class="thumbnail">
